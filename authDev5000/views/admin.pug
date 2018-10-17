@@ -1,0 +1,19 @@
+html
+  head
+    title= "Admin"
+  body
+    form(method='POST' action='/users/change')
+          div.form-group
+           label You are admin,input information to change todo of user:
+            
+          div.form-group
+            label(for='username') Username:
+            input#username.form-control(type='text',  name='username')
+          div.form-group
+            label(for='title') TodoName:
+            input#title.form-control(type='text' name='title')
+          div.form-group
+            label(for='tododesc') Change to:
+            input#tododesc.form-control(type='text' name='tododesc')
+          button.btn.btn-primary(type='submit') Sign up
+    

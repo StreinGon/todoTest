@@ -1,0 +1,17 @@
+html
+  head
+    title= "User"
+  body
+    form(method='POST' action='/users/addtodo')
+          div.form-group
+           label You are user,input information to add todo:
+          div.form-group
+            label(for='todotitle') Todo Title:
+            input#todotitle.form-control(type='text' name='todotitle')
+          div.form-group
+            label(for='tododesc') Todo Description:
+            input#tododesc.form-control(type='text' name='tododesc')
+          button.btn.btn-primary(type='submit') ADD
+  div=list
+    
+   
