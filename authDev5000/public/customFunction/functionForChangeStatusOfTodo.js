@@ -4,7 +4,7 @@ const Todos = require("../dbModels/todoModel");
 
 const customResponse = require("../customResponse");
 
-const functionForChangeTodo = function(req, res) {
+const functionForChangeStatusOfTodo = function(req, res) {
   const errors = validationResult(req);
   let Errormsg = "";
   errors.array().forEach(mes => {
@@ -19,13 +19,10 @@ const functionForChangeTodo = function(req, res) {
   }
 
   const username = req.body.username;
-  const title = req.body.title;
-
-  const newDesc = req.body.tododesc;
   return Todos.findOne({ todoOwner: username }, function(err, todo) {
-    todo.todo.task = newDesc;
+    todo.success = !todo.success;
     todo.save();
-    return customResponse(res, 200, "todo changed", todo);
+    return customResponse(res, 200, "todo status  changed", todo);
   });
 };
-module.exports = functionForChangeTodo;
+module.exports = functionForChangeStatusOfTodo;
