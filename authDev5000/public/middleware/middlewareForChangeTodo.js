@@ -15,7 +15,8 @@ const middlewareForChangeTodo = function(req, res) {
 
   const newDesc = req.body.tododesc;
   return Todos.findOne({ todoOwner: username }, function(err, todo) {
-    todo.todo.find(task => task.todoName === title).task = newDesc;
+    console.log(todo);
+    todo.todo.task = newDesc;
     todo.save();
     return customResponse(res, 200, "todo changed", todo);
   });

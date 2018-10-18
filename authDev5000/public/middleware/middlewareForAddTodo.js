@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const { validationResult } = require("express-validator/check");
 
+const TodoModel = require("../dbModels/todoModel");
 const Users = require("../dbModels/userModel");
 
 const secret = new Buffer("1", "base64");
@@ -17,7 +18,7 @@ const middlewareForAddTodo = function(req, res) {
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
   console.log(currentUser);
-  const newtodo = new Todo({
+  const newtodo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
     todo: { todoName: title, task: desc },
     success: false,
