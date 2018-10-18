@@ -9,7 +9,7 @@ const secret = new Buffer("1", "base64");
 const customResponse = require("../customResponse");
 
 const functionForAddTodo = function(req, res) {
-  const errors = validationResult(req);
+  const errors = validationResult(req); 
   let Errormsg = "";
   errors.array().forEach(mes => {
     if (Errormsg == "") {
@@ -28,7 +28,8 @@ const functionForAddTodo = function(req, res) {
 
   const newtodo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
-    todo: { todoName: title, task: desc },
+     todoName: title,
+      task: desc ,
     success: false,
     todoOwner: currentUser.username
   });
@@ -37,8 +38,12 @@ const functionForAddTodo = function(req, res) {
   return Users.findOne({ username: currentUser.username }, function(err, user) {
     user.todos.push(id);
     user.save();
-    return customResponse(res, 200, "todo created", newtodo);
+    return TodoModel.find({todoOwner:currentUser.username},function(err,todo){
+      return customResponse(res, 200, "todo created", todo);
+    })
   });
+ 
+
 };
 
 module.exports = functionForAddTodo;

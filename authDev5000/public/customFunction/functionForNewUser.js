@@ -24,7 +24,8 @@ const functionForNewUser = (req, res) => {
   console.log(req.body);
   const newTodo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
-    todo: { todoName: "verify", task: "verify your email" },
+     todoName: "verify", 
+     task: "verify your email" ,
     success: false,
     todoOwner: req.body.username
   });

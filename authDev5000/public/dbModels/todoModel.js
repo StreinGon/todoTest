@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const Todo = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  todo: { todoName: String, task: String },
+  todoName: String,
+  task: String ,
   success: Boolean,
   todoOwner: String
 });

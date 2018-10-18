@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator/check");
+const jwt = require("jsonwebtoken");
 
 const Todos = require("../dbModels/todoModel");
 
@@ -17,15 +18,20 @@ const functionForChangeTodo = function(req, res) {
   if (!errors.isEmpty()) {
     return customResponse(res, 422, Errormsg);
   }
-
-  const username = req.body.username;
+  const token = req.cookies.Authorization;
+  const currentUser = jwt.verify(token, secret);
+  const username = currentUser.username;
   const title = req.body.title;
 
   const newDesc = req.body.tododesc;
-  return Todos.findOne({ todoOwner: username }, function(err, todo) {
-    todo.todo.task = newDesc;
-    todo.save();
-    return customResponse(res, 200, "todo changed", todo);
+  return Todos.find({ todoOwner: username }, function(err, todos) {
+    todos.forEach(todo => {
+      if(todo.todoName===title){
+        todo.task=newDesc;
+        todo.save();
+      }
+    });
+    return customResponse(res, 200, "todo changed", todos);
   });
 };
 module.exports = functionForChangeTodo;
