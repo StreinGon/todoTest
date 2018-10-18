@@ -6,5 +6,5 @@ const Role = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   rights: Number
 });
-const RoleModel = mongoose.model("Role", Role, "roles");
+const RoleModel = mongoose.model("Roles", Role, "roles");
 module.exports = RoleModel;

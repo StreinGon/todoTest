@@ -8,5 +8,5 @@ const Todo = new Schema({
   success: Boolean,
   todoOwner: String
 });
-const TodoModel = mongoose.model("Todo", Todo, "todos");
+const TodoModel = mongoose.model("Todos", Todo, "todos");
 module.exports = TodoModel;

@@ -6,8 +6,8 @@ const Users = new Schema({
   username: String,
   mail: String,
   password: String,
-  role: { type: Schema.ObjectId, ref: "Role" },
-  todos: [{ type: Schema.ObjectId, ref: "Todo" }]
+  role: { type: Schema.ObjectId, ref: "Roles" },
+  todos: [{ type: Schema.ObjectId, ref: "Todos" }]
 });
 
 const UsersModel = mongoose.model("Users", Users, "users");
