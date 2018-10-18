@@ -5,7 +5,7 @@ const secret = new Buffer("1", "base64");
 const Todos = require("../dbModels/todoModel");
 const customResponse = require("../customResponse");
 
-const middlewareForJWTauth = (req, res) => {
+const functionForJWTauth = (req, res) => {
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
   return Users.findOne({ username: currentUser.username })
@@ -29,4 +29,4 @@ const middlewareForJWTauth = (req, res) => {
       }
     });
 };
-module.exports = middlewareForJWTauth;
+module.exports = functionForJWTauth;

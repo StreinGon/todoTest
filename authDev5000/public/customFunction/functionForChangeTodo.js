@@ -4,7 +4,7 @@ const Todos = require("../dbModels/todoModel");
 
 const customResponse = require("../customResponse");
 
-const middlewareForChangeTodo = function(req, res) {
+const functionForChangeTodo = function(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return customResponse(res, 422, "Validation  error");
@@ -15,10 +15,9 @@ const middlewareForChangeTodo = function(req, res) {
 
   const newDesc = req.body.tododesc;
   return Todos.findOne({ todoOwner: username }, function(err, todo) {
-    console.log(todo);
     todo.todo.task = newDesc;
     todo.save();
     return customResponse(res, 200, "todo changed", todo);
   });
 };
-module.exports = middlewareForChangeTodo;
+module.exports = functionForChangeTodo;

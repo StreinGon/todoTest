@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const middlewareForNewUser = require("../public/middleware/middlewareForNewUser");
+const functionForNewUser = require("../public/customFunction/functionForNewUser");
 const validator = require("../public/validators/validatorForRegistration");
 
 router.post(
   "/",
   validator.validatorForRegistration,
   validator.checkForExistingEmail,
-  middlewareForNewUser
+  functionForNewUser
 );
 module.exports = router;

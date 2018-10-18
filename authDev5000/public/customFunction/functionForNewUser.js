@@ -8,7 +8,7 @@ const Rolemodel = require("../dbModels/roleModel");
 const customResponse = require("../customResponse");
 const saltRounds = 10;
 
-const middlewareForNewUser = (req, res) => {
+const functionForNewUser = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -43,4 +43,4 @@ const middlewareForNewUser = (req, res) => {
   customResponse(res, 200, "Registration succesfull");
 };
 
-module.exports = middlewareForNewUser;
+module.exports = functionForNewUser;

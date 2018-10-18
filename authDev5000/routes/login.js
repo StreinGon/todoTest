@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const middlewareForLocalAuth = require("../public/middleware/middlewareForLocalAuth");
+const functionForLocalAuth = require("../public/customFunction/functionForLocalAuth");
 
-router.post("/", middlewareForLocalAuth);
+router.post("/", functionForLocalAuth);
 
 module.exports = router;

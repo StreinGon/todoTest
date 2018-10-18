@@ -4,7 +4,7 @@ const passport = require("passport");
 const secret = new Buffer("1", "base64");
 const customResponse = require("../customResponse");
 
-const middlewareForLocalAuth = function(req, res, next) {
+const functionForLocalAuth = function(req, res, next) {
   passport.authenticate("local", function(err, user, info) {
     if (err) throw err;
     if (!user) {
@@ -26,4 +26,4 @@ const middlewareForLocalAuth = function(req, res, next) {
     });
   })(req, res, next);
 };
-module.exports = middlewareForLocalAuth;
+module.exports = functionForLocalAuth;

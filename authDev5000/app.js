@@ -7,10 +7,10 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
-const logger = require("morgan");
 const bodyParser = require("body-parser");
-const localStrategy = require("./strategy/localStrategy");
 
+const localStrategy = require("./strategy/localStrategy");
+const jwtStategy = require("./strategy/jwtStategy");
 mongoose.connect(
   "mongodb://localhost/Users",
   { useNewUrlParser: true }
@@ -27,10 +27,6 @@ const regRouter = require("./routes/registerform");
 app.set("views", path.join(__dirname, "views"));
 
 app.set("view engine", "pug");
-
-//app.use(express.json());
-
-app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -66,6 +62,7 @@ passport.deserializeUser(function(_id, done) {
     done(err, user);
   });
 });
+passport.use(jwtStategy);
 passport.use(localStrategy);
 app.use(passport.initialize());
 

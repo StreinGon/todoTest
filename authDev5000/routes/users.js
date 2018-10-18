@@ -3,12 +3,12 @@ var router = express.Router();
 var passport = require("passport");
 
 const customResponse = require("../public/customResponse");
-const middlewareForJWTauth = require("../public/middleware/middlewareForJWTauth");
+const functionForJWTauth = require("../public/customFunction/functionForJWTauth");
 
 router.get(
   "/",
   passport.authenticate("jwt", { session: false, failWithError: true }),
-  middlewareForJWTauth
+  functionForJWTauth
 );
 router.post("/logout", function(req, res) {
   req.logout();
