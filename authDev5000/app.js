@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 
 const localStrategy = require("./strategy/localStrategy");
 const jwtStategy = require("./strategy/jwtStategy");
+
 mongoose.connect(
   "mongodb://localhost/Users",
   { useNewUrlParser: true }

@@ -10,9 +10,16 @@ const saltRounds = 10;
 
 const functionForNewUser = (req, res) => {
   const errors = validationResult(req);
-
+  let Errormsg = "";
+  errors.array().forEach(mes => {
+    if (Errormsg == "") {
+      Errormsg += mes.msg;
+    } else {
+      Errormsg += "," + mes.msg;
+    }
+  });
   if (!errors.isEmpty()) {
-    return customResponse(res, 422, "Validation error");
+    return customResponse(res, 422, Errormsg);
   }
   console.log(req.body);
   const newTodo = new TodoModel({
