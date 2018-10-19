@@ -14,14 +14,16 @@ const validatorForAddTodo = [
 const checkForExistingTitle = body("todotitle").custom(value => {
   return TodoModel.findOne({ todoName: value }).then(task => {
     if (task) {
-      return Promise.reject("Title already in use");
+      return Promise.reject("Task with your title is already being performed.");
     }
   });
 });
 const checkForExistingDescription = body("tododesc").custom(value => {
   return TodoModel.findOne({ task: value }).then(task => {
     if (task) {
-      return Promise.reject("Description already in use");
+      return Promise.reject(
+        "Task with your description is already being performed."
+      );
     }
   });
 });

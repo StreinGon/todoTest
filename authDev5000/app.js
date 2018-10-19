@@ -19,6 +19,7 @@ mongoose.connect(
 
 const Users = require("./public/dbModels/userModel");
 
+const todosRouter = require("./routes/todos");
 const todoRouter = require("./routes/todo");
 const loginRouter = require("./routes/login");
 const usersRouter = require("./routes/users");
@@ -62,8 +63,11 @@ passport.deserializeUser(function(_id, done) {
     done(err, user);
   });
 });
+
 passport.use(jwtStategy);
+
 passport.use(localStrategy);
+
 app.use(passport.initialize());
 
 app.use(passport.session());
@@ -74,7 +78,10 @@ app.use("/reg", regRouter);
 
 app.use("/login", loginRouter);
 
+app.use("/todos", todosRouter);
+
 app.use("/todo", todoRouter);
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
