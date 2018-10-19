@@ -12,7 +12,7 @@ const functionForJWTauth = (req, res) => {
     .populate("role")
     .exec((err, user) => {
       if (user.role.rights === 0) {
-        return Todos.findOne({ todoOwner: currentUser.username }, function(
+        return Todos.find({ todoOwner: currentUser.username }, function(
           err,
           todo
         ) {

@@ -8,8 +8,8 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const logger=require("morgan")
-app.use(logger("dev"))
+const logger = require("morgan");
+app.use(logger("dev"));
 const localStrategy = require("./strategy/localStrategy");
 const jwtStategy = require("./strategy/jwtStategy");
 
@@ -21,7 +21,6 @@ mongoose.connect(
 const Users = require("./public/dbModels/userModel");
 
 const todoRouter = require("./routes/todo");
-const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const usersRouter = require("./routes/users");
 const regRouter = require("./routes/registerform");
@@ -69,8 +68,6 @@ passport.use(localStrategy);
 app.use(passport.initialize());
 
 app.use(passport.session());
-
-app.use("/", indexRouter);
 
 app.use("/users", usersRouter);
 
