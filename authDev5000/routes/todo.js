@@ -19,7 +19,7 @@ router.get(
 );
 router.post("/change", validatorForChangeTodo, functionForChangeTodo);
 router.put(
-  "/addtodo",
+  "/",
   validator.validatorForAddTodo,
   validator.checkForExistingTitle,
   validator.checkForExistingDescription,
@@ -30,5 +30,5 @@ router.post(
   validatorForChangeStatusOfTodo,
   functionForChangeStatusOfTodo
 );
-router.delete("/delete", validatorForDeleteTodo, functionForDeleteTodo);
+router.delete("/", validatorForDeleteTodo, functionForDeleteTodo);
 module.exports = router;

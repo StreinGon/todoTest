@@ -22,14 +22,13 @@ const functionForDeleteTodo = function(req, res) {
   const currentUser = jwt.verify(token, secret);
   const username = currentUser.username;
   const title = req.body.title;
-  let test;
   return Todos.find({ todoOwner: username }, function(err, todos) {
     todos.forEach(todo => {
       if (todo.todoName === title) {
         todo.remove();
       }
     });
-    return customResponse(res, 201, "todo deleted", test);
+    return customResponse(res, 201, "todo deleted");
   });
 };
 module.exports = functionForDeleteTodo;
