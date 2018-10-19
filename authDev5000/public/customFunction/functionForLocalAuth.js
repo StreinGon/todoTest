@@ -13,6 +13,7 @@ const functionForLocalAuth = function(req, res, next) {
     req.logIn(user, function(err) {
       if (err) throw err;
       const changedUser = {
+        _id: user._id,
         username: user.username,
         mail: user.mail,
         role: user.role

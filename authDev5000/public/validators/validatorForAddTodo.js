@@ -4,25 +4,25 @@ const { check } = require("express-validator/check");
 const TodoModel = require("../dbModels/todoModel");
 
 const validatorForAddTodo = [
-  check("todotitle")
+  check("title")
     .isLength({ min: 1 })
     .withMessage("Title must be at least 1 chars long"),
-  check("tododesc")
+  check("description")
     .isLength({ min: 1 })
     .withMessage("Description must be at least 1 chars long")
 ];
-const checkForExistingTitle = body("todotitle").custom(value => {
+const checkForExistingTitle = body("title").custom(value => {
   return TodoModel.findOne({ todoName: value }).then(task => {
     if (task) {
-      return Promise.reject("Task with your title is already being performed.");
+      return Promise.reject("Task with your title is already being performed");
     }
   });
 });
-const checkForExistingDescription = body("tododesc").custom(value => {
+const checkForExistingDescription = body("description").custom(value => {
   return TodoModel.findOne({ task: value }).then(task => {
     if (task) {
       return Promise.reject(
-        "Task with your description is already being performed."
+        "Task with your description is already being performed"
       );
     }
   });

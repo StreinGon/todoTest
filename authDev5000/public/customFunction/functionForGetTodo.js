@@ -21,17 +21,13 @@ const functionForGetTodo = function(req, res) {
   }
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
-  const username = currentUser.username;
+  const id = req.query.id;
 
-  const title = req.query.title;
-  let requestedTodo;
-  return Todos.find({ todoOwner: username }, function(err, todos) {
-    todos.forEach(todo => {
-      if (todo.todoName === title) {
-        requestedTodo = todo;
-      }
-    });
-    return customResponse(res, 200, "Todo sended", requestedTodo);
+  return Todos.findOne({ todoOwner: currentUser._id, _id: id }, function(
+    err,
+    todos
+  ) {
+    return customResponse(res, 200, "Todo sended", todos);
   });
 };
 module.exports = functionForGetTodo;

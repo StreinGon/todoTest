@@ -21,17 +21,16 @@ const functionForAddTodo = function(req, res) {
   if (!errors.isEmpty()) {
     return customResponse(res, 422, Errormsg);
   }
-  const title = req.body.todotitle;
-  const desc = req.body.tododesc;
+  const title = req.body.title;
+  const desc = req.body.description;
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
-
   const newtodo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
     todoName: title,
     task: desc,
     success: false,
-    todoOwner: currentUser.username
+    todoOwner: currentUser._id
   });
   const id = newtodo._id;
 
