@@ -20,9 +20,9 @@ const functionForDeleteTodo = function(req, res) {
   }
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
-  const username = currentUser.username;
+  const id = currentUser._id;
   const title = req.body.title;
-  return Todos.find({ todoOwner: username }, function(err, todos) {
+  return Todos.find({ todoOwner: id }, function(err, todos) {
     todos.forEach(todo => {
       if (todo.todoName === title) {
         todo.remove();

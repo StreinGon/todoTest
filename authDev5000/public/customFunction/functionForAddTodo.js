@@ -25,6 +25,9 @@ const functionForAddTodo = function(req, res) {
   const desc = req.body.description;
   const token = req.cookies.Authorization;
   const currentUser = jwt.verify(token, secret);
+  if(currentUser._id===null||currentUser._id===undefined){
+    return customResponse(res, 401 , "Unauthorized ");
+  }
   const newtodo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
     todoName: title,
