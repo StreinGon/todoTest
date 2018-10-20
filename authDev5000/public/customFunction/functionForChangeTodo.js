@@ -23,7 +23,7 @@ const functionForChangeTodo = function(req, res) {
   const username = currentUser.username;
   const title = req.body.title;
 
-  const newDesc = req.body.tododesc;
+  const newDesc = req.body.description;
   let changedTodos;
   return Todos.find({ todoOwner: username }, function(err, todos) {
     todos.forEach(todo => {
