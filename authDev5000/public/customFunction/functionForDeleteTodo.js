@@ -28,7 +28,10 @@ const functionForDeleteTodo = function(req, res) {
         todo.remove();
       }
     });
-    return customResponse(res, 201, "todo deleted");
+    if (todos != null) return customResponse(res, 201, "todo deleted");
+    else {
+      return customResponse(res, 201, "Not found");
+    }
   });
 };
 module.exports = functionForDeleteTodo;

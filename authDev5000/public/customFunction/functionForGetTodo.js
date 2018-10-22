@@ -27,7 +27,11 @@ const functionForGetTodo = function(req, res) {
     err,
     todos
   ) {
-    return customResponse(res, 200, "Todo sended", todos);
+    if (todos != null) {
+      return customResponse(res, 200, "Todo sended", todos);
+    } else {
+      return customResponse(res, 200, "not found");
+    }
   });
 };
 module.exports = functionForGetTodo;

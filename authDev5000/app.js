@@ -8,8 +8,7 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const kigger=require("morgan")
-app.use(kigger("dev"))
+
 const localStrategy = require("./strategy/localStrategy");
 const jwtStategy = require("./strategy/jwtStategy");
 
@@ -33,6 +32,8 @@ app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
+
+app.use(express.json());
 
 app.use(session({ secret: "secret" }));
 
