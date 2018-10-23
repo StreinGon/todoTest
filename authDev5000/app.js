@@ -17,7 +17,7 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 
-const Users = require("./public/dbModels/userModel");
+const Users = require("./models/userModel");
 
 const todosRouter = require("./routes/todos");
 const todoRouter = require("./routes/todo");

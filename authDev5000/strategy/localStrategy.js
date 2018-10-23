@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 
-const Users = require("../public/dbModels/userModel");
+const userServices = require("../services/userServices.js");
 
 const localStrategy = new LocalStrategy(
   {
@@ -10,7 +10,7 @@ const localStrategy = new LocalStrategy(
     passwordField: "password"
   },
   function(username, password, done) {
-    Users.findOne({ username: username }, function(err, user) {
+    userServices.findUserbyUsername(username, function(err, user) {
       if (err) {
         return done(err);
       }

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const functionForNewUser = require("../public/customFunction/functionForNewUser");
-const validator = require("../public/validators/validatorForRegistration");
+const functionForNewUser = require("../controllers/auth/functionForNewUser");
+const validator = require("../helpers/validators/validatorForRegistration");
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos

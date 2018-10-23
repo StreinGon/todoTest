@@ -2,7 +2,7 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 
-const functionForJWTauth = require("../public/customFunction/functionForJWTauth");
+const functionForJWTauth = require("../controllers/todos/functionForJWTauth");
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos

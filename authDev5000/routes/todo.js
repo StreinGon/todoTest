@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
-const functionForGetTodo = require("../public/customFunction/functionForGetTodo");
-const functionForChangeTodo = require("../public/customFunction/functionForChangeTodo");
-const functionForAddTodo = require("../public/customFunction/functionForAddTodo");
-const functionForDeleteTodo = require("../public/customFunction/functionForDeleteTodo");
+const functionForGetTodo = require("../controllers/todo/functionForGetTodo");
+const functionForChangeTodo = require("../controllers/todo/functionForChangeTodo");
+const functionForAddTodo = require("../controllers/todo/functionForAddTodo");
+const functionForDeleteTodo = require("../controllers/todo/functionForDeleteTodo");
 
-const validator = require("../public/validators/validatorForAddTodo");
-const validatorForDeleteTodo = require("../public/validators/validatorForDeleteTodo");
+const validator = require("../helpers/validators/validatorForAddTodo");
+const validatorForDeleteTodo = require("../helpers/validators/validatorForDeleteTodo");
 /**
  * @api {post} /todo Change single todo
  * @apiGroup Todo
@@ -29,7 +30,11 @@ const validatorForDeleteTodo = require("../public/validators/validatorForDeleteT
  *  "msg": "Todo not found"
  * }
  */
-router.post("/", functionForChangeTodo);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  functionForChangeTodo
+);
 /**
  * @api {put} /todo Add single todo
  * @apiGroup Todo
@@ -54,6 +59,7 @@ router.post("/", functionForChangeTodo);
  */
 router.put(
   "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
   validator.validatorForAddTodo,
   validator.checkForExistingTitle,
   validator.checkForExistingDescription,
@@ -80,7 +86,11 @@ router.put(
  *    "msg": "Not found"
  * }
  */
-router.get("/", functionForGetTodo);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  functionForGetTodo
+);
 /**
  * @api {get} /todo Get single todo
  * @apiGroup Todo
@@ -94,5 +104,10 @@ router.get("/", functionForGetTodo);
  *    "msg": "Not found"
  * }
  */
-router.delete("/", validatorForDeleteTodo, functionForDeleteTodo);
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  validatorForDeleteTodo,
+  functionForDeleteTodo
+);
 module.exports = router;

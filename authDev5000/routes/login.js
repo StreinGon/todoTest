@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const functionForLocalAuth = require("../public/customFunction/functionForLocalAuth");
+const functionForLocalAuth = require("../controllers/auth/functionForLocalAuth");
 /**
  * @api {post} /users/login Login
  * @apiGroup Users

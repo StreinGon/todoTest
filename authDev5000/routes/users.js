@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
-const customResponse = require("../public/customResponse");
+const customResponse = require("../helpers/customResponse/customResponse");
 /**
  * @api {post} /users/logout Logout
  * @apiGroup Users
@@ -11,9 +12,13 @@ const customResponse = require("../public/customResponse");
  *   "msg": "LogOut"
  *  }
  */
-router.post("/logout", function(req, res) {
-  req.logout();
-  res.cookie("Authorization", null);
-  return customResponse(res, 200, "LogOut");
-});
+router.post(
+  "/logout",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  function(req, res) {
+    req.logout();
+    res.cookie("Authorization", null);
+    return customResponse(res, 200, "LogOut");
+  }
+);
 module.exports = router;
