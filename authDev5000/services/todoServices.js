@@ -37,7 +37,7 @@ function findTodosByOwnerAndName(id, name, func) {
 }
 function changeTodos(newDesc, status, todos, changedTodos) {
   todos.forEach(todo => {
-    if (newDesc != null && newDesc != undefined) {
+    if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
       todo.task = newDesc;
       changedTodos = todo;
     }
