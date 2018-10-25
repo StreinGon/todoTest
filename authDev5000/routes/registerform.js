@@ -1,8 +1,9 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
 
-const functionForNewUser = require("../controllers/auth/functionForNewUser");
-const validator = require("../helpers/validators/validatorForRegistration");
+const authController = require('../controllers/auth/authController');
+const validator = require('../helpers/validators/registrationValidators');
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos
@@ -18,9 +19,9 @@ const validator = require("../helpers/validators/validatorForRegistration");
  *  }
  */
 router.post(
-  "/",
-  validator.validatorForRegistration,
+  '/',
+  validator.registrationValidator,
   validator.checkForExistingEmail,
-  functionForNewUser
+  authController.singUp
 );
 module.exports = router;

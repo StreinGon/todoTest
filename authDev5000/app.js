@@ -1,4 +1,5 @@
 const express = require("express");
+
 const app = express();
 const createError = require("http-errors");
 const path = require("path");
@@ -10,20 +11,15 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 
 const localStrategy = require("./strategy/localStrategy");
-const jwtStategy = require("./strategy/jwtStategy");
+const jwtStrategy = require("./strategy/jwtStrategy");
+const routes = require("./routes");
 
 mongoose.connect(
   "mongodb://localhost/Users",
   { useNewUrlParser: true }
 );
 
-const Users = require("./models/userModel");
-
-const todosRouter = require("./routes/todos");
-const todoRouter = require("./routes/todo");
-const loginRouter = require("./routes/login");
-const usersRouter = require("./routes/users");
-const regRouter = require("./routes/registerform");
+const Users = require("./models/user");
 
 app.set("views", path.join(__dirname, "views"));
 
@@ -45,7 +41,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
   res.header(
@@ -56,17 +52,17 @@ app.use(function(req, res, next) {
   next();
 });
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser(function(_id, done) {
-  Users.findById(_id, function(err, user) {
+passport.deserializeUser((_id, done) => {
+  Users.findById(_id, (err, user) => {
     done(err, user);
   });
 });
 
-passport.use(jwtStategy);
+passport.use(jwtStrategy);
 
 passport.use(localStrategy);
 
@@ -74,21 +70,21 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use("/users", usersRouter);
+app.use("/users", routes.usersRouter);
 
-app.use("/reg", regRouter);
+app.use("/reg", routes.regRouter);
 
-app.use("/login", loginRouter);
+app.use("/login", routes.loginRouter);
 
-app.use("/todos", todosRouter);
+app.use("/todos", routes.todosRouter);
 
-app.use("/todo", todoRouter);
+app.use("/todo", routes.todoRouter);
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-app.use(function(err, req, res) {
+app.use((err, req, res) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);

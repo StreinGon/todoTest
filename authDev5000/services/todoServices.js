@@ -1,61 +1,78 @@
-const TodoModel = require("../models/todoModel");
+const TodoModel = require("../models/todo");
+const constants = require("../constants");
+const customResponse = require("../helpers/customResponse/customResponse");
 const mongoose = require("mongoose");
 
-function createNewTodo(title, desc, id) {
-  return new TodoModel({
+const createNewTodo = payload => {
+  const todo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
-    todoName: title,
-    task: desc,
+    todoName: payload.title,
+    task: payload.description,
     success: false,
-    todoOwner: id
+    todoOwner: payload.id
   });
-}
-function deleteTodo(todos, title) {
-  todos.forEach(todo => {
-    if (todo.todoName === title) {
-      todo.remove();
+  todo.save();
+  return todo;
+};
+const deleteTodo = (id, idTodo, res) => {
+  return find({ todoOwner: id, _id: idTodo }).then(todo => {
+    if (!todo) {
+      return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
+    todo.remove();
+    return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
   });
-}
-function findTodoByName(name, func) {
-  return TodoModel.findOne({ todoName: name }, func);
-}
-function findTodoByOwnerAndId(owner, id, func) {
-  return TodoModel.findOne({ todoOwner: owner, _id: id }, func);
-}
-function findTodoByTask(task, func) {
-  return TodoModel.findOne({ task: task }, func);
-}
-function findTodosByOwner(id, func) {
-  return TodoModel.find({ todoOwner: id }, func);
-}
-function findTodoByOwner(id, func) {
-  return TodoModel.find({ todoOwner: id }, func);
-}
-function findTodosByOwnerAndName(id, name, func) {
-  return TodoModel.find({ todoOwner: id, todoName: name }, func);
-}
-function changeTodos(newDesc, status, todos, changedTodos) {
-  todos.forEach(todo => {
-    if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
-      todo.task = newDesc;
-      changedTodos = todo;
-    }
-    if (status === "true" || status === "false") {
-      todo.success = status;
-      changedTodos = todo;
-    }
-    todo.save();
-  });
-}
+};
+const find = payload => {
+  return TodoModel.findOne(payload);
+};
+const changeTodos = (newDesc, status, idTodo, id, res) => {
+  return find({ todoOwner: id, _id: idTodo })
+    .then(todo => {
+      if (!todo) {
+        return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+      }
+      if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
+        todo.task = newDesc;
+      }
+      if (status === "true" || status === "false") {
+        todo.success = status;
+      }
+      todo.save();
+      return customResponse(
+        res,
+        200,
+        constants.statusConstants.TODO_UPDATED,
+        todo
+      );
+    })
+    .catch(err => {
+      if (err) return err;
+    });
+};
+const getTodo = (id, idTodo, res) => {
+  return find({ todoOwner: id, _id: idTodo })
+    .then(todo => {
+      if (!todo) {
+        return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+      }
+      return customResponse(
+        res,
+        200,
+        constants.statusConstants.TODO_SENDED,
+        todo
+      );
+    })
+    .catch(err => {
+      if (err) {
+        return err;
+      }
+    });
+};
 module.exports = {
   createNewTodo,
   deleteTodo,
-  findTodoByName,
-  findTodoByOwnerAndId,
-  findTodoByTask,
-  findTodoByOwner,
-  findTodosByOwnerAndName,
+  find,
   changeTodos,
-  findTodosByOwner
+  getTodo
 };

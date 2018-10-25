@@ -1,8 +1,9 @@
-const passport = require("passport");
-const express = require("express");
+const passport = require('passport');
+const express = require('express');
+
 const router = express.Router();
 
-const functionForJWTauth = require("../controllers/todos/functionForJWTauth");
+const todosController = require('../controllers/todos/todosController');
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos
@@ -25,8 +26,8 @@ const functionForJWTauth = require("../controllers/todos/functionForJWTauth");
  *     404 Unauthorized
  */
 router.get(
-  "/",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
-  functionForJWTauth
+  '/',
+  passport.authenticate('jwt', { session: false, failWithError: true }),
+  todosController.getTodolist
 );
 module.exports = router;

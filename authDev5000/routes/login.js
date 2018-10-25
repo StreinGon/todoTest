@@ -1,7 +1,8 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
 
-const functionForLocalAuth = require("../controllers/auth/functionForLocalAuth");
+const authController = require('../controllers/auth/authController');
 /**
  * @api {post} /users/login Login
  * @apiGroup Users
@@ -17,6 +18,6 @@ const functionForLocalAuth = require("../controllers/auth/functionForLocalAuth")
  *  "msg": "Login incorrect"
  *  }
  */
-router.post("/", functionForLocalAuth);
+router.post('/', authController.singIn);
 
 module.exports = router;

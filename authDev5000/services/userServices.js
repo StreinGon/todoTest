@@ -1,27 +1,17 @@
-const Users = require("../models/userModel");
+const Users = require("../models/user");
 
-function createNewUser(username, password, mail, id) {
-  return Users.create({
-    username: username,
-    password: password,
-    mail: mail,
-    todos: [],
-    role: id
-  });
-}
-function findUserbyMail(mail, func) {
-  return Users.findOne({ mail: mail }, func);
-}
-function findUserbyUsername(username, func) {
-  return Users.findOne({ username: username }, func);
-}
-function userAddNewTodo(user, id) {
+const createNewUser = payload => {
+  return Users.create(payload);
+};
+const find = payload => {
+  return Users.findOne(payload);
+};
+const userAddNewTodo = (user, id) => {
   user.todos.push(id);
   user.save();
-}
+};
 module.exports = {
   createNewUser,
-  findUserbyMail,
-  findUserbyUsername,
+  find,
   userAddNewTodo
 };
