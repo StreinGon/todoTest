@@ -1,4 +1,4 @@
-function customResponse(res, status, msg, data) {
-  return res.status(status).json({ msg, data });
+function customResponse(res, status, message, data) {
+  return res.status(status).json({ message, data });
 }
 module.exports = customResponse;

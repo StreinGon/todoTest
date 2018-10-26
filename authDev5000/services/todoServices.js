@@ -1,6 +1,4 @@
 const TodoModel = require("../models/todo");
-const constants = require("../constants");
-const customResponse = require("../helpers/customResponse/customResponse");
 const mongoose = require("mongoose");
 
 const createNewTodo = payload => {
@@ -14,23 +12,23 @@ const createNewTodo = payload => {
   todo.save();
   return todo;
 };
-const deleteTodo = (id, idTodo, res) => {
+const deleteTodo = (id, idTodo) => {
   return find({ todoOwner: id, _id: idTodo }).then(todo => {
     if (!todo) {
-      return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+      return false;
     }
     todo.remove();
-    return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
+    return true;
   });
 };
 const find = payload => {
   return TodoModel.findOne(payload);
 };
-const changeTodos = (newDesc, status, idTodo, id, res) => {
+const changeTodos = (newDesc, status, idTodo, id) => {
   return find({ todoOwner: id, _id: idTodo })
     .then(todo => {
       if (!todo) {
-        return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+        return null;
       }
       if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
         todo.task = newDesc;
@@ -39,29 +37,19 @@ const changeTodos = (newDesc, status, idTodo, id, res) => {
         todo.success = status;
       }
       todo.save();
-      return customResponse(
-        res,
-        200,
-        constants.statusConstants.TODO_UPDATED,
-        todo
-      );
+      return todo;
     })
     .catch(err => {
       if (err) return err;
     });
 };
-const getTodo = (id, idTodo, res) => {
+const getTodo = (id, idTodo) => {
   return find({ todoOwner: id, _id: idTodo })
     .then(todo => {
       if (!todo) {
-        return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+        return false;
       }
-      return customResponse(
-        res,
-        200,
-        constants.statusConstants.TODO_SENDED,
-        todo
-      );
+      return todo;
     })
     .catch(err => {
       if (err) {

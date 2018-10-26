@@ -1,5 +1,4 @@
 const JwtStrategy = require("passport-jwt").Strategy;
-
 const userServices = require("../services/userServices.js");
 
 const secret = Buffer.from("1", "base64");
@@ -22,10 +21,13 @@ const jwtStrategy = new JwtStrategy(opts, (jwtPayload, done) => {
       if (user) {
         return done(null, user);
       }
+
       return done(null, false);
     })
     .catch(err => {
-      if (err) return done(err, false);
+      if (err) {
+        return done(err, false);
+      }
     });
 });
 

@@ -35,12 +35,13 @@ const checkForExistingTitle = body("title").custom(value => {
   });
 });
 const checkForExistingDescription = body("description").custom(value => {
-  return todoServices.find({ task: value }).then(task => {
-    if (task) {
+  return todoServices.find({ task: value }).then(todo => {
+    if (todo) {
       return Promise.reject(
         new Error("Task with your description is already being performed")
       );
     }
+
     return true;
   });
 });

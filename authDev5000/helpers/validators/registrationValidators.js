@@ -7,6 +7,9 @@ const registrationValidator = [
   check("mail")
     .isEmail()
     .withMessage("Incorrect mail"),
+  check("mail")
+    .custom(value => !/^[а-яА-Я]+$/.test(value))
+    .withMessage("Only latin chars"),
   check("username")
     .custom(value => !/\s/.test(value))
     .withMessage("No spaces are allowed in the username"),

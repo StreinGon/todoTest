@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const authController = require('../controllers/auth/authController');
+const authController = require("../controllers/auth/authController");
 /**
  * @api {post} /users/login Login
  * @apiGroup Users
@@ -18,6 +18,7 @@ const authController = require('../controllers/auth/authController');
  *  "msg": "Login incorrect"
  *  }
  */
-router.post('/', authController.singIn);
+
+router.post("/", authController.singIn);
 
 module.exports = router;

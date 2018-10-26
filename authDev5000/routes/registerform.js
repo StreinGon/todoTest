@@ -1,9 +1,10 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const authController = require('../controllers/auth/authController');
-const validator = require('../helpers/validators/registrationValidators');
+const authController = require("../controllers/auth/authController");
+const validator = require("../helpers/validators/registrationValidators");
+
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos
@@ -18,8 +19,9 @@ const validator = require('../helpers/validators/registrationValidators');
  *    "msg": "Password must be at least 5 chars long,E-mail already in use"
  *  }
  */
+
 router.post(
-  '/',
+  "/",
   validator.registrationValidator,
   validator.checkForExistingEmail,
   authController.singUp

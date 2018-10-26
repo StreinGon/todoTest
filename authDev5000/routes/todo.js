@@ -1,12 +1,14 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const passport = require('passport');
+const passport = require("passport");
 
-const todoController = require('../controllers/todo/todoController');
+const todoController = require("../controllers/todo/todoController");
 
-const validator = require('../helpers/validators/addTodoValidators');
-const deleteTodoValidators = require('../helpers/validators/deleteTodoValidators');
+const validator = require("../helpers/validators/addTodoValidators");
+const deleteTodoValidators = require("../helpers/validators/deleteTodoValidators");
+const changeTodoValidator = require("../helpers/validators/changeTodoValidator");
+const getTodoValidator = require("../helpers/validators/getTodoValidator");
 /**
  * @api {post} /todo Change single todo
  * @apiGroup Todo
@@ -29,8 +31,9 @@ const deleteTodoValidators = require('../helpers/validators/deleteTodoValidators
  * }
  */
 router.post(
-  '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  changeTodoValidator,
   todoController.changeTodo
 );
 /**
@@ -55,16 +58,17 @@ router.post(
  * "msg": "Task with your title is already being performed,Task with your description is already being performed"
  * }
  */
+
 router.put(
-  '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
   validator.addTodoValidator,
   validator.checkForExistingTitle,
   validator.checkForExistingDescription,
   todoController.addTodo
 );
 /**
- * @api {get} /todo Delete single todo
+ * @api {get} /todo Get single todo
  * @apiGroup Todo
  *
  * @apiSuccessExample {json} Success
@@ -85,12 +89,13 @@ router.put(
  * }
  */
 router.get(
-  '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  getTodoValidator,
   todoController.getTodo
 );
 /**
- * @api {get} /todo Get single todo
+ * @api {delete} /todo delete single todo
  * @apiGroup Todo
  *
  * @apiSuccessExample {json} Success
@@ -103,8 +108,8 @@ router.get(
  * }
  */
 router.delete(
-  '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
   deleteTodoValidators,
   todoController.deleteTodo
 );

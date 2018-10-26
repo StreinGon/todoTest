@@ -1,14 +1,14 @@
 [
   {
-    "type": "get",
+    "type": "delete",
     "url": "/todo",
-    "title": "Delete single todo",
+    "title": "delete single todo",
     "group": "Todo",
     "success": {
       "examples": [
         {
           "title": "Success",
-          "content": "{\n \"msg\": \"Todo sended\",\n \"data\": {\n      \"_id\": \"5bcde5fd2b4e3b1d5890978a\",\n     \"todoName\": \"123245\",\n     \"task\": \"122345\",\n     \"success\": false,\n     \"todoOwner\": \"5bc9dea3ef3a9931386555c1\",\n    \"__v\": 0\n }\n}",
+          "content": "{\n   \"msg\": \"todo deleted\"\n}",
           "type": "json"
         }
       ]
@@ -25,7 +25,7 @@
     "version": "0.0.0",
     "filename": "routes/todo.js",
     "groupTitle": "Todo",
-    "name": "GetTodo"
+    "name": "DeleteTodo"
   },
   {
     "type": "get",
@@ -36,7 +36,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "{\n   \"msg\": \"todo deleted\"\n}",
+          "content": "{\n \"msg\": \"Todo sended\",\n \"data\": {\n      \"_id\": \"5bcde5fd2b4e3b1d5890978a\",\n     \"todoName\": \"123245\",\n     \"task\": \"122345\",\n     \"success\": false,\n     \"todoOwner\": \"5bc9dea3ef3a9931386555c1\",\n    \"__v\": 0\n }\n}",
           "type": "json"
         }
       ]
@@ -156,38 +156,38 @@
           },
           {
             "group": "Success 200",
-            "type": "ObjectId",
+            "type": "Integer",
             "optional": false,
-            "field": "_id",
-            "description": "<p>DB id of todo</p>"
+            "field": "countAllTodo",
+            "description": "<p>Count of user's todo</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "todoName",
-            "description": "<p>Title of todo</p>"
+            "field": "amount",
+            "description": "<p>requsted amount</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "task",
-            "description": "<p>Task of todo</p>"
+            "field": "startForm",
+            "description": "<p>requsted startFrom</p>"
           },
           {
             "group": "Success 200",
-            "type": "Boolean",
+            "type": "Integer",
             "optional": false,
-            "field": "success",
-            "description": "<p>Status of todo</p>"
+            "field": "Role",
+            "description": "<p>Role of user</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "200 Login as user\n[{\n  \"_id\": 5bc9debeef3a9931386555c2\n  \"todoName\": \"Study\",\n  \"task\": \"task\",\n  \"success\": false,\n  \"todoOwner\":5bc9dea3ef3a9931386555c1\n}]",
+          "content": "200 Login as user\n{\n  \"message\": \"Log in as user\",\n  \"data\": {\n         \"todos\": []\n         \"countAlltodo\": 4,\n         \"startFrom\": 3,\n         \"amount\": 1,\n         \"UserRole\": 0\n  }\n}",
           "type": "json"
         }
       ]
@@ -196,7 +196,7 @@
       "examples": [
         {
           "title": "Error",
-          "content": "404 Unauthorized",
+          "content": "401 Unauthorized",
           "type": "json"
         }
       ]

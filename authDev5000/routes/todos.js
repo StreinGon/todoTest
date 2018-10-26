@@ -1,33 +1,37 @@
-const passport = require('passport');
-const express = require('express');
+const passport = require("passport");
+const express = require("express");
 
 const router = express.Router();
 
-const todosController = require('../controllers/todos/todosController');
+const todosQueryValidator = require("../helpers/validators/todosQueryValidator");
+const todosController = require("../controllers/todos/todosController");
 /**
  * @api {get} /todos List all todo
  * @apiGroup Todos
  * @apiSuccess {Object[]} todos Todo's list
- * @apiSuccess {ObjectId} _id DB id of todo
- * @apiSuccess {String} todoName Title of todo
- * @apiSuccess {String} task Task of todo
- * @apiSuccess {Boolean} success Status of todo
- * @apiSuccess {ObjectId} _id DB id of todo
+ * @apiSuccess {Integer} countAllTodo Count of user's todo
+ * @apiSuccess {Integer} amount requsted amount
+ * @apiSuccess {Integer} startForm requsted startFrom
+ * @apiSuccess {Integer} Role Role of user
  * @apiSuccessExample {json} Success
  *    200 Login as user
- *    [{
- *      "_id": 5bc9debeef3a9931386555c2
- *      "todoName": "Study",
- *      "task": "task",
- *      "success": false,
- *      "todoOwner":5bc9dea3ef3a9931386555c1
- *    }]
+ *    {
+ *      "message": "Log in as user",
+ *      "data": {
+ *             "todos": []
+ *             "countAlltodo": 4,
+ *             "startFrom": 3,
+ *             "amount": 1,
+ *             "UserRole": 0
+ *      }
+ *    }
  * @apiErrorExample {json}  Error
- *     404 Unauthorized
+ *     401 Unauthorized
  */
 router.get(
-  '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/",
+  todosQueryValidator,
+  passport.authenticate("jwt", { session: false, failWithError: true }),
   todosController.getTodolist
 );
 module.exports = router;
