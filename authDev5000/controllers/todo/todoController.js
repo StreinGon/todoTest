@@ -1,9 +1,11 @@
 const { validationResult } = require("express-validator/check");
+
 const customResponse = require("../../helpers/customResponse/customResponse");
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
 const todoServices = require("../../services/todoServices.js");
 const userServices = require("../../services/userServices.js");
 const constants = require("../../constants");
+const imageModel = require("../../models/photo");
 
 const addTodo = (req, res) => {
   const errors = validationResult(req);
@@ -17,9 +19,16 @@ const addTodo = (req, res) => {
   if (currentUser._id === null || currentUser._id === undefined) {
     return customResponse(res, 401, constants.statusConstants.UNAUTHORIZED);
   }
+  const photo = new imageModel({
+    path: req.file.path,
+    originalname: req.file.originalname
+  });
+  const photoId = photo._id;
+  photo.save();
   const newtodo = todoServices.createNewTodo({
     title,
     description,
+    photoId,
     id: currentUser._id
   });
   const id = newtodo._id;
@@ -66,7 +75,6 @@ const changeTodo = (req, res) => {
     );
   });
 };
-
 const deleteTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = "";

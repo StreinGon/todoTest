@@ -2,10 +2,12 @@ const TodoModel = require("../models/todo");
 const mongoose = require("mongoose");
 
 const createNewTodo = payload => {
+  console.log();
   const todo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
     todoName: payload.title,
     task: payload.description,
+    image: payload.photoId,
     success: false,
     todoOwner: payload.id
   });

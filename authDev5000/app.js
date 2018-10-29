@@ -9,8 +9,6 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const multer=require("multer");
-const upload = multer({ dest: 'uploads/' })
 
 const localStrategy = require("./strategy/localStrategy");
 const jwtStrategy = require("./strategy/jwtStrategy");
@@ -18,7 +16,6 @@ const routes = require("./routes");
 const JSONError = require("./helpers/errorChecker/JSONerror");
 const authError = require("./helpers/errorChecker/authError");
 const Users = require("./models/user");
-const imageModel=require("./models/photo")
 
 mongoose.connect(
   "mongodb://localhost/Users",
@@ -74,18 +71,7 @@ app.use(authError);
 app.use(passport.initialize());
 
 app.use(passport.session());
-app.get("/todo/photo",(req,res,next)=>{
-  return imageModel.findOne({_id:"5bd5abe7b0eb1e4ac0a84386"}).then(photo=>{
-    res.render("./test",{image:photo})
-  })
-})
-app.post('/todo/photo', upload.single('todo'), function (req, res, next) {
-    imageModel.create({
-      path:req.file.path,
-      originalname:req.file.originalname
-    })
-    res.send({file:req.file,text:req.body.test})
-})
+
 app.use("/users", routes.usersRouter);
 
 app.use("/reg", routes.regRouter);

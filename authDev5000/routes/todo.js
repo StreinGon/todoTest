@@ -1,5 +1,6 @@
 const express = require("express");
-
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 const passport = require("passport");
 
@@ -62,6 +63,7 @@ router.post(
 router.put(
   "/",
   passport.authenticate("jwt", { session: false, failWithError: true }),
+  upload.single("todo"),
   validator.addTodoValidator,
   validator.checkForExistingTitle,
   validator.checkForExistingDescription,

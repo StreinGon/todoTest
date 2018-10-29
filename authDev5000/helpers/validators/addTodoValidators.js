@@ -4,23 +4,23 @@ const { check } = require("express-validator/check");
 const todoServices = require("../../services/todoServices.js");
 
 const addTodoValidator = [
-  check("title")
+  body("title")
     .isLength({ min: 5 })
     .withMessage("Title must be at least 5 chars long"),
-  check("title")
+  body("title")
     .custom(value => !/\s/.test(value))
     .withMessage("No spaces are allowed in the title "),
-  check("title")
+  body("title")
     .custom(value => /^[a-zA-Z]+$/.test(value))
     .withMessage(
       "No special simbols are allowed in the title,Only latin chars"
     ),
-  check("description")
+  body("description")
     .custom(value => /^[a-zA-Z]+$/.test(value))
     .withMessage(
       "No special simbols are allowed in the description,Only latin chars"
     ),
-  check("description")
+  body("description")
     .isLength({ min: 5 })
     .withMessage("Description must be at least 5 chars long")
 ];
