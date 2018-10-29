@@ -39,8 +39,10 @@ const getTodolist = (req, res) => {
 
             const end = -1 + parseInt(startFrom, 10) + parseInt(amount, 10);
             let todos;
-            if (todo != null) {
+            if (todo != null && Array.isArray(todo)) {
               todos = todo.slice(startFrom - 1, end);
+            } else {
+              todos = todo;
             }
             const amountInt = parseInt(amount, 10);
             const startFromInt = parseInt(startFrom, 10);
