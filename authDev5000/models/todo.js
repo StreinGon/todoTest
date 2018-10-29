@@ -9,6 +9,7 @@ const Todo = new Schema({
   todoName: String,
   task: String,
   success: Boolean,
+  image: { type: Schema.ObjectId, ref: "Image" },
   todoOwner: { type: Schema.ObjectId, ref: constants.modelConstants.USERS }
 });
 const TodoModel = mongoose.model(constants.modelConstants.TODOS, Todo, "todos");
