@@ -16,11 +16,12 @@ const createNewTodo = payload => {
 };
 const deleteTodo = (id, idTodo) => {
   return find({ todoOwner: id, _id: idTodo }).then(todo => {
-    if (!todo) {
+    if (!todo || todo.length < 1) {
       return false;
     }
-    todo.remove();
-    return { deleted: true, photoId: todo.image };
+    //todo[0].remove();
+
+    return { deleted: true, photoId: todo[0].image };
   });
 };
 const find = payload => {
@@ -52,14 +53,13 @@ const changeTodos = (newDesc, status, idTodo, id) => {
         return null;
       }
       if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
-        todo.task = newDesc;
+        todo[0].task = newDesc;
       }
       if (status === "true" || status === "false") {
-        todo.success = status;
+        todo[0].success = status;
       }
-      console.log(todo);
-      todo.save();
-      return todo;
+      todo[0].save();
+      return todo[0];
     })
     .catch(err => {
       if (err) return err;

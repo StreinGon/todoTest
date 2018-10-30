@@ -43,6 +43,7 @@ const addTodo = (req, res) => {
   });
   newPriority.save();
   const id = newtodo._id;
+
   return userServices
     .find({ username: req.user.username })
     .then(user => {
@@ -79,6 +80,7 @@ const changeTodo = (req, res) => {
   );
 
   return check.then(todo => {
+    console.log(todo);
     if (!todo || todo.lenght < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
@@ -96,10 +98,11 @@ const addImage = (req, res) => {
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
   }
+
   return todoServices
     .find({ _id: idTodo })
     .then(todo => {
-      if (req.files) {
+      if (req.files && todo.length >= 1) {
         req.files.forEach(file => {
           const photo = imageServices.createImage({
             name: file.filename,
@@ -109,15 +112,20 @@ const addImage = (req, res) => {
           });
 
           todo[0].image.push(photo._id);
-          todo.save();
           photo.save();
         });
+        todo[0].save();
+        return customResponse(
+          res,
+          200,
+          constants.statusConstants.TODO_UPDATED,
+          todo
+        );
       }
       return customResponse(
         res,
-        200,
-        constants.statusConstants.TODO_UPDATED,
-        todo
+        422,
+        "Add image error,check your files or id of todo"
       );
     })
     .catch(err => {
@@ -132,16 +140,15 @@ const deleteTodo = (req, res) => {
   }
 
   const { id: idTodo } = req.query;
-  const check = todoServices.deleteTodo(req.user._id, idTodo);
-  return check.then(todo => {
+  return todoServices.deleteTodo(req.user._id, idTodo).then(todo => {
     if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
     return imageServices
       .find({ _id: todo.photoId })
       .then(image => {
-        fs.unlinkSync(image.path);
-        image.remove();
+        fs.unlinkSync(`${image.destination}${image.name}`);
+        image[0].remove();
         return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
       })
       .catch(err => {
@@ -159,7 +166,7 @@ const getTodo = (req, res) => {
   const { id } = req.query;
   const check = todoServices.getTodo(req.user._id, id);
   return check.then(todo => {
-    if (!todo) {
+    if (!todo || todo.length < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
     return imageServices.find({ _id: todo[0].image }).then(image => {

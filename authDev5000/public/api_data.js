@@ -1,5 +1,99 @@
 define({ "api": [
   {
+    "type": "get",
+    "url": "/admin",
+    "title": "Todos of  users",
+    "group": "Admin",
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "{\n    \"message\": \"Todo list of user\",\n    \"data\": {\n        \"todoList\": []\n    },\n    \"responseTime\": \"10/30/2018 17:46\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error",
+          "content": "    422 Unauthorized\n{\n    \"message\": \"You must login as admin\",\n    \"responseTime\": \"10/30/2018 17:27\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin.js",
+    "groupTitle": "Admin",
+    "name": "GetAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/admin/users",
+    "title": "User list for admin",
+    "group": "Admin",
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "{\n    \"message\": \"UsersList\",\n    \"data\": [\n        {\n            \"todos\": [\n                \"5bd869012f04b519b42a7a7d\"\n            ],\n            \"_id\": \"5bd867f975d51114087b2049\",\n            \"username\": \"testetA\",\n            \"password\": \"$2b$10$A9fXfS1l2JHEWIrv6S3wVuX0hDgL2FWcgwxI3cohN8vidqiAnD3ES\",\n            \"mail\": \"teste2r@mail.con\",\n            \"role\": \"5bd867f975d51114087b2048\",\n            \"__v\": 1\n        }\n    ],\n    \"responseTime\": \"10/30/2018 17:41\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error",
+          "content": "    422 Unauthorized\n{\n    \"message\": \"You must login as admin\",\n    \"responseTime\": \"10/30/2018 17:27\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin.js",
+    "groupTitle": "Admin",
+    "name": "GetAdminUsers"
+  },
+  {
+    "type": "post",
+    "url": "/admin",
+    "title": "Change todo owner",
+    "group": "Admin",
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "{\n    \"message\": \"Todo updated\",\n    \"data\": { },\n    \"responseTime\": \"10/30/2018 17:43\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error",
+          "content": "    422 Unauthorized\n{\n    \"message\": \"You must login as admin\",\n    \"responseTime\": \"10/30/2018 17:27\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin.js",
+    "groupTitle": "Admin",
+    "name": "PostAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/image/:imagename",
+    "title": "Image Get single image",
+    "group": "Image",
+    "version": "0.0.0",
+    "filename": "routes/image.js",
+    "groupTitle": "Image",
+    "name": "GetImageImagename"
+  },
+  {
     "type": "delete",
     "url": "/todo",
     "title": "delete single todo",
@@ -82,6 +176,34 @@ define({ "api": [
     "filename": "routes/todo.js",
     "groupTitle": "Todo",
     "name": "PostTodo"
+  },
+  {
+    "type": "post",
+    "url": "/todo/imageAdd/:id",
+    "title": "Add image to todo",
+    "group": "Todo",
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": " {\n    \"message\": \"Todo updated\",\n    \"data\": [\n        {\n            \"image\": [\n                \"5bd869012f04b519b42a7a7a\",\n                \"5bd869012f04b519b42a7a7b\",\n                \"5bd86b94730c912db4b2e8b5\",\n                \"5bd86b94730c912db4b2e8b6\",\n                \"5bd86bc3e589992ea0985efd\",\n                \"5bd86bc3e589992ea0985efe\",\n                \"5bd86be73328a12ebc85684e\",\n                \"5bd86be73328a12ebc85684f\",\n                \"5bd86bec3328a12ebc856850\",\n                \"5bd86bec3328a12ebc856851\",\n                \"5bd86bec3328a12ebc856852\",\n                \"5bd86bec3328a12ebc856853\",\n                \"5bd86bed3328a12ebc856854\",\n                \"5bd86bed3328a12ebc856855\"\n            ],\n            \"_id\": \"5bd869012f04b519b42a7a7d\",\n            \"todoName\": \"assssssAF\",\n            \"task\": \"assssssAF\",\n            \"success\": false,\n            \"todoOwner\": \"5bd867f975d51114087b2049\",\n            \"priority\": \"5bd869012f04b519b42a7a7c\",\n            \"__v\": 5\n        }\n    ],\n    \"responseTime\": \"10/30/2018 17:34\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error",
+          "content": "{\n    \"message\": \"Not found\",\n    \"responseTime\": \"10/30/2018 17:37\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/todo.js",
+    "groupTitle": "Todo",
+    "name": "PostTodoImageaddId"
   },
   {
     "type": "put",
@@ -187,7 +309,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "200 Login as user\n{\n  \"message\": \"Log in as user\",\n  \"data\": {\n         \"todos\": []\n         \"countAlltodo\": 4,\n         \"startFrom\": 3,\n         \"amount\": 1,\n         \"UserRole\": 0\n  }\n}",
+          "content": "   200 Login as user\n{\n  \"message\": \"Log in as user\",\n  \"data\": {\n      \"todoList\": [\n          {\n              \"image\": [\n                 \"5bd8606adf3e0031609c725d\",\n                  \"5bd8606adf3e0031609c725e\"\n              ],\n               \"_id\": \"5bd8606adf3e0031609c7260\",\n               \"todoName\": \"asssassafasfas\",\n               \"task\": \"sassasaasfasfs\",\n               \"success\": false,\n               \"todoOwner\": \"5bd86057df3e0031609c725c\",\n               \"priority\": {\n                   \"_id\": \"5bd8606adf3e0031609c725f\",\n                   \"value\": 1,\n                   \"__v\": 0\n               },\n               \"__v\": 0\n           }\n      ],\n       \"UserRole\": 0\n   },\n   \"responseTime\": \"10/30/2018 16:45\"\n}",
           "type": "json"
         }
       ]

@@ -2,13 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const router = express.Router();
 /**
- * @api {get} /image/:imagename Get single image
- * @apiGroup Image
- *
- * @apiErrorExample {json}  Error
- * {
- *    "msg": "Not found"
- * }
+ * @api {get} /image/:imagename Image Get single image
+ *  * @apiGroup Image
  */
 router.get("/:image", (req, res, next) => {
   fs.readFile(`public\\uploads\\${req.url}`, "binary", function(error, file) {

@@ -83,12 +83,23 @@ const getTodolist = (req, res) => {
     return errorAfterValidation(errors, Errormsg, res);
   }
   const { userID } = req.query;
-  return userServices.find({ _id: userID }).then(user => {
-    return todoServices.findAll({ todoOwner: user._id }).then(todo => {
-      return customResponse(res, 200, "Todo list of user", {
-        todoList: todo
-      });
+  return userServices
+    .find({ username: req.user.username })
+    .populate("role")
+    .exec((err, user) => {
+      if (user.role.rights === 1) {
+        return userServices.find({ _id: userID }).then(user => {
+          if (!user || user.length < 1) {
+            return customResponse(res, 422, "User Not found");
+          }
+          return todoServices.findAll({ todoOwner: user._id }).then(todo => {
+            return customResponse(res, 200, "Todo list of user", {
+              todoList: todo
+            });
+          });
+        });
+      }
+      return customResponse(res, 422, "You must login as admin");
     });
-  });
 };
 module.exports = { getUserlist, changeTodoAsAdmin, getTodolist };

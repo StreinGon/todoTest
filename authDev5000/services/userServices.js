@@ -7,7 +7,6 @@ const find = payload => {
   if (payload !== undefined) {
     return Users.findOne(payload);
   }
-
   return Users.find();
 };
 const userAddNewTodo = (user, id) => {
