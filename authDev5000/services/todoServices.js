@@ -42,6 +42,7 @@ const changeTodosAsAdmin = (idTodo, idUser) => {
       if (idUser != null && idUser != undefined) {
         todo.todoOwner = idUser;
       }
+
       todo.save();
       return todo;
     })
@@ -49,7 +50,7 @@ const changeTodosAsAdmin = (idTodo, idUser) => {
       if (err) return err;
     });
 };
-const changeTodos = (newDesc, status, idTodo, id) => {
+const changeTodos = (newDesc, status, idTodo, id, onFact) => {
   return find({ todoOwner: id, _id: idTodo })
     .then(todo => {
       if (!todo || todo.length < 1) {
@@ -61,7 +62,11 @@ const changeTodos = (newDesc, status, idTodo, id) => {
       if (status === "true" || status === "false") {
         todo[0].success = status;
       }
+      if (onFact) {
+        todo[0].timeTracking.onFact = onFact;
+      }
       todo[0].save();
+
       return todo[0];
     })
     .catch(err => {

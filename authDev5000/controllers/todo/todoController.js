@@ -74,17 +74,18 @@ const changeTodo = (req, res) => {
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
   }
+  const onFact = req.body.onFact;
   const status = req.body.success;
   const newDescription = req.body.description;
   const check = todoServices.changeTodos(
     newDescription,
     status,
     idTodo,
-    req.user._id
+    req.user._id,
+    onFact
   );
 
   return check.then(todo => {
-    console.log(todo);
     if (!todo || todo.lenght < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
