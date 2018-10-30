@@ -4,6 +4,9 @@ const { check } = require("express-validator/check");
 const todoServices = require("../../services/todoServices.js");
 
 const addTodoValidator = [
+  body("investigation")
+    .custom(value => /^[1-9]+$/.test(value))
+    .withMessage("investigation must be integer(>1)"),
   body("priority")
     .custom(value => /^[0-2]$/.test(value))
     .withMessage("priority 0-1-2"),

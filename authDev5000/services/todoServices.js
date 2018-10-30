@@ -9,7 +9,10 @@ const createNewTodo = payload => {
     image: payload.photoId,
     success: false,
     todoOwner: payload.id,
-    priority: payload.priority
+    priority: payload.priority,
+    timeTracking: {
+      investigation: payload.timeTracking.investigation
+    }
   });
   todo.save();
   return todo;
@@ -19,7 +22,7 @@ const deleteTodo = (id, idTodo) => {
     if (!todo || todo.length < 1) {
       return false;
     }
-    //todo[0].remove();
+    todo[0].remove();
 
     return { deleted: true, photoId: todo[0].image };
   });

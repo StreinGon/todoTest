@@ -19,6 +19,7 @@ const addTodo = (req, res) => {
   const { title } = req.body;
   const { description } = req.body;
   const { priority } = req.body;
+  const { investigation } = req.body;
   userCheck(req, res);
   let photoId = [];
   if (req.files) {
@@ -39,7 +40,10 @@ const addTodo = (req, res) => {
     description,
     photoId: photoId,
     id: req.user._id,
-    priority: newPriority._id
+    priority: newPriority._id,
+    timeTracking: {
+      investigation: investigation
+    }
   });
   newPriority.save();
   const id = newtodo._id;
