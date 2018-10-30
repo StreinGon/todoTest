@@ -10,6 +10,10 @@ const changeTodoValidator = [
   query("id")
     .custom(value => /^[a-zA-Z0-9]+$/.test(value))
     .withMessage("id must contain only numbers and latin chars"),
+  body("onFact")
+    .optional()
+    .custom(value => /^[1-9]+$/.test(value))
+    .withMessage("onFact must be integer (>1)"),
   body("title")
     .optional()
     .isLength({ min: 5 })
