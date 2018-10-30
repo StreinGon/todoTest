@@ -37,6 +37,10 @@ const changeTodoValidator = [
   body("success")
     .optional()
     .custom(value => value === "true" || value === "false")
-    .withMessage("Status must be true or false")
+    .withMessage("Status must be true or false"),
+  body("priority")
+    .optional()
+    .custom(value => /^[0-2]$/.test(value))
+    .withMessage("priority 0-1-2")
 ];
 module.exports = changeTodoValidator;

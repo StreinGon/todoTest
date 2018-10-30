@@ -1,11 +1,14 @@
 const { validationResult } = require("express-validator/check");
+const fs = require("fs");
 
+const userCheck = require("../../helpers/userCheck/userCheck");
 const customResponse = require("../../helpers/customResponse/customResponse");
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
 const todoServices = require("../../services/todoServices.js");
 const userServices = require("../../services/userServices.js");
+const imageServices = require("../../services/imageServices.js");
+const priorityServices = require("../../services/priorityServices.js");
 const constants = require("../../constants");
-const imageModel = require("../../models/photo");
 
 const addTodo = (req, res) => {
   const errors = validationResult(req);
@@ -15,25 +18,33 @@ const addTodo = (req, res) => {
   }
   const { title } = req.body;
   const { description } = req.body;
-  const currentUser = req.user;
-  if (currentUser._id === null || currentUser._id === undefined) {
-    return customResponse(res, 401, constants.statusConstants.UNAUTHORIZED);
+  const { priority } = req.body;
+  userCheck(req, res);
+  let photoId = [];
+  if (req.files) {
+    req.files.forEach(file => {
+      const photo = imageServices.createImage({
+        name: file.filename,
+        destination: file.destination,
+        originalname: file.originalname,
+        url: `localhost:8080/image/${file.filename}`
+      });
+      photoId.push(photo._id);
+      photo.save();
+    });
   }
-  const photo = new imageModel({
-    path: req.file.path,
-    originalname: req.file.originalname
-  });
-  const photoId = photo._id;
-  photo.save();
+  const newPriority = priorityServices.createPriority({ value: priority });
   const newtodo = todoServices.createNewTodo({
     title,
     description,
-    photoId,
-    id: currentUser._id
+    photoId: photoId,
+    id: req.user._id,
+    priority: newPriority._id
   });
+  newPriority.save();
   const id = newtodo._id;
   return userServices
-    .find({ username: currentUser.username })
+    .find({ username: req.user.username })
     .then(user => {
       userServices.userAddNewTodo(user, id);
       return customResponse(
@@ -53,18 +64,22 @@ const changeTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-  const currentUser = req.user;
-  const id = currentUser._id;
+  userCheck(req, res);
   const { id: idTodo } = req.query;
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
   }
   const status = req.body.success;
   const newDescription = req.body.description;
-  const check = todoServices.changeTodos(newDescription, status, idTodo, id);
+  const check = todoServices.changeTodos(
+    newDescription,
+    status,
+    idTodo,
+    req.user._id
+  );
 
   return check.then(todo => {
-    if (!todo) {
+    if (!todo || todo.lenght < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
     return customResponse(
@@ -75,21 +90,63 @@ const changeTodo = (req, res) => {
     );
   });
 };
+const addImage = (req, res) => {
+  userCheck(req, res);
+  const { id: idTodo } = req.query;
+  if (!idTodo) {
+    return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
+  }
+  return todoServices
+    .find({ _id: idTodo })
+    .then(todo => {
+      if (req.files) {
+        req.files.forEach(file => {
+          const photo = imageServices.createImage({
+            name: file.filename,
+            destination: file.destination,
+            originalname: file.originalname,
+            url: `localhost:8080/image/${file.filename}`
+          });
+
+          todo[0].image.push(photo._id);
+          todo.save();
+          photo.save();
+        });
+      }
+      return customResponse(
+        res,
+        200,
+        constants.statusConstants.TODO_UPDATED,
+        todo
+      );
+    })
+    .catch(err => {
+      if (err) return err;
+    });
+};
 const deleteTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = "";
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-  const currentUser = req.user;
-  const id = currentUser._id;
+
   const { id: idTodo } = req.query;
-  const check = todoServices.deleteTodo(id, idTodo);
+  const check = todoServices.deleteTodo(req.user._id, idTodo);
   return check.then(todo => {
     if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
+    return imageServices
+      .find({ _id: todo.photoId })
+      .then(image => {
+        fs.unlinkSync(image.path);
+        image.remove();
+        return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
+      })
+      .catch(err => {
+        return err;
+      });
   });
 };
 const getTodo = (req, res) => {
@@ -98,25 +155,25 @@ const getTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-  const currentUser = req.user;
+
   const { id } = req.query;
-  const check = todoServices.getTodo(currentUser._id, id);
+  const check = todoServices.getTodo(req.user._id, id);
   return check.then(todo => {
     if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-
-    return customResponse(
-      res,
-      200,
-      constants.statusConstants.TODO_SENDED,
-      todo
-    );
+    return imageServices.find({ _id: todo[0].image }).then(image => {
+      return customResponse(res, 200, constants.statusConstants.TODO_SENDED, {
+        todo,
+        image
+      });
+    });
   });
 };
 module.exports = {
   addTodo,
   changeTodo,
   deleteTodo,
-  getTodo
+  getTodo,
+  addImage
 };

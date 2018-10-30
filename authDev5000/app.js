@@ -82,6 +82,10 @@ app.use("/todos", routes.todosRouter);
 
 app.use("/todo", routes.todoRouter);
 
+app.use("/admin", routes.adminRouter);
+
+app.use("/image", routes.imageRouter);
+
 app.use((req, res, next) => {
   next(createError(404));
 });
@@ -92,5 +96,4 @@ app.use((err, req, res) => {
   res.status(err.status || 500);
   res.send("err");
 });
-
 module.exports = app;

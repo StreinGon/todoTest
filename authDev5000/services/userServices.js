@@ -4,7 +4,11 @@ const createNewUser = payload => {
   return Users.create(payload);
 };
 const find = payload => {
-  return Users.findOne(payload);
+  if (payload !== undefined) {
+    return Users.findOne(payload);
+  }
+
+  return Users.find();
 };
 const userAddNewTodo = (user, id) => {
   user.todos.push(id);

@@ -4,6 +4,9 @@ const { check } = require("express-validator/check");
 const todoServices = require("../../services/todoServices.js");
 
 const addTodoValidator = [
+  body("priority")
+    .custom(value => /^[0-2]$/.test(value))
+    .withMessage("priority 0-1-2"),
   body("title")
     .isLength({ min: 5 })
     .withMessage("Title must be at least 5 chars long"),
@@ -26,17 +29,18 @@ const addTodoValidator = [
 ];
 const checkForExistingTitle = body("title").custom(value => {
   return todoServices.find({ todoName: value }).then(task => {
-    if (task) {
+    if (task && task.length != 0) {
       return Promise.reject(
         new Error("Task with your title is already being performed")
       );
     }
+
     return true;
   });
 });
 const checkForExistingDescription = body("description").custom(value => {
   return todoServices.find({ task: value }).then(todo => {
-    if (todo) {
+    if (todo && todo.length != 0) {
       return Promise.reject(
         new Error("Task with your description is already being performed")
       );

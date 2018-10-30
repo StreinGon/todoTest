@@ -15,16 +15,32 @@ const todosController = require("../controllers/todos/todosController");
  * @apiSuccess {Integer} Role Role of user
  * @apiSuccessExample {json} Success
  *    200 Login as user
- *    {
- *      "message": "Log in as user",
- *      "data": {
- *             "todos": []
- *             "countAlltodo": 4,
- *             "startFrom": 3,
- *             "amount": 1,
- *             "UserRole": 0
- *      }
- *    }
+ *{
+ *   "message": "Log in as user",
+ *   "data": {
+ *       "todoList": [
+ *           {
+ *               "image": [
+ *                  "5bd8606adf3e0031609c725d",
+ *                   "5bd8606adf3e0031609c725e"
+ *               ],
+ *                "_id": "5bd8606adf3e0031609c7260",
+ *                "todoName": "asssassafasfas",
+ *                "task": "sassasaasfasfs",
+ *                "success": false,
+ *                "todoOwner": "5bd86057df3e0031609c725c",
+ *                "priority": {
+ *                    "_id": "5bd8606adf3e0031609c725f",
+ *                    "value": 1,
+ *                    "__v": 0
+ *                },
+ *                "__v": 0
+ *            }
+ *       ],
+ *        "UserRole": 0
+ *    },
+ *    "responseTime": "10/30/2018 16:45"
+ *}
  * @apiErrorExample {json}  Error
  *     401 Unauthorized
  */

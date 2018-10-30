@@ -2,14 +2,14 @@ const TodoModel = require("../models/todo");
 const mongoose = require("mongoose");
 
 const createNewTodo = payload => {
-  console.log();
   const todo = new TodoModel({
     _id: new mongoose.Types.ObjectId(),
     todoName: payload.title,
     task: payload.description,
     image: payload.photoId,
     success: false,
-    todoOwner: payload.id
+    todoOwner: payload.id,
+    priority: payload.priority
   });
   todo.save();
   return todo;
@@ -20,16 +20,35 @@ const deleteTodo = (id, idTodo) => {
       return false;
     }
     todo.remove();
-    return true;
+    return { deleted: true, photoId: todo.image };
   });
 };
 const find = payload => {
-  return TodoModel.findOne(payload);
+  return TodoModel.find(payload);
+};
+const findAll = payload => {
+  return TodoModel.find(payload);
+};
+const changeTodosAsAdmin = (idTodo, idUser) => {
+  return find({ _id: idTodo })
+    .then(todo => {
+      if (!todo) {
+        return null;
+      }
+      if (idUser != null && idUser != undefined) {
+        todo.todoOwner = idUser;
+      }
+      todo.save();
+      return todo;
+    })
+    .catch(err => {
+      if (err) return err;
+    });
 };
 const changeTodos = (newDesc, status, idTodo, id) => {
   return find({ todoOwner: id, _id: idTodo })
     .then(todo => {
-      if (!todo) {
+      if (!todo || todo.length < 1) {
         return null;
       }
       if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
@@ -38,6 +57,7 @@ const changeTodos = (newDesc, status, idTodo, id) => {
       if (status === "true" || status === "false") {
         todo.success = status;
       }
+      console.log(todo);
       todo.save();
       return todo;
     })
@@ -64,5 +84,7 @@ module.exports = {
   deleteTodo,
   find,
   changeTodos,
-  getTodo
+  getTodo,
+  findAll,
+  changeTodosAsAdmin
 };

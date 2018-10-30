@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "public/uploads/" });
 const router = express.Router();
 const passport = require("passport");
 
@@ -10,6 +10,7 @@ const validator = require("../helpers/validators/addTodoValidators");
 const deleteTodoValidators = require("../helpers/validators/deleteTodoValidators");
 const changeTodoValidator = require("../helpers/validators/changeTodoValidator");
 const getTodoValidator = require("../helpers/validators/getTodoValidator");
+
 /**
  * @api {post} /todo Change single todo
  * @apiGroup Todo
@@ -63,7 +64,7 @@ router.post(
 router.put(
   "/",
   passport.authenticate("jwt", { session: false, failWithError: true }),
-  upload.single("todo"),
+  upload.any(),
   validator.addTodoValidator,
   validator.checkForExistingTitle,
   validator.checkForExistingDescription,
@@ -114,5 +115,11 @@ router.delete(
   passport.authenticate("jwt", { session: false, failWithError: true }),
   deleteTodoValidators,
   todoController.deleteTodo
+);
+router.post(
+  "/imageAdd",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  upload.any(),
+  todoController.addImage
 );
 module.exports = router;

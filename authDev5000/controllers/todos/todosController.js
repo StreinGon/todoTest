@@ -24,14 +24,19 @@ const getTodolist = (req, res) => {
       if (user.role.rights === 0) {
         return todoServices
           .find({ todoOwner: currentUser._id })
-          .then(todo => {
+          .populate("priority")
+          .exec((err, todo) => {
             if (!amount || !startFrom) {
+              const filteredTodo = todo.sort((a, b) => {
+                return a.priority.value - b.priority.value;
+              });
+
               return customResponse(
                 res,
                 200,
                 constants.statusConstants.LOGIN_USER,
                 {
-                  todoList: todo,
+                  todoList: filteredTodo,
                   UserRole: user.role.rights
                 }
               );
@@ -44,6 +49,9 @@ const getTodolist = (req, res) => {
             } else {
               todos = todo;
             }
+            const filteredTodo = todos.sort((a, b) => {
+              return a.priority.value - b.priority.value;
+            });
             const amountInt = parseInt(amount, 10);
             const startFromInt = parseInt(startFrom, 10);
             return customResponse(
@@ -51,19 +59,13 @@ const getTodolist = (req, res) => {
               200,
               constants.statusConstants.LOGIN_USER,
               {
-                todoList: todos,
+                todoList: filteredTodo,
                 countAlltodo: todos === undefined ? 0 : todos.length,
                 startFrom: startFromInt,
                 amount: amountInt,
                 UserRole: user.role.rights
               }
             );
-          })
-          .catch(err => {
-            if (err) {
-              console.log(err);
-              return err;
-            }
           });
       }
       if (user.role.rights === 1) {
