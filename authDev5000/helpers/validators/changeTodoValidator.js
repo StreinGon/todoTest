@@ -38,6 +38,12 @@ const changeTodoValidator = [
     .optional()
     .isLength({ min: 5 })
     .withMessage("Description must be at least 5 chars long"),
+  body("status")
+    .optional()
+    .custom(
+      value => value === "ended" || value === "started" || value === "blocked"
+    )
+    .withMessage("Status must be true or false"),
   body("success")
     .optional()
     .custom(value => value === "true" || value === "false")

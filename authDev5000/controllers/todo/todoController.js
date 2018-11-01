@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator/check");
 const fs = require("fs");
 
-const userCheck = require("../../helpers/userCheck/userCheck");
 const customResponse = require("../../helpers/customResponse/customResponse");
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
 const todoServices = require("../../services/todoServices.js");
@@ -20,7 +19,6 @@ const addTodo = (req, res) => {
   const { description } = req.body;
   const { priority } = req.body;
   const { investigation } = req.body;
-  userCheck(req, res);
   let photoId = [];
   if (req.files) {
     req.files.forEach(file => {
@@ -43,7 +41,8 @@ const addTodo = (req, res) => {
     priority: newPriority._id,
     timeTracking: {
       investigation: investigation
-    }
+    },
+    status: "not started"
   });
   newPriority.save();
   const id = newtodo._id;
@@ -69,20 +68,21 @@ const changeTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-  userCheck(req, res);
   const { id: idTodo } = req.query;
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
   }
   const onFact = req.body.onFact;
-  const status = req.body.success;
+  const success = req.body.success;
   const newDescription = req.body.description;
+  const status = req.body.status;
   const check = todoServices.changeTodos(
     newDescription,
-    status,
+    success,
     idTodo,
     req.user._id,
-    onFact
+    onFact,
+    status
   );
 
   return check.then(todo => {
@@ -97,46 +97,7 @@ const changeTodo = (req, res) => {
     );
   });
 };
-const addImage = (req, res) => {
-  userCheck(req, res);
-  const { id: idTodo } = req.query;
-  if (!idTodo) {
-    return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
-  }
 
-  return todoServices
-    .find({ _id: idTodo })
-    .then(todo => {
-      if (req.files && todo.length >= 1) {
-        req.files.forEach(file => {
-          const photo = imageServices.createImage({
-            name: file.filename,
-            destination: file.destination,
-            originalname: file.originalname,
-            url: `localhost:8080/image/${file.filename}`
-          });
-
-          todo[0].image.push(photo._id);
-          photo.save();
-        });
-        todo[0].save();
-        return customResponse(
-          res,
-          200,
-          constants.statusConstants.TODO_UPDATED,
-          todo
-        );
-      }
-      return customResponse(
-        res,
-        422,
-        "Add image error,check your files or id of todo"
-      );
-    })
-    .catch(err => {
-      if (err) return err;
-    });
-};
 const deleteTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = "";
@@ -182,10 +143,10 @@ const getTodo = (req, res) => {
     });
   });
 };
+
 module.exports = {
   addTodo,
   changeTodo,
   deleteTodo,
-  getTodo,
-  addImage
+  getTodo
 };

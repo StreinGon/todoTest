@@ -1,4 +1,6 @@
 const USERS = "Users";
 const TODOS = "Todos";
 const ROLES = "Roles";
-module.exports = { ROLES, TODOS, USERS };
+const IMAGES = "Image";
+const PRIORITY = "Priority";
+module.exports = { ROLES, TODOS, USERS, IMAGES, PRIORITY };

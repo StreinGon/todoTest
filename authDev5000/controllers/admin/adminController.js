@@ -5,6 +5,8 @@ const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValid
 const userServices = require("../../services/userServices.js");
 const todoServices = require("../../services/todoServices.js");
 const constants = require("../../constants");
+const createReport = require("../../helpers/createReport");
+
 const changeTodoAsAdmin = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = "";
@@ -102,4 +104,22 @@ const getTodolist = (req, res) => {
       return customResponse(res, 422, "You must login as admin");
     });
 };
-module.exports = { getUserlist, changeTodoAsAdmin, getTodolist };
+
+const getMonthlyReport = (req, res) => {
+  return userServices
+    .find({ username: req.user.username })
+    .populate("role")
+    .exec((err, user) => {
+      if (user.role.rights === 1) {
+        return createReport(res);
+      }
+      return customResponse(res, 422, "Your must be admin");
+    });
+};
+
+module.exports = {
+  getUserlist,
+  changeTodoAsAdmin,
+  getTodolist,
+  getMonthlyReport
+};

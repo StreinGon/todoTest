@@ -1,6 +1,6 @@
 const { query } = require("express-validator/check");
 
-const deleteTodoValidator = [
+const idValidator = [
   query("id")
     .custom(value => {
       return !/\s/.test(value);
@@ -14,4 +14,4 @@ const deleteTodoValidator = [
     .withMessage("id must contain only numbers and latin chars")
 ];
 
-module.exports = deleteTodoValidator;
+module.exports = idValidator;

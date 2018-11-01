@@ -8,6 +8,7 @@ const Users = new Schema({
   username: String,
   mail: String,
   password: String,
+  avatar: { type: Schema.ObjectId, ref: constants.modelConstants.IMAGES },
   role: { type: Schema.ObjectId, ref: constants.modelConstants.ROLES },
   todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }]
 });

@@ -1,9 +1,11 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const passport = require('passport');
+const passport = require("passport");
 
-const authController = require('../controllers/auth/authController');
+const idValidator = require("../helpers/validators/idValidator");
+const authController = require("../controllers/auth/authController");
+const userController = require("../controllers/user/userController");
 /**
  * @api {post} /users/logout Logout
  * @apiGroup Users
@@ -14,8 +16,14 @@ const authController = require('../controllers/auth/authController');
  *  }
  */
 router.post(
-  '/logout',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  "/logout",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
   authController.logout
+);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  idValidator,
+  userController.getUser
 );
 module.exports = router;

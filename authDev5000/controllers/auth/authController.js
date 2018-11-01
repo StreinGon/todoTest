@@ -3,6 +3,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator/check");
 
+const imageServices = require("../../services/imageServices");
 const roleServices = require("../../services/roleServices.js");
 const userServices = require("../../services/userServices.js");
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
@@ -24,7 +25,6 @@ const singIn = (req, res, next) => {
         constants.statusConstants.LOGIN_INCORRECT
       );
     }
-
     return req.logIn(user, error => {
       if (error) return error;
       const changedUser = {
@@ -42,7 +42,7 @@ const singIn = (req, res, next) => {
         res,
         200,
         constants.statusConstants.LOGIN_CORRECT,
-        token
+        changedUser
       );
     });
   })(req, res, next);
@@ -54,6 +54,16 @@ const singUp = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
+
+  const photo = imageServices.createImage({
+    name: req.file ? req.file.filename : "test",
+    destination: req.file ? req.file.destination : "public/uploads/",
+    originalname: req.file ? req.file.originalname : "test",
+    url: `localhost:8080/image/${req.file ? req.file.filename : "test"}`
+  });
+
+  const avatarId = photo._id;
+  photo.save();
   const newRole = roleServices.createRoleOfUser(0);
   const hash = bcrypt.hashSync(req.body.password, saltRounds);
   return newRole.save(err => {
@@ -63,7 +73,8 @@ const singUp = (req, res) => {
         username: req.body.username,
         password: hash,
         mail: req.body.mail,
-        role: newRole._id
+        role: newRole._id,
+        avatar: avatarId
       })
       .then(() =>
         customResponse(

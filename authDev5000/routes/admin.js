@@ -83,4 +83,9 @@ router.get(
   passport.authenticate("jwt", { session: false, failWithError: true }),
   adminController.getTodolist
 );
+router.get(
+  "/report",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  adminController.getMonthlyReport
+);
 module.exports = router;

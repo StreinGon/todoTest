@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
+const constants = require("../constants");
 
 const prioritySchema = mongoose.Schema({
-  value: Number
+  value: Number,
+  name: String
 });
-const priorityModel = mongoose.model("Priority", prioritySchema, "priority");
+const priorityModel = mongoose.model(
+  constants.modelConstants.PRIORITY,
+  prioritySchema,
+  "priority"
+);
 module.exports = priorityModel;

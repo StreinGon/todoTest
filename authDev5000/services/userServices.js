@@ -13,7 +13,22 @@ const userAddNewTodo = (user, id) => {
   user.todos.push(id);
   user.save();
 };
+const getUser = id => {
+  return find({ _id: id })
+    .then(user => {
+      if (!user) {
+        return false;
+      }
+      return user;
+    })
+    .catch(err => {
+      if (err) {
+        return err;
+      }
+    });
+};
 module.exports = {
+  getUser,
   createNewUser,
   find,
   userAddNewTodo
