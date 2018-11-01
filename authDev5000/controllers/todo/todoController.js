@@ -8,6 +8,7 @@ const userServices = require("../../services/userServices.js");
 const imageServices = require("../../services/imageServices.js");
 const priorityServices = require("../../services/priorityServices.js");
 const constants = require("../../constants");
+const userCheck = require("../../helpers/userCheck/userCheck");
 
 const addTodo = (req, res) => {
   const errors = validationResult(req);
@@ -15,6 +16,7 @@ const addTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
+  userCheck(req, res);
   const { title } = req.body;
   const { description } = req.body;
   const { priority } = req.body;
@@ -68,6 +70,7 @@ const changeTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
+  userCheck(req, res);
   const { id: idTodo } = req.query;
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
@@ -76,14 +79,14 @@ const changeTodo = (req, res) => {
   const success = req.body.success;
   const newDescription = req.body.description;
   const status = req.body.status;
-  const check = todoServices.changeTodos(
+  const check = todoServices.changeTodos({
     newDescription,
     success,
     idTodo,
-    req.user._id,
+    id: req.user._id,
     onFact,
     status
-  );
+  });
 
   return check.then(todo => {
     if (!todo || todo.lenght < 1) {
@@ -104,7 +107,7 @@ const deleteTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-
+  userCheck(req, res);
   const { id: idTodo } = req.query;
   return todoServices.deleteTodo(req.user._id, idTodo).then(todo => {
     if (!todo) {
@@ -128,7 +131,7 @@ const getTodo = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-
+  userCheck(req, res);
   const { id } = req.query;
   const check = todoServices.getTodo(req.user._id, id);
   return check.then(todo => {

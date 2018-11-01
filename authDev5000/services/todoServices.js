@@ -51,31 +51,35 @@ const changeTodosAsAdmin = (idTodo, idUser) => {
       if (err) return err;
     });
 };
-const changeTodos = (newDesc, success, idTodo, id, onFact, status) => {
-  return find({ todoOwner: id, _id: idTodo })
+const changeTodos = payload => {
+  return find({ todoOwner: payload.id, _id: payload.idTodo })
     .then(todo => {
       if (!todo || todo.length < 1) {
         return null;
       }
-      if (newDesc != null && newDesc != undefined && newDesc.length > 4) {
-        todo[0].task = newDesc;
+      if (
+        payload.newDesc != null &&
+        payload.newDesc != undefined &&
+        payload.newDesc.length > 4
+      ) {
+        todo[0].task = payload.newDesc;
       }
-      if (success === "true" || success === "false") {
-        todo[0].success = success;
+      if (payload.success === "true" || payload.success === "false") {
+        todo[0].success = payload.success;
       }
       if (onFact) {
-        todo[0].timeTracking.onFact = onFact;
+        todo[0].timeTracking.onFact = payload.onFact;
       }
-      if (todo[0].status !== "ended" && status === "started") {
-        todo[0].status = status;
+      if (todo[0].status !== "ended" && payload.status === "started") {
+        todo[0].status = payload.status;
         todo[0].dates.start = new Date();
       }
-      if (todo[0].status !== "ended" && status === "ended") {
-        todo[0].status = status;
+      if (todo[0].status !== "ended" && payload.status === "ended") {
+        todo[0].status = payload.status;
         todo[0].dates.end = new Date();
       }
-      if (todo[0].status !== "ended" && status) {
-        todo[0].status = status;
+      if (todo[0].status !== "ended" && payload.status) {
+        todo[0].status = payload.status;
       }
 
       todo[0].save();

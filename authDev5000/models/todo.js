@@ -20,7 +20,8 @@ const Todo = new Schema({
   dates: {
     start: Date,
     end: Date
-  }
+  },
+  createdAt: { type: Date, default: Date.now }
 });
 const TodoModel = mongoose.model(constants.modelConstants.TODOS, Todo, "todos");
 module.exports = TodoModel;

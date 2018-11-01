@@ -12,7 +12,7 @@ const resizeValidators = require("../helpers/validators/resizeValidator");
  * @api {get} /image/:imagename Image Get single image
  *  * @apiGroup Image
  */
-router.get("/:image", resizeValidators, imageController.getImage);
+router.get("/", resizeValidators, imageController.getImage);
 
 /**
  * @api {post} /todo/imageAdd/:id Add image to todo
@@ -63,4 +63,5 @@ router.post(
   idValidators,
   imageController.addImage
 );
+router.get("/download", imageController.downloadAllAssets);
 module.exports = router;

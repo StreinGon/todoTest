@@ -10,7 +10,8 @@ const Users = new Schema({
   password: String,
   avatar: { type: Schema.ObjectId, ref: constants.modelConstants.IMAGES },
   role: { type: Schema.ObjectId, ref: constants.modelConstants.ROLES },
-  todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }]
+  todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }],
+  createdAt: { type: Date, default: Date.now }
 });
 
 const UsersModel = mongoose.model(

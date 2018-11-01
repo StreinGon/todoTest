@@ -1,5 +1,8 @@
 const sharp = require("sharp");
 const { validationResult } = require("express-validator/check");
+const fs = require("mz/fs");
+const path = require("path");
+const zip = new require("node-zip")();
 
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
 const customResponse = require("../../helpers/customResponse/customResponse");
@@ -7,15 +10,28 @@ const todoServices = require("../../services/todoServices.js");
 const imageServices = require("../../services/imageServices.js");
 const constants = require("../../constants");
 
+const downloadAllAssets = (req, res, next) => {
+  fs.readdir("public/uploads").then(items => {
+    items.forEach(file => {
+      zip.file(
+        `${String(file)}.png`,
+        fs.readFileSync(path.join("public/uploads", String(file)))
+      );
+    });
+    const data = zip.generate({ base64: false, compression: "DEFLATE" });
+    res.end(data, "binary");
+  });
+};
+
 const getImage = (req, res, next) => {
   const errors = validationResult(req);
   const Errormsg = "";
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
+  const { imageName } = req.query.imageName;
   const height = parseInt(req.query.height);
   const width = parseInt(req.query.width);
-  const imageName = req.url.slice(1, req.url.indexOf("?"));
   return sharp(`${constants.otherConstants.UPLOADS}${imageName}`)
     .resize(width, height)
     .toBuffer()
@@ -63,4 +79,4 @@ const addImage = (req, res) => {
       if (err) return err;
     });
 };
-module.exports = { addImage, getImage };
+module.exports = { addImage, getImage, downloadAllAssets };

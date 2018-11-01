@@ -5,7 +5,8 @@ const imageSchema = mongoose.Schema({
   name: String,
   destination: String,
   url: String,
-  originalname: String
+  originalname: String,
+  createdAt: { type: Date, default: Date.now }
 });
 const imageModel = mongoose.model(constants.modelConstants.IMAGES, imageSchema);
 module.exports = imageModel;
