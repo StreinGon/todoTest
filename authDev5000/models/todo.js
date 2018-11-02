@@ -10,6 +10,7 @@ const Todo = new Schema({
   task: String,
   success: Boolean,
   image: [{ type: Schema.ObjectId, ref: constants.modelConstants.IMAGES }],
+  category: String,
   todoOwner: { type: Schema.ObjectId, ref: constants.modelConstants.USERS },
   priority: { type: Schema.ObjectId, ref: constants.modelConstants.PRIORITY },
   timeTracking: {

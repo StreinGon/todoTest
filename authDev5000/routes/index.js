@@ -5,6 +5,7 @@ const usersRouter = require("./users");
 const regRouter = require("./registerform");
 const adminRouter = require("./admin");
 const imageRouter = require("./image");
+const categoryRouter = require("./category");
 module.exports = {
   todosRouter,
   todoRouter,
@@ -12,5 +13,6 @@ module.exports = {
   usersRouter,
   regRouter,
   adminRouter,
-  imageRouter
+  imageRouter,
+  categoryRouter
 };

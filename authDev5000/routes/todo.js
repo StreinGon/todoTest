@@ -97,6 +97,11 @@ router.get(
   getTodoValidator,
   todoController.getTodo
 );
+router.get(
+  "/shared",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  todoController.GetShared
+);
 /**
  * @api {delete} /todo delete single todo
  * @apiGroup Todo

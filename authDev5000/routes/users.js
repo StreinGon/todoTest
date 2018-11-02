@@ -26,4 +26,14 @@ router.get(
   idValidator,
   userController.getUser
 );
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  userController.sendInvite
+);
+router.post(
+  "/inviteToReg",
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  userController.sendInviteToReg
+);
 module.exports = router;

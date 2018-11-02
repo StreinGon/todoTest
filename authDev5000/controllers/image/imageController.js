@@ -11,15 +11,21 @@ const imageServices = require("../../services/imageServices.js");
 const constants = require("../../constants");
 
 const downloadAllAssets = (req, res, next) => {
+  let array = [];
   fs.readdir("public/uploads").then(items => {
     items.forEach(file => {
-      zip.file(
-        `${String(file)}.png`,
-        fs.readFileSync(path.join("public/uploads", String(file)))
-      );
+      const promiseTest = fs
+        .readFile(path.join("public/uploads", String(file)))
+        .then(data => {
+          zip.file(`${String(file)}.png`, data);
+        });
+      array.push(promiseTest);
     });
-    const data = zip.generate({ base64: false, compression: "DEFLATE" });
-    res.end(data, "binary");
+
+    Promise.all(array).then(() => {
+      const data = zip.generate({ base64: false, compression: "DEFLATE" });
+      res.end(data, "binary");
+    });
   });
 };
 

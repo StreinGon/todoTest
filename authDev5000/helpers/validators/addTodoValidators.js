@@ -1,5 +1,4 @@
 const { body } = require("express-validator/check");
-const { check } = require("express-validator/check");
 
 const todoServices = require("../../services/todoServices.js");
 

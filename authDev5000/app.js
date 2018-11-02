@@ -86,6 +86,8 @@ app.use("/admin", routes.adminRouter);
 
 app.use("/image", routes.imageRouter);
 
+app.use("/category", routes.categoryRouter);
+
 app.use((req, res, next) => {
   next(createError(404));
 });

@@ -6,7 +6,10 @@ const { validationResult } = require("express-validator/check");
 const imageServices = require("../../services/imageServices");
 const roleServices = require("../../services/roleServices.js");
 const userServices = require("../../services/userServices.js");
+const sharedTodosServices = require("../../services/sharedTodosServices");
 const errorAfterValidation = require("../../helpers/errorChecker/errorAfterValidation");
+const SharedTodosModel = require("../../models/sharedTodos");
+const inviteReg = require("../../models/inviteReg");
 
 const saltRounds = 10;
 const secret = Buffer.from("1", "base64");
@@ -37,6 +40,13 @@ const singIn = (req, res, next) => {
         expiresIn: 86400 * 30
       });
 
+      if (req.query.invite) {
+        sharedTodosServices.find({ _id: req.query.invite }).then(shared => {
+          shared.allowed.push(user._id);
+
+          shared.save();
+        });
+      }
       res.cookie(constants.statusConstants.AUTH_COOKIES, token);
       return customResponse(
         res,
@@ -54,14 +64,13 @@ const singUp = (req, res) => {
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, Errormsg, res);
   }
-
   const photo = imageServices.createImage({
     name: req.file ? req.file.filename : "test",
     destination: req.file ? req.file.destination : "public/uploads/",
     originalname: req.file ? req.file.originalname : "test",
-    url: `localhost:8080/image/${req.file ? req.file.filename : "test"}`
+    url: `${req.headers.host}/image/${req.file ? req.file.filename : "test"}`
   });
-
+  const newShared = new SharedTodosModel({});
   const avatarId = photo._id;
   photo.save();
   const newRole = roleServices.createRoleOfUser(0);
@@ -74,15 +83,31 @@ const singUp = (req, res) => {
         password: hash,
         mail: req.body.mail,
         role: newRole._id,
-        avatar: avatarId
+        avatar: avatarId,
+        invite: newShared._id
       })
-      .then(() =>
-        customResponse(
+      .then(user => {
+        newShared.todos = user.todos;
+        newShared.save();
+        if (req.query.inviteToReg) {
+          inviteReg
+            .findOne({ invite_token: req.query.inviteToReg })
+            .then(token => {
+              token.remove();
+            });
+        }
+        if (req.query.invite) {
+          sharedTodosServices.find({ _id: req.query.invite }).then(shared => {
+            shared.allowed.push(user._id);
+            shared.save();
+          });
+        }
+        return customResponse(
           res,
           200,
           constants.statusConstants.REDISTRATION_SUCCESSFULL
-        )
-      );
+        );
+      });
   });
 };
 const logout = (req, res) => {

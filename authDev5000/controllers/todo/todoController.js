@@ -9,6 +9,8 @@ const imageServices = require("../../services/imageServices.js");
 const priorityServices = require("../../services/priorityServices.js");
 const constants = require("../../constants");
 const userCheck = require("../../helpers/userCheck/userCheck");
+const SharedTodosModel = require("../../models/sharedTodos");
+const sharedTodosServices = require("../../services/sharedTodosServices");
 
 const addTodo = (req, res) => {
   const errors = validationResult(req);
@@ -146,10 +148,34 @@ const getTodo = (req, res) => {
     });
   });
 };
+const GetShared = (req, res) => {
+  const errors = validationResult(req);
+  const Errormsg = "";
+  if (!errors.isEmpty()) {
+    return errorAfterValidation(errors, Errormsg, res);
+  }
+  userCheck(req, res);
+  const { id } = req.query;
 
+  sharedTodosServices
+    .find({ _id: id })
+    .populate("todos")
+    .then(shared => {
+      let checker = false;
+      shared.allowed.forEach(user => {
+        if (user == req.user.id) {
+          checker = true;
+        }
+      });
+      if (checker)
+        return customResponse(res, 200, "Shared Todos", shared.todos);
+      return customResponse(res, 422, "Not allowed");
+    });
+};
 module.exports = {
   addTodo,
   changeTodo,
   deleteTodo,
-  getTodo
+  getTodo,
+  GetShared
 };

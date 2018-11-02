@@ -13,8 +13,8 @@ const userAddNewTodo = (user, id) => {
   user.todos.push(id);
   user.save();
 };
-const getUser = id => {
-  return find({ _id: id })
+const getUser = payload => {
+  return find(payload)
     .then(user => {
       if (!user) {
         return false;

@@ -11,7 +11,8 @@ const Users = new Schema({
   avatar: { type: Schema.ObjectId, ref: constants.modelConstants.IMAGES },
   role: { type: Schema.ObjectId, ref: constants.modelConstants.ROLES },
   todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }],
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  invite: { type: Schema.ObjectId, ref: "SharedTodos" }
 });
 
 const UsersModel = mongoose.model(
