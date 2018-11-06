@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator/check');
 
+
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
 import * as  userServices from '../../services/userServices.js';
@@ -41,7 +42,6 @@ const changeTodoAsAdmin = (req, res) => {
           }
           const check = todoServices.changeTodosAsAdmin(idTodo, idUser);
           return check.then((todo) => {
-            console.log(todo);
             if (!todo) {
               return customResponse(
                 res,
@@ -72,7 +72,7 @@ const getUserlist = (req, res) => {
     .exec((err, user) => {
       if (user.role.rights === 1) {
         return userServices
-          .find()
+          .find({})
           .then((users) => {
             return customResponse(res, 200, 'UsersList', users);
           })
@@ -94,7 +94,7 @@ const getTodolist = (req, res) => {
     .exec((err, user) => {
       if (user.role.rights === 1) {
         return userServices.find({ _id: userID }).then((user) => {
-          if (!user || user.length < 1) {
+          if (!user) {
             return customResponse(res, 422, 'User Not found');
           }
           return todoServices.findAll({ todoOwner: user._id }).then((todo) => {
