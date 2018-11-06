@@ -21,4 +21,6 @@ const authController = require('../controllers/auth/authController');
 
 router.post('/', (req, res) => authController.singIn(req, res));
 
-export default router;
+export {
+    router,
+  };

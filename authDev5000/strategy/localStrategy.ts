@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 
-const passportLocal = require('passport-local').Strategy;
+const passportLocal = require('passport-local');
 
 const userServices = require('../services/userServices');
 
-const localStrategy = new passportLocal(
+const localStrategy = new passportLocal.Strategy(
   {
     usernameField: 'username',
     passwordField: 'password',
@@ -28,4 +28,4 @@ const localStrategy = new passportLocal(
       });
   },
 );
-export default localStrategy;
+export { localStrategy };

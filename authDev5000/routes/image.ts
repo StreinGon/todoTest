@@ -5,14 +5,14 @@ const router = express.Router();
 const passport = require('passport');
 
 const imageController = require('../controllers/image/imageController');
-const idValidators = require('../helpers/validators/idValidator');
-const resizeValidators = require('../helpers/validators/resizeValidator');
+const validatorId = require('../helpers/validators/idValidator');
+const validatorResize = require('../helpers/validators/resizeValidator');
 
 /**
  * @api {get} /image/:imagename Image Get single image
  *  * @apiGroup Image
  */
-router.get('/', resizeValidators, (req, res) => imageController.getImage(req, res));
+router.get('/', validatorResize.resizeValidators, (req, res) => imageController.getImage(req, res));
 
 /**
  * @api {post} /todo/imageAdd/:id Add image to todo
@@ -60,8 +60,8 @@ router.post(
     '/',
     passport.authenticate('jwt', { session: false, failWithError: true }),
     upload.any(),
-    idValidators,
+    validatorId.idValidator,
     (req, res) => imageController.addImage(req, res),
 );
 router.get('/download', imageController.downloadAllAssets);
-export default router;
+export  { router };

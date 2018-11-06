@@ -14,5 +14,5 @@ const idValidator = [
         .custom(value => /^[a-zA-Z0-9]+$/.test(value))
         .withMessage('id must contain only numbers and latin chars'),
 ];
-exports.default = idValidator;
+exports.idValidator = idValidator;
 //# sourceMappingURL=idValidator.js.map

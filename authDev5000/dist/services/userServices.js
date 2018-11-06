@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Users = require('../models/user');
+const { UsersModel } = require('../models/user');
 const createNewUser = (payload) => {
-    return Users.create(payload);
+    return UsersModel.create(payload);
 };
 exports.createNewUser = createNewUser;
 const find = (payload) => {
     if (payload !== undefined) {
-        return Users.findOne(payload);
+        return UsersModel.findOne(payload);
     }
-    return Users.find();
+    return UsersModel.find();
 };
 exports.find = find;
 const userAddNewTodo = (user, id) => {

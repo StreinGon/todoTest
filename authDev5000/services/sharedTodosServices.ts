@@ -1,9 +1,9 @@
-const sharedTodos = require('../models/sharedTodos');
+const { SharedTodosModel } = require('../models/sharedTodos');
 
 const createNewsharedTodos = (payload) => {
-  return sharedTodos.create(payload);
+  return SharedTodosModel.create(payload);
 };
 const find = (payload) => {
-  return sharedTodos.findOne(payload);
+  return SharedTodosModel.findOne(payload);
 };
 export { createNewsharedTodos, find };

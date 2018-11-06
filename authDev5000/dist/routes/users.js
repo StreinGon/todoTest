@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const router = express.Router();
+exports.router = router;
 const passport = require('passport');
-const idValidator = require('../helpers/validators/idValidator');
+const validatorID = require('../helpers/validators/idValidator');
 const authController = require('../controllers/auth/authController');
 const userController = require('../controllers/user/userController');
 /**
@@ -16,8 +17,7 @@ const userController = require('../controllers/user/userController');
  *  }
  */
 router.post('/logout', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => authController.logout(req, res));
-router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), idValidator, (req, res) => userController.getUser(req, res));
+router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), validatorID.idValidator, (req, res) => userController.getUser(req, res));
 router.post('/', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => userController.sendInvite(req, res));
 router.post('/inviteToReg', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => userController.sendInviteToReg(req, res));
-exports.default = router;
 //# sourceMappingURL=users.js.map

@@ -8,5 +8,5 @@ const SharedTodosSchema = mongoose.Schema({
     allowed: [{ type: Schema.ObjectId, ref: constants.modelConstants.USERS }],
 });
 const SharedTodosModel = mongoose.model('SharedTodos', SharedTodosSchema);
-exports.default = SharedTodosModel;
+exports.SharedTodosModel = SharedTodosModel;
 //# sourceMappingURL=sharedTodos.js.map

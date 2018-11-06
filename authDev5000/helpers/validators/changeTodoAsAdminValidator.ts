@@ -20,4 +20,4 @@ const changeTodoAsAdminValidator = [
     .custom(value => /^[a-zA-Z0-9]+$/.test(value))
     .withMessage('id must contain only numbers and latin chars'),
 ];
-export default changeTodoAsAdminValidator;
+export  { changeTodoAsAdminValidator };

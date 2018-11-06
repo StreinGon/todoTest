@@ -7,4 +7,4 @@ const userCheck = (req, res) => {
     return customResponse(res, 401, constants.statusConstants.UNAUTHORIZED);
   }
 };
-export default userCheck;
+export { userCheck };

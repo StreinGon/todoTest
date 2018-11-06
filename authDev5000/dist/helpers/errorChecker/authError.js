@@ -6,5 +6,5 @@ const authError = (error, request, response, next) => {
     }
     return next();
 };
-exports.default = authError;
+exports.authError = authError;
 //# sourceMappingURL=authError.js.map

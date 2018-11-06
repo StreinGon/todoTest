@@ -19,4 +19,4 @@ const UsersModel = mongoose.model(
   Users,
   'users',
 );
-export default UsersModel;
+export { UsersModel };

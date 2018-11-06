@@ -21,5 +21,5 @@ const changeTodoAsAdminValidator = [
         .custom(value => /^[a-zA-Z0-9]+$/.test(value))
         .withMessage('id must contain only numbers and latin chars'),
 ];
-exports.default = changeTodoAsAdminValidator;
+exports.changeTodoAsAdminValidator = changeTodoAsAdminValidator;
 //# sourceMappingURL=changeTodoAsAdminValidator.js.map

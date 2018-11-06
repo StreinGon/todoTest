@@ -6,5 +6,5 @@ const JSONerrorChecker = (error, request, response, next) => {
     }
     return next();
 };
-exports.default = JSONerrorChecker;
+exports.JSONerrorChecker = JSONerrorChecker;
 //# sourceMappingURL=JSONerror.js.map

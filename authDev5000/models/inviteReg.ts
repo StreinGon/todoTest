@@ -5,4 +5,4 @@ const inviteToRegSchema = mongoose.Schema({
   invite_token: { type: String, required: true },
 });
 const inviteToRegSchemaModel = mongoose.model('InviteToReg', inviteToRegSchema);
-export default inviteToRegSchemaModel;
+export  { inviteToRegSchemaModel };

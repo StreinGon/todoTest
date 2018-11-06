@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const Rolemodel = require('../models/role');
+const { RoleModel } = require('../models/role');
 
 function createRoleOfUser(rights) {
-  return new Rolemodel({
+  return new RoleModel({
     rights,
     _id: new mongoose.Types.ObjectId(),
 
   });
 }
-export default createRoleOfUser;
+export { createRoleOfUser };

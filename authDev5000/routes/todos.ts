@@ -50,4 +50,4 @@ router.get(
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req, res) => todosController.getTodolist(req, res),
 );
-export default router;
+export  { router };

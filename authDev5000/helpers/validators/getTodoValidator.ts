@@ -14,4 +14,4 @@ const getTodoValidator = [
     .withMessage('id must contain only numbers and latin chars'),
 ];
 
-export default getTodoValidator;
+export { getTodoValidator };

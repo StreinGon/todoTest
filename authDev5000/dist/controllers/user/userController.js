@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
 const nodemailer = require('nodemailer');
 const uuidv1 = require('uuid/v1');
-const sharedTodosServices = require('../../services/sharedTodosServices');
+const sharedTodosServices = require("../../services/sharedTodosServices");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -11,12 +11,12 @@ const transporter = nodemailer.createTransport({
         pass: '9101991leva5',
     },
 });
-const customResponse = require('../../helpers/customResponse/customResponse');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const userServices = require('../../services/userServices.js');
-const imageServices = require('../../services/imageServices.js');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const userServices = require("../../services/userServices.js");
+const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
-const inviteReg = require('../../models/inviteReg');
+const { inviteToRegSchemaModel } = require('../../models/inviteReg');
 const getUser = (req, res) => {
     const check = userServices.getUser({ _id: req.user._id });
     return check.then((user) => {
@@ -24,12 +24,12 @@ const getUser = (req, res) => {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
         return imageServices.find({ _id: user.avatar }).then((image) => {
-            return customResponse(res, 200, constants.statusConstants.TODO_SENDED, {
+            return customResponse(res, 200, 'User sended', {
                 user,
                 image,
             });
         });
-    });
+    }).catch(err => res.send(err));
 };
 exports.getUser = getUser;
 const sendInvite = (req, res) => {
@@ -73,7 +73,7 @@ const sendInviteToReg = (req, res) => {
     const { mail } = req.body;
     for (let i = 0; i < mail.length; i = i + 1) {
         const inviteToken = uuidv1();
-        const newToken = new inviteReg({
+        const newToken = new inviteToRegSchemaModel({
             invite_token: inviteToken,
         });
         newToken.save();
@@ -88,8 +88,8 @@ const sendInviteToReg = (req, res) => {
                 return customResponse(res, 422, 'Errors', error);
             }
         });
-        return customResponse(res, 422, 'Emails sended');
     }
+    return customResponse(res, 422, 'Emails sended');
 };
 exports.sendInviteToReg = sendInviteToReg;
 //# sourceMappingURL=userController.js.map

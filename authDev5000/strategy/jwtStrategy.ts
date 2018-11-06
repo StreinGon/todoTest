@@ -33,4 +33,4 @@ const jwtStrategy = new JwtStrategy(opts, (jwtPayload, done) => {
     });
 });
 
-export default jwtStrategy;
+export { jwtStrategy };

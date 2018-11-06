@@ -10,5 +10,5 @@ const imageSchema = mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 });
 const imageModel = mongoose.model(constants.modelConstants.IMAGES, imageSchema);
-exports.default = imageModel;
+exports.imageModel = imageModel;
 //# sourceMappingURL=image.js.map

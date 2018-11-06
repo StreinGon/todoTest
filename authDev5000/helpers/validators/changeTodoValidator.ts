@@ -53,4 +53,6 @@ const changeTodoValidator = [
     .custom(value => /^[0-2]$/.test(value))
     .withMessage('priority 0-1-2'),
 ];
-export default changeTodoValidator;
+export {
+  changeTodoValidator,
+};

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const customResponse = require('../../helpers/customResponse/customResponse');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
 function errorAftervalidation(errors, Errormsg, res) {
     let ErrormsgTest = '';
     errors.array().forEach((mes) => {
@@ -13,5 +13,5 @@ function errorAftervalidation(errors, Errormsg, res) {
     });
     return customResponse(res, 422, ErrormsgTest);
 }
-exports.default = errorAftervalidation;
+exports.errorAftervalidation = errorAftervalidation;
 //# sourceMappingURL=errorAfterValidation.js.map

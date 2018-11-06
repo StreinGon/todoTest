@@ -1,21 +1,21 @@
 const { validationResult } = require('express-validator/check');
 const fs = require('fs');
 
-const customResponse = require('../../helpers/customResponse/customResponse');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const todoServices = require('../../services/todoServices.js');
-const userServices = require('../../services/userServices.js');
-const imageServices = require('../../services/imageServices.js');
-const priorityServices = require('../../services/priorityServices.js');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
+import * as todoServices from'../../services/todoServices.js';
+import * as userServices from'../../services/userServices.js';
+import * as imageServices from'../../services/imageServices.js';
+import * as priorityServices from'../../services/priorityServices.js';
 const constants = require('../../constants');
-const userCheck = require('../../helpers/userCheck/userCheck');
+const { userCheck } = require('../../helpers/userCheck/userCheck');
 const sharedTodosServices = require('../../services/sharedTodosServices');
 
 const addTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const { title } = req.body;
@@ -69,7 +69,7 @@ const changeTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const { id: idTodo } = req.query;
@@ -107,7 +107,7 @@ const deleteTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const { id: idTodo } = req.query;
@@ -115,23 +115,28 @@ const deleteTodo = (req, res) => {
     if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    return imageServices
-      .find({ _id: todo.photoId })
+    if (todo.photoId.lenght > 0) {
+      return imageServices
+      .find({ _id: todo.photoId[0] })
       .then((image) => {
-        fs.unlinkSync(`${image.destination}${image.name}`);
-        image[0].remove();
+        if (image.name !== 'test') {
+          fs.unlinkSync(`${image.destination}${image.name}`);
+          image[0].remove();
+        }
         return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
       })
       .catch((err) => {
         return err;
       });
+    }
+    return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
   });
 };
 const getTodo = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const { id } = req.query;
@@ -152,7 +157,7 @@ const GetShared = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const { id } = req.query;
@@ -161,16 +166,19 @@ const GetShared = (req, res) => {
     .find({ _id: id })
     .populate('todos')
     .then((shared) => {
-      let checker = false;
-      shared.allowed.forEach((user) => {
-        if (user === req.user.id) {
-          checker = true;
+      if (shared) {
+        let checker = false;
+        shared.allowed.forEach((user) => {
+          if (user === req.user.id) {
+            checker = true;
+          }
+        });
+        if (checker) {
+          return customResponse(res, 200, 'Shared Todos', shared.todos);
         }
-      });
-      if (checker) {
-        return customResponse(res, 200, 'Shared Todos', shared.todos);
+        return customResponse(res, 422, 'Not allowed');
       }
-      return customResponse(res, 422, 'Not allowed');
+      return customResponse(res, 422, 'Shared not found');
     });
 };
 export {

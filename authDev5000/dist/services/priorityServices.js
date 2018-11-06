@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const priorityModel = require('../models/priority');
+const { priorityModel } = require('../models/priority');
 function createPriority(value) {
     return new priorityModel({
         value: value.value,

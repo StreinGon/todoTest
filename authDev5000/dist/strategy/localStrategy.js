@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = require('bcrypt');
-const passportLocal = require('passport-local').Strategy;
+const passportLocal = require('passport-local');
 const userServices = require('../services/userServices');
-const localStrategy = new passportLocal({
+const localStrategy = new passportLocal.Strategy({
     usernameField: 'username',
     passwordField: 'password',
 }, (username, password, done) => {
@@ -24,5 +24,5 @@ const localStrategy = new passportLocal({
         }
     });
 });
-exports.default = localStrategy;
+exports.localStrategy = localStrategy;
 //# sourceMappingURL=localStrategy.js.map

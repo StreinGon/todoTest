@@ -10,4 +10,4 @@ const priorityModel = mongoose.model(
   prioritySchema,
   'priority',
 );
-export default priorityModel;
+export  { priorityModel };

@@ -9,4 +9,4 @@ const Role = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 const RoleModel = mongoose.model(constants.modelConstants.ROLES, Role, 'roles');
-export default RoleModel;
+export  { RoleModel };

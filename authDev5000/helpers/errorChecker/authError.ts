@@ -5,4 +5,4 @@ const authError = (error, request, response, next) => {
   }
   return next();
 };
-export default authError;
+export { authError };

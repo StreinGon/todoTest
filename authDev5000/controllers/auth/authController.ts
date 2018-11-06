@@ -3,17 +3,17 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator/check');
 
-const imageServices = require('../../services/imageServices');
-const roleServices = require('../../services/roleServices.js');
-const userServices = require('../../services/userServices.js');
-const sharedTodosServices = require('../../services/sharedTodosServices');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const SharedTodosModel = require('../../models/sharedTodos');
-const inviteReg = require('../../models/inviteReg');
+import * as  imageServices from '../../services/imageServices';
+import * as  roleServices from '../../services/roleServices.js';
+import * as  userServices from '../../services/userServices.js';
+import * as  sharedTodosServices from '../../services/sharedTodosServices';
+const  { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const { SharedTodosModel } = require('../../models/sharedTodos');
+const { inviteReg } = require('../../models/inviteReg');
 
 const saltRounds = 10;
 const secret = Buffer.from('1', 'base64');
-const customResponse = require('../../helpers/customResponse/customResponse');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
 const constants = require('../../constants');
 
 const singIn = (req, res, next) => {
@@ -62,7 +62,7 @@ const singUp = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   const photo = imageServices.createImage({
     name: req.file ? req.file.filename : 'test',

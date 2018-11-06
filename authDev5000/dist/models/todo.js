@@ -24,5 +24,5 @@ const Todo = new Schema({
     createdAt: { type: Date, default: Date.now },
 });
 const TodoModel = mongoose.model(constants.modelConstants.TODOS, Todo, 'todos');
-exports.default = TodoModel;
+exports.TodoModel = TodoModel;
 //# sourceMappingURL=todo.js.map

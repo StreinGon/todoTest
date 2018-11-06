@@ -4,6 +4,7 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
 const router = express.Router();
+exports.router = router;
 const authController = require('../controllers/auth/authController');
 const validator = require('../helpers/validators/registrationValidators');
 /**
@@ -21,5 +22,4 @@ const validator = require('../helpers/validators/registrationValidators');
  *  }
  */
 router.post('/', upload.single('avatar'), validator.registrationValidator, validator.checkForExistingEmail, (req, res) => authController.singUp(req, res));
-exports.default = router;
 //# sourceMappingURL=registerform.js.map

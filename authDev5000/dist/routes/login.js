@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const router = express.Router();
+exports.router = router;
 const authController = require('../controllers/auth/authController');
 /**
  * @api {post} /users/login Login
@@ -19,5 +20,4 @@ const authController = require('../controllers/auth/authController');
  *  }
  */
 router.post('/', (req, res) => authController.singIn(req, res));
-exports.default = router;
 //# sourceMappingURL=login.js.map

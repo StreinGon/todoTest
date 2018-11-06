@@ -28,4 +28,4 @@ router.post(
   validator.checkForExistingEmail,
   (req, res) => authController.singUp(req, res),
 );
-export default router;
+export  { router };

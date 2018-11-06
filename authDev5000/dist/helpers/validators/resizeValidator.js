@@ -9,5 +9,5 @@ const resizeValidators = [
         .custom(value => /^[0-9]+$/.test(value))
         .withMessage('height must contain only numbers'),
 ];
-exports.default = resizeValidators;
+exports.resizeValidators = resizeValidators;
 //# sourceMappingURL=resizeValidator.js.map

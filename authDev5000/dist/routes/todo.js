@@ -4,12 +4,13 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
 const router = express.Router();
+exports.router = router;
 const passport = require('passport');
 const todoController = require('../controllers/todo/todoController');
 const validator = require('../helpers/validators/addTodoValidators');
-const idValidators = require('../helpers/validators/idValidator');
-const changeTodoValidator = require('../helpers/validators/changeTodoValidator');
-const getTodoValidator = require('../helpers/validators/getTodoValidator');
+const validatorID = require('../helpers/validators/idValidator');
+const validatorChange = require('../helpers/validators/changeTodoValidator');
+const validatorGet = require('../helpers/validators/getTodoValidator');
 /**
  * @api {post} /todo Change single todo
  * @apiGroup Todo
@@ -31,7 +32,7 @@ const getTodoValidator = require('../helpers/validators/getTodoValidator');
  *  "msg": "Todo not found"
  * }
  */
-router.post('/', changeTodoValidator, passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => todoController.changeTodo(req, res));
+router.post('/', validatorChange.changeTodoValidator, passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => todoController.changeTodo(req, res));
 /**
  * @api {put} /todo Add single todo
  * @apiGroup Todo
@@ -76,8 +77,8 @@ router.put('/', passport.authenticate('jwt', { session: false, failWithError: tr
  *    "msg": "Not found"
  * }
  */
-router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), getTodoValidator, (req, res) => todoController.getTodo(req, res));
-router.get('/shared', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => todoController.GetShared(req, res));
+router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), validatorGet.getTodoValidator, (req, res) => todoController.getTodo(req, res));
+router.get('/shared', passport.authenticate('jwt', { session: false, failWithError: true }), validatorID.idValidator, (req, res) => todoController.GetShared(req, res));
 /**
  * @api {delete} /todo delete single todo
  * @apiGroup Todo
@@ -91,6 +92,5 @@ router.get('/shared', passport.authenticate('jwt', { session: false, failWithErr
  *    "msg": "Not found"
  * }
  */
-router.delete('/', passport.authenticate('jwt', { session: false, failWithError: true }), idValidators, (req, res) => todoController.deleteTodo(req, res));
-exports.default = router;
+router.delete('/', passport.authenticate('jwt', { session: false, failWithError: true }), validatorID.idValidator, (req, res) => todoController.deleteTodo(req, res));
 //# sourceMappingURL=todo.js.map

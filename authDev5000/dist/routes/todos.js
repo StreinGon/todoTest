@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport = require('passport');
 const express = require('express');
 const router = express.Router();
+exports.router = router;
 const { todosQueryValidator } = require('../helpers/validators/todosQueryValidator');
 const todosController = require('../controllers/todos/todosController');
 /**
@@ -45,5 +46,4 @@ const todosController = require('../controllers/todos/todosController');
  *     401 Unauthorized
  */
 router.get('/', todosQueryValidator, passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => todosController.getTodolist(req, res));
-exports.default = router;
 //# sourceMappingURL=todos.js.map

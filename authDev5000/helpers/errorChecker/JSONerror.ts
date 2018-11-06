@@ -4,4 +4,4 @@ const JSONerrorChecker = (error, request, response, next) => {
   }
   return next();
 };
-export default JSONerrorChecker;
+export { JSONerrorChecker };

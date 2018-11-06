@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const imageModel = require('../models/image');
+const { imageModel } = require('../models/image');
 function createImage(payload) {
     return new imageModel({
         name: payload.name,

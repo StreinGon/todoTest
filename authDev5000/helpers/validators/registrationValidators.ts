@@ -1,7 +1,7 @@
 const { body } = require('express-validator/check');
 const { check } = require('express-validator/check');
 
-const userServices = require('../../services/userServices.js');
+import * as userServices from '../../services/userServices.js';
 
 const registrationValidator = [
   check('mail')

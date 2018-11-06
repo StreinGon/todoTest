@@ -9,4 +9,4 @@ const resizeValidators = [
     .withMessage('height must contain only numbers'),
 ];
 
-export default resizeValidators;
+export { resizeValidators };

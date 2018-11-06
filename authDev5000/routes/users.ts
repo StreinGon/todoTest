@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-const idValidator = require('../helpers/validators/idValidator');
+const validatorID = require('../helpers/validators/idValidator');
 const authController = require('../controllers/auth/authController');
 const userController = require('../controllers/user/userController');
 /**
@@ -23,7 +23,7 @@ router.post(
 router.get(
   '/',
   passport.authenticate('jwt', { session: false, failWithError: true }),
-  idValidator,
+  validatorID.idValidator,
   (req, res) => userController.getUser(req, res),
 );
 router.post(
@@ -36,4 +36,4 @@ router.post(
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req, res) => userController.sendInviteToReg(req, res),
 );
-export default router;
+export  { router };

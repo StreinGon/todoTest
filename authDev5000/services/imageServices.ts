@@ -1,4 +1,4 @@
-const imageModel = require('../models/image');
+const { imageModel } = require('../models/image');
 
 function createImage(payload) {
   return new imageModel({

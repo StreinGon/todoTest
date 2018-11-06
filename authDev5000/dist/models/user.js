@@ -14,5 +14,5 @@ const Users = new Schema({
     invite: { type: Schema.ObjectId, ref: 'SharedTodos' },
 });
 const UsersModel = mongoose.model(constants.modelConstants.USERS, Users, 'users');
-exports.default = UsersModel;
+exports.UsersModel = UsersModel;
 //# sourceMappingURL=user.js.map

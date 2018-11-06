@@ -7,5 +7,5 @@ const prioritySchema = mongoose.Schema({
     name: String,
 });
 const priorityModel = mongoose.model(constants.modelConstants.PRIORITY, prioritySchema, 'priority');
-exports.default = priorityModel;
+exports.priorityModel = priorityModel;
 //# sourceMappingURL=priority.js.map

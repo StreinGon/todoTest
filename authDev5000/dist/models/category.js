@@ -8,5 +8,5 @@ const CategorySchema = mongoose.Schema({
     todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }],
 });
 const CategoryModel = mongoose.model('Category', CategorySchema);
-exports.default = CategoryModel;
+exports.CategoryModel = CategoryModel;
 //# sourceMappingURL=category.js.map

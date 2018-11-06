@@ -16,5 +16,5 @@ function customResponse(res, status, message, data) {
     const todayString = `${mm}/${dd}/${yyyy} ${hours}:${min}`;
     return res.status(status).json({ message, data, responseTime: todayString });
 }
-exports.default = customResponse;
+exports.customResponse = customResponse;
 //# sourceMappingURL=customResponse.js.map

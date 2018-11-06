@@ -1,4 +1,4 @@
-function customResponse(res, status, message, data) {
+export function customResponse(res, status, message, data) {
   const today = new Date();
 
   let dd = today.getDate();
@@ -17,4 +17,4 @@ function customResponse(res, status, message, data) {
   const todayString = `${mm}/${dd}/${yyyy} ${hours}:${min}`;
   return res.status(status).json({ message, data, responseTime: todayString });
 }
-export default customResponse;
+

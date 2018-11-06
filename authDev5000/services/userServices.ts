@@ -1,13 +1,13 @@
-const Users = require('../models/user');
+const { UsersModel } = require('../models/user');
 
 const createNewUser = (payload) => {
-  return Users.create(payload);
+  return UsersModel.create(payload);
 };
 const find = (payload) => {
   if (payload !== undefined) {
-    return Users.findOne(payload);
+    return UsersModel.findOne(payload);
   }
-  return Users.find();
+  return UsersModel.find();
 };
 const userAddNewTodo = (user, id) => {
   user.todos.push(id);
@@ -16,9 +16,11 @@ const userAddNewTodo = (user, id) => {
 const getUser = (payload) => {
   return find(payload)
     .then((user) => {
+     
       if (!user) {
         return false;
       }
+    
       return user;
     })
     .catch((err) => {

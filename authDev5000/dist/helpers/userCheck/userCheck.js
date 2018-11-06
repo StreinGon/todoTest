@@ -8,5 +8,5 @@ const userCheck = (req, res) => {
         return customResponse(res, 401, constants.statusConstants.UNAUTHORIZED);
     }
 };
-exports.default = userCheck;
+exports.userCheck = userCheck;
 //# sourceMappingURL=userCheck.js.map

@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const adminController = require('../controllers/admin/adminController');
 
-const changeTodoAsAdminValidator = require('../helpers/validators/changeTodoAsAdminValidator');
+const adminValidator = require('../helpers/validators/changeTodoAsAdminValidator');
 /**
  * @api {post} /admin Change todo owner
  * @apiGroup Admin
@@ -24,7 +24,7 @@ const changeTodoAsAdminValidator = require('../helpers/validators/changeTodoAsAd
 router.post(
     '/',
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    changeTodoAsAdminValidator,
+    adminValidator.changeTodoAsAdminValidator,
     (req, res) => adminController.changeTodoAsAdmin(req, res),
 );
 /**
@@ -88,4 +88,4 @@ router.get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
     (req, res) => adminController.getMonthlyReport(req, res),
 );
-export default router;
+export { router };

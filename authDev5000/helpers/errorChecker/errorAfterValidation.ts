@@ -1,6 +1,6 @@
-const customResponse = require('../../helpers/customResponse/customResponse');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
 
-function errorAftervalidation(errors, Errormsg, res) {
+export function errorAftervalidation(errors, Errormsg, res) {
   let ErrormsgTest = '';
   errors.array().forEach((mes) => {
     if (ErrormsgTest === '') {
@@ -11,4 +11,4 @@ function errorAftervalidation(errors, Errormsg, res) {
   });
   return customResponse(res, 422, ErrormsgTest);
 }
-export default errorAftervalidation;
+

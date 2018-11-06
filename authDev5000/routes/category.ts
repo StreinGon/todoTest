@@ -23,4 +23,4 @@ router.get(
   validator.getCategory,
   (req, res) => categoryController.getCategory(req, res),
 );
-export default router;
+export { router };

@@ -4,15 +4,16 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
 const router = express.Router();
+exports.router = router;
 const passport = require('passport');
 const imageController = require('../controllers/image/imageController');
-const idValidators = require('../helpers/validators/idValidator');
-const resizeValidators = require('../helpers/validators/resizeValidator');
+const validatorId = require('../helpers/validators/idValidator');
+const validatorResize = require('../helpers/validators/resizeValidator');
 /**
  * @api {get} /image/:imagename Image Get single image
  *  * @apiGroup Image
  */
-router.get('/', resizeValidators, (req, res) => imageController.getImage(req, res));
+router.get('/', validatorResize.resizeValidators, (req, res) => imageController.getImage(req, res));
 /**
  * @api {post} /todo/imageAdd/:id Add image to todo
  * @apiGroup Todo
@@ -55,7 +56,6 @@ router.get('/', resizeValidators, (req, res) => imageController.getImage(req, re
     "responseTime": "10/30/2018 17:37"
 }
  */
-router.post('/', passport.authenticate('jwt', { session: false, failWithError: true }), upload.any(), idValidators, (req, res) => imageController.addImage(req, res));
+router.post('/', passport.authenticate('jwt', { session: false, failWithError: true }), upload.any(), validatorId.idValidator, (req, res) => imageController.addImage(req, res));
 router.get('/download', imageController.downloadAllAssets);
-exports.default = router;
 //# sourceMappingURL=image.js.map

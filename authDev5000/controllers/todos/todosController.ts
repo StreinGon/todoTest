@@ -1,15 +1,15 @@
 const { validationResult } = require('express-validator/check');
 
-const customResponse = require('../../helpers/customResponse/customResponse');
-const todoServices = require('../../services/todoServices');
-const userCheck = require('../../helpers/userCheck/userCheck');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+import * as  todoServices from '../../services/todoServices';
+const { userCheck } = require('../../helpers/userCheck/userCheck');
+const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 
 const getTodolist = (req, res) => {
   const errors = validationResult(req);
   const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, Errormsg, res);
   }
   userCheck(req, res);
   const currentUser = req.user;

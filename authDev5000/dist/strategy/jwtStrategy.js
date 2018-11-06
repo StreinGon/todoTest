@@ -28,5 +28,5 @@ const jwtStrategy = new JwtStrategy(opts, (jwtPayload, done) => {
         }
     });
 });
-exports.default = jwtStrategy;
+exports.jwtStrategy = jwtStrategy;
 //# sourceMappingURL=jwtStrategy.js.map

@@ -14,4 +14,4 @@ const idValidator = [
     .withMessage('id must contain only numbers and latin chars'),
 ];
 
-export default idValidator;
+export { idValidator };

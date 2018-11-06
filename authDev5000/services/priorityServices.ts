@@ -1,4 +1,4 @@
-const priorityModel = require('../models/priority');
+const { priorityModel } = require('../models/priority');
 
 function createPriority(value) {
   return new priorityModel({

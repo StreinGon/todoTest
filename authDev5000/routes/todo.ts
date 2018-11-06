@@ -7,9 +7,9 @@ const passport = require('passport');
 const todoController = require('../controllers/todo/todoController');
 
 const validator = require('../helpers/validators/addTodoValidators');
-const idValidators = require('../helpers/validators/idValidator');
-const changeTodoValidator = require('../helpers/validators/changeTodoValidator');
-const getTodoValidator = require('../helpers/validators/getTodoValidator');
+const validatorID = require('../helpers/validators/idValidator');
+const validatorChange = require('../helpers/validators/changeTodoValidator');
+const validatorGet = require('../helpers/validators/getTodoValidator');
 
 /**
  * @api {post} /todo Change single todo
@@ -34,7 +34,7 @@ const getTodoValidator = require('../helpers/validators/getTodoValidator');
  */
 router.post(
   '/',
-  changeTodoValidator,
+  validatorChange.changeTodoValidator,
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req, res) => todoController.changeTodo(req, res),
 );
@@ -94,12 +94,13 @@ router.put(
 router.get(
   '/',
   passport.authenticate('jwt', { session: false, failWithError: true }),
-  getTodoValidator,
+  validatorGet.getTodoValidator,
   (req, res) => todoController.getTodo(req, res),
 );
 router.get(
   '/shared',
   passport.authenticate('jwt', { session: false, failWithError: true }),
+  validatorID.idValidator,
   (req, res) => todoController.GetShared(req, res),
 );
 /**
@@ -118,8 +119,8 @@ router.get(
 router.delete(
   '/',
   passport.authenticate('jwt', { session: false, failWithError: true }),
-  idValidators,
+  validatorID.idValidator,
   (req, res) => todoController.deleteTodo(req, res),
 );
 
-export default router;
+export  { router };

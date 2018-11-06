@@ -8,4 +8,4 @@ const CategorySchema = mongoose.Schema({
   todos: [{ type: Schema.ObjectId, ref: constants.modelConstants.TODOS }],
 });
 const CategoryModel = mongoose.model('Category', CategorySchema);
-export default CategoryModel;
+export  { CategoryModel };
