@@ -1,18 +1,21 @@
-const { UsersModel } = require('../models/user');
+const { UserModel } = require('../typegoouseClasses/user');
 
 
 const createNewUser = (payload: Object) => {
-  return UsersModel.create(payload);
+  return UserModel.create(payload);
 };
 const find = (payload: Object) => {
   if (payload !== undefined) {
-    return UsersModel.findOne(payload);
+    return UserModel.findOne(payload);
   }
-  return UsersModel.find();
+  return UserModel.find();
 };
-const userAddNewTodo = (user, id: String) => {
+const userAddNewTodo = (user, id) => {
+
   user.todos.push(id);
+
   user.save();
+  return user;
 };
 const getUser = (payload: Object) => {
   return find(payload)
@@ -22,7 +25,7 @@ const getUser = (payload: Object) => {
       }
       return user;
     })
-    .catch((err: any) => {
+    .catch((err: String) => {
       if (err) {
         return err;
       }

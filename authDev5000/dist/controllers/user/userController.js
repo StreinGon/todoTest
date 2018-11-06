@@ -3,7 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
 const nodemailer = require('nodemailer');
 const uuidv1 = require('uuid/v1');
-const sharedTodosServices = require("../../services/sharedTodosServices");
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const userServices = require("../../services/userServices.js");
+const imageServices = require("../../services/imageServices.js");
+const constants = require('../../constants');
+const { inviteRegModel } = require('../../typegoouseClasses/inviteReg');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -11,12 +16,6 @@ const transporter = nodemailer.createTransport({
         pass: '9101991leva5',
     },
 });
-const { customResponse } = require('../../helpers/customResponse/customResponse');
-const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
-const userServices = require("../../services/userServices.js");
-const imageServices = require("../../services/imageServices.js");
-const constants = require('../../constants');
-const { inviteToRegSchemaModel } = require('../../models/inviteReg');
 const getUser = (req, res) => {
     const check = userServices.getUser({ _id: req.user._id });
     return check.then((user) => {
@@ -50,7 +49,7 @@ const sendInvite = (req, res) => {
             subject: 'InviteCode',
             text: String(`${req.headers.host}/users/?invite=${req.user.invite}`),
         };
-        return sharedTodosServices.find({ _id: req.user.invite }).then((shared) => {
+        return inviteRegModel.find({ _id: req.user.invite }).then((shared) => {
             shared.todos = req.user.todos;
             shared.allowed.push(req.user._id);
             shared.save();
@@ -73,7 +72,7 @@ const sendInviteToReg = (req, res) => {
     const { mail } = req.body;
     for (let i = 0; i < mail.length; i = i + 1) {
         const inviteToken = uuidv1();
-        const newToken = new inviteToRegSchemaModel({
+        const newToken = new inviteRegModel({
             invite_token: inviteToken,
         });
         newToken.save();

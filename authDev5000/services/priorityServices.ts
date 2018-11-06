@@ -1,12 +1,12 @@
-const { priorityModel } = require('../models/priority');
+const { PriorityModel } = require('../typegoouseClasses/priority');
 
 function createPriority(value) {
-  return new priorityModel({
+  return new PriorityModel({
     value: value.value,
   });
 }
 const find = (payload) => {
-  return priorityModel.findOne(payload);
+  return PriorityModel.findOne(payload);
 };
 export {
   createPriority,

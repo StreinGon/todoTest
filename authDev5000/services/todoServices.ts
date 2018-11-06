@@ -1,4 +1,4 @@
-const { TodoModel } = require('../models/todo');
+const { TodoModel } = require('../typegoouseClasses/todo');
 const mongoose = require('mongoose');
 import * as userServices from './userServices';
 

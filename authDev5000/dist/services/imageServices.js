@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { imageModel } = require('../models/image');
+const { ImageModel } = require('../typegoouseClasses/image');
 function createImage(payload) {
-    return new imageModel({
+    return new ImageModel({
         name: payload.name,
         destination: payload.destination,
         url: payload.url,
@@ -11,7 +11,7 @@ function createImage(payload) {
 }
 exports.createImage = createImage;
 const find = (payload) => {
-    return imageModel.find(payload);
+    return ImageModel.find(payload);
 };
 exports.find = find;
 //# sourceMappingURL=imageServices.js.map

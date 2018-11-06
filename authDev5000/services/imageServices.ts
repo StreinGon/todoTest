@@ -1,7 +1,7 @@
-const { imageModel } = require('../models/image');
+const { ImageModel } = require('../typegoouseClasses/image');
 
 function createImage(payload) {
-  return new imageModel({
+  return new ImageModel({
     name: payload.name,
     destination: payload.destination,
     url: payload.url,
@@ -9,7 +9,7 @@ function createImage(payload) {
   });
 }
 const find = (payload) => {
-  return imageModel.find(payload);
+  return ImageModel.find(payload);
 };
 
 export {

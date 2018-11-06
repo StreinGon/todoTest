@@ -16,7 +16,7 @@ const { jwtStrategy } = require('./strategy/jwtStrategy');
 const globalRouter = require('./routes/index');
 const errorJSON = require('./helpers/errorChecker/JSONerror');
 const errorAuth = require('./helpers/errorChecker/authError');
-const { UsersModel } = require('./models/user');
+const { UserModel } = require('./typegoouseClasses/user');
 mongoose.connect('mongodb://localhost/Users', { useNewUrlParser: true });
 app.set('views', path.join('views'));
 app.set('view engine', 'pug');
@@ -41,7 +41,7 @@ passport.serializeUser((user, done) => {
     done(null, user._id);
 });
 passport.deserializeUser((_id, done) => {
-    UsersModel.findById(_id, (err, user) => {
+    UserModel.findById(_id, (err, user) => {
         done(err, user);
     });
 });

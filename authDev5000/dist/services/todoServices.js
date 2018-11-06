@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { TodoModel } = require('../models/todo');
+const { TodoModel } = require('../typegoouseClasses/todo');
 const mongoose = require('mongoose');
 const userServices = require("./userServices");
 const createNewTodo = (payload) => {

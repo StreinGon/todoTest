@@ -25,6 +25,7 @@ const addTodo = (req, res) => {
     const photoId = [];
     if (req.files) {
         req.files.forEach((file) => {
+            console.log("test");
             const photo = imageServices.createImage({
                 name: file.filename,
                 destination: file.destination,

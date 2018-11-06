@@ -3,10 +3,10 @@ const fs = require('fs');
 
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
-import * as todoServices from'../../services/todoServices.js';
-import * as userServices from'../../services/userServices.js';
-import * as imageServices from'../../services/imageServices.js';
-import * as priorityServices from'../../services/priorityServices.js';
+import * as todoServices from '../../services/todoServices.js';
+import * as userServices from '../../services/userServices.js';
+import * as imageServices from '../../services/imageServices.js';
+import * as priorityServices from '../../services/priorityServices.js';
 const constants = require('../../constants');
 const { userCheck } = require('../../helpers/userCheck/userCheck');
 const sharedTodosServices = require('../../services/sharedTodosServices');
@@ -25,6 +25,7 @@ const addTodo = (req, res) => {
   const photoId = [];
   if (req.files) {
     req.files.forEach((file) => {
+      console.log("test")
       const photo = imageServices.createImage({
         name: file.filename,
         destination: file.destination,
@@ -47,13 +48,16 @@ const addTodo = (req, res) => {
     },
     status: 'not started',
   });
+
   newPriority.save();
   const id = newtodo._id;
 
   return userServices
     .find({ username: req.user.username })
     .then((user) => {
-      userServices.userAddNewTodo(user, id);
+
+      userServices.userAddNewTodo(user, id)
+
       return customResponse(
         res,
         200,
@@ -117,17 +121,17 @@ const deleteTodo = (req, res) => {
     }
     if (todo.photoId.lenght > 0) {
       return imageServices
-      .find({ _id: todo.photoId[0] })
-      .then((image) => {
-        if (image.name !== 'test') {
-          fs.unlinkSync(`${image.destination}${image.name}`);
-          image[0].remove();
-        }
-        return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
-      })
-      .catch((err) => {
-        return err;
-      });
+        .find({ _id: todo.photoId[0] })
+        .then((image) => {
+          if (image.name !== 'test') {
+            fs.unlinkSync(`${image.destination}${image.name}`);
+            image[0].remove();
+          }
+          return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
+        })
+        .catch((err) => {
+          return err;
+        });
     }
     return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
   });

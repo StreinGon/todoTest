@@ -10,8 +10,8 @@ import * as  sharedTodosServices from '../../services/sharedTodosServices';
 
 
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
-const { SharedTodosModel } = require('../../models/sharedTodos');
-const { inviteReg } = require('../../models/inviteReg');
+const { SharedTodosModel } = require('../../typegoouseClasses/sharedTodos');
+const { inviteReg } = require('../../typegoouseClasses/inviteReg');
 
 const saltRounds = 10;
 const secret = Buffer.from('1', 'base64');
