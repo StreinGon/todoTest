@@ -61,4 +61,4 @@ const createReport = (res) => {
     });
 };
 
-export default createReport;
+export { createReport };

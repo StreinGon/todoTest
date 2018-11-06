@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { TodoModel } = require('../models/todo');
 const mongoose = require('mongoose');
+const userServices = require("./userServices");
 const createNewTodo = (payload) => {
     const todo = new TodoModel({
         _id: new mongoose.Types.ObjectId(),
@@ -45,10 +46,19 @@ const changeTodosAsAdmin = (idTodo, idUser) => {
             return null;
         }
         if (idUser != null && idUser !== undefined) {
-            todo.todoOwner = idUser;
+            return userServices.find({ _id: todo[0].todoOwner }).then((user) => {
+                user.todos.splice(user.todos.indexOf(idTodo), 1);
+                user.save();
+                return userServices.find({ _id: idUser }).then((usernext) => {
+                    usernext.todos.push(idTodo);
+                    todo[0].todoOwner = idUser;
+                    todo[0].save();
+                    usernext.save();
+                    return todo[0];
+                });
+            });
         }
-        todo.save();
-        return todo;
+        return null;
     })
         .catch((err) => {
         if (err)

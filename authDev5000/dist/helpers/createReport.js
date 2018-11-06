@@ -60,5 +60,5 @@ const createReport = (res) => {
         });
     });
 };
-exports.default = createReport;
+exports.createReport = createReport;
 //# sourceMappingURL=createReport.js.map

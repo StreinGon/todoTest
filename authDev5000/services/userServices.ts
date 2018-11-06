@@ -16,11 +16,9 @@ const userAddNewTodo = (user, id) => {
 const getUser = (payload) => {
   return find(payload)
     .then((user) => {
-     
       if (!user) {
         return false;
       }
-    
       return user;
     })
     .catch((err) => {

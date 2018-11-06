@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
-const categoryServices = require('../../services/categoryServices');
-const todoServices = require('../../services/todoServices');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const customResponse = require('../../helpers/customResponse/customResponse');
+const categoryServices = require("../../services/categoryServices");
+const todoServices = require("../../services/todoServices");
+const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
 const createNewCategory = (req, res) => {
     const errors = validationResult(req);
     const Errormsg = '';

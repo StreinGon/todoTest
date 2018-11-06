@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const CategoryModel = require('../models/category');
+const { CategoryModel } = require('../models/category');
 const createNewCategory = (payload) => {
     return CategoryModel.create(payload);
 };

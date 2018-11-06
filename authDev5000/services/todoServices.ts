@@ -1,5 +1,6 @@
 const { TodoModel } = require('../models/todo');
 const mongoose = require('mongoose');
+import * as userServices from './userServices';
 
 const createNewTodo = (payload) => {
   const todo = new TodoModel({
@@ -37,15 +38,28 @@ const findAll = (payload) => {
 const changeTodosAsAdmin = (idTodo, idUser) => {
   return find({ _id: idTodo })
     .then((todo) => {
+
       if (!todo) {
         return null;
       }
       if (idUser != null && idUser !== undefined) {
-        todo.todoOwner = idUser;
-      }
+        return userServices.find({ _id: todo[0].todoOwner }).then((user) => {
 
-      todo.save();
-      return todo;
+          user.todos.splice(user.todos.indexOf(idTodo), 1);
+          user.save();
+          return userServices.find({ _id: idUser }).then((usernext) => {
+
+            usernext.todos.push(idTodo);
+            todo[0].todoOwner = idUser;
+            todo[0].save();
+            usernext.save();
+            return todo[0];
+          });
+        });
+
+      }
+      return null;
+
     })
     .catch((err) => {
       if (err) return err;

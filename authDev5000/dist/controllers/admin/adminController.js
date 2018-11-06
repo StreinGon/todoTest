@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
-const customResponse = require('../../helpers/customResponse/customResponse');
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const userServices = require('../../services/userServices.js');
-const todoServices = require('../../services/todoServices.js');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const userServices = require("../../services/userServices.js");
+const todoServices = require("../../services/todoServices.js");
 const constants = require('../../constants');
-const createReport = require('../../helpers/createReport');
+const { createReport } = require('../../helpers/createReport');
 const changeTodoAsAdmin = (req, res) => {
     const errors = validationResult(req);
     const Errormsg = '';
@@ -33,6 +33,7 @@ const changeTodoAsAdmin = (req, res) => {
             }
             const check = todoServices.changeTodosAsAdmin(idTodo, idUser);
             return check.then((todo) => {
+                console.log(todo);
                 if (!todo) {
                     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
                 }

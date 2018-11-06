@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
+express.Router({ strict: true });
 const router = express.Router();
 exports.router = router;
 const passport = require('passport');

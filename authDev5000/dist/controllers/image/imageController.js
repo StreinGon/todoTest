@@ -6,10 +6,10 @@ const fs = require('mz/fs');
 const path = require('path');
 const nodezip = require('node-zip');
 const zip = new nodezip();
-const errorAfterValidation = require('../../helpers/errorChecker/errorAfterValidation');
-const customResponse = require('../../helpers/customResponse/customResponse');
-const todoServices = require('../../services/todoServices.js');
-const imageServices = require('../../services/imageServices.js');
+const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const { customResponse } = require('../../helpers/customResponse/customResponse');
+const todoServices = require("../../services/todoServices.js");
+const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
 const downloadAllAssets = (req, res, next) => {
     const array = [];
@@ -33,9 +33,10 @@ const getImage = (req, res, next) => {
     const errors = validationResult(req);
     const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, Errormsg, res);
     }
-    const { imageName } = req.query.imageName;
+    const index = req.url.indexOf('?');
+    const imageName = req.url.slice(1, index);
     const height = parseInt(req.query.height, 10);
     const width = parseInt(req.query.width, 10);
     return sharp(`${constants.otherConstants.UPLOADS}${imageName}`)

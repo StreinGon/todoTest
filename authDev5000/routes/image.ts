@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
+express.Router({ strict: true });
 const router = express.Router();
 const passport = require('passport');
 
@@ -64,4 +65,4 @@ router.post(
     (req, res) => imageController.addImage(req, res),
 );
 router.get('/download', imageController.downloadAllAssets);
-export  { router };
+export { router };
