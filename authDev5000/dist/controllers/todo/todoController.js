@@ -13,35 +13,33 @@ const { userCheck } = require('../../helpers/userCheck/userCheck');
 const sharedTodosServices = require('../../services/sharedTodosServices');
 const addTodo = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
-    const { title } = req.body;
-    const { description } = req.body;
-    const { priority } = req.body;
-    const { investigation } = req.body;
-    const photoId = [];
+    const { title: todoName } = req.body;
+    const { description: task } = req.body;
+    const { priority: priority } = req.body;
+    const { investigation: investigation } = req.body;
+    const image = [];
     if (req.files) {
         req.files.forEach((file) => {
-            console.log("test");
             const photo = imageServices.createImage({
                 name: file.filename,
                 destination: file.destination,
                 originalname: file.originalname,
                 url: `localhost:8080/image/${file.filename}`,
             });
-            photoId.push(photo._id);
+            image.push(photo._id);
             photo.save();
         });
     }
-    const newPriority = priorityServices.createPriority({ value: priority });
+    const newPriority = priorityServices.createPriority(priority);
     const newtodo = todoServices.createNewTodo({
-        title,
-        description,
-        photoId,
-        id: req.user._id,
+        todoName,
+        task,
+        image,
+        todoOwner: req.user._id,
         priority: newPriority._id,
         timeTracking: {
             investigation,
@@ -64,9 +62,8 @@ const addTodo = (req, res) => {
 exports.addTodo = addTodo;
 const changeTodo = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
     const { id: idTodo } = req.query;
@@ -86,7 +83,7 @@ const changeTodo = (req, res) => {
         id: req.user._id,
     });
     return check.then((todo) => {
-        if (!todo || todo.lenght < 1) {
+        if (!todo || todo.length < 1) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
         return customResponse(res, 200, constants.statusConstants.TODO_UPDATED, todo);
@@ -95,9 +92,8 @@ const changeTodo = (req, res) => {
 exports.changeTodo = changeTodo;
 const deleteTodo = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
     const { id: idTodo } = req.query;
@@ -105,9 +101,9 @@ const deleteTodo = (req, res) => {
         if (!todo) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
-        if (todo.photoId.lenght > 0) {
+        if (todo) {
             return imageServices
-                .find({ _id: todo.photoId[0] })
+                .find({ _id: todo })
                 .then((image) => {
                 if (image.name !== 'test') {
                     fs.unlinkSync(`${image.destination}${image.name}`);
@@ -125,9 +121,8 @@ const deleteTodo = (req, res) => {
 exports.deleteTodo = deleteTodo;
 const getTodo = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
     const { id } = req.query;
@@ -147,9 +142,8 @@ const getTodo = (req, res) => {
 exports.getTodo = getTodo;
 const GetShared = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
     const { id } = req.query;

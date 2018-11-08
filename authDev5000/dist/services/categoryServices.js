@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { CategoryModel } = require('../typegoouseClasses/category');
+const { CategoryModel } = require('../models/category');
 const createNewCategory = (payload) => {
     return CategoryModel.create(payload);
 };
@@ -14,7 +14,7 @@ const getCategory = (categoryName) => {
         .populate('todos')
         .then((category) => {
         if (!category) {
-            return false;
+            return null;
         }
         return category;
     })

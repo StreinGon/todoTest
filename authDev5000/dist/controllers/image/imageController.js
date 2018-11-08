@@ -11,7 +11,7 @@ const { customResponse } = require('../../helpers/customResponse/customResponse'
 const todoServices = require("../../services/todoServices.js");
 const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
-const downloadAllAssets = (req, res, next) => {
+const downloadAllAssets = (req, res) => {
     const array = [];
     fs.readdir('public/uploads').then((items) => {
         items.forEach((file) => {
@@ -26,14 +26,14 @@ const downloadAllAssets = (req, res, next) => {
             const data = zip.generate({ base64: false, compression: 'DEFLATE' });
             res.end(data, 'binary');
         });
-    });
+    }).catch((err) => err);
+    return customResponse(res, 422, "Fatal Error");
 };
 exports.downloadAllAssets = downloadAllAssets;
-const getImage = (req, res, next) => {
+const getImage = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     const index = req.url.indexOf('?');
     const imageName = req.url.slice(1, index);
@@ -45,7 +45,7 @@ const getImage = (req, res, next) => {
         .then((data) => {
         return res.end(data, 'binary');
     })
-        .catch(err => err);
+        .catch((error) => error);
 };
 exports.getImage = getImage;
 const addImage = (req, res) => {

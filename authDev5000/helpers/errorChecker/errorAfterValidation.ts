@@ -1,6 +1,8 @@
+import { Response } from "express";
+
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 
-export function errorAftervalidation(errors, Errormsg, res) {
+export function errorAftervalidation(errors, res: Response): Response {
   let ErrormsgTest = '';
   errors.array().forEach((mes) => {
     if (ErrormsgTest === '') {

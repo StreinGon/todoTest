@@ -1,28 +1,30 @@
-const { CategoryModel } = require('../typegoouseClasses/category');
+const { CategoryModel } = require('../models/category');
+import mongoose from 'mongoose';
+import { ICategory } from '../interfaces/category';
 
-const createNewCategory = (payload) => {
+const createNewCategory = (payload: Object): mongoose.Query => {
   return CategoryModel.create(payload);
 };
-const find = (payload) => {
+const find = (payload: Object): mongoose.Query => {
   return CategoryModel.find(payload);
 };
-const getCategory = (categoryName) => {
+const getCategory = (categoryName: String): mongoose.Query => {
   return find({ name: categoryName })
     .populate('todos')
-    .then((category) => {
+    .then((category: ICategory): ICategory => {
       if (!category) {
-        return false;
+        return null;
       }
       return category;
     })
-    .catch((err) => {
+    .catch((err: Error): Error | void => {
       if (err) {
         return err;
       }
     });
 };
-const categoryAddNewTodo = (categoryName, id) => {
-  return find({ name: categoryName }).then((category) => {
+const categoryAddNewTodo = (categoryName: String, id: String): mongoose.Query => {
+  return find({ name: categoryName }).then((category): ICategory => {
     category[0].todos.push(id);
     category[0].save();
     return category[0];

@@ -1,22 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { TodoModel } = require('../typegoouseClasses/todo');
-const mongoose = require('mongoose');
+const { TodoModel } = require('../models/todo');
 const userServices = require("./userServices");
 const createNewTodo = (payload) => {
-    const todo = new TodoModel({
-        _id: new mongoose.Types.ObjectId(),
-        todoName: payload.title,
-        task: payload.description,
-        image: payload.photoId,
-        success: false,
-        todoOwner: payload.id,
-        priority: payload.priority,
-        timeTracking: {
-            investigation: payload.timeTracking.investigation,
-        },
-        status: payload.status,
-    });
+    const todo = new TodoModel(payload);
     todo.save();
     return todo;
 };
@@ -24,10 +11,10 @@ exports.createNewTodo = createNewTodo;
 const deleteTodo = (id, idTodo) => {
     return find({ todoOwner: id, _id: idTodo }).then((todo) => {
         if (!todo || todo.length < 1) {
-            return false;
+            return null;
         }
         todo[0].remove();
-        return { deleted: true, photoId: todo[0].image };
+        return todo[0].image;
     });
 };
 exports.deleteTodo = deleteTodo;
@@ -107,7 +94,7 @@ const getTodo = (id, idTodo) => {
     return find({ todoOwner: id, _id: idTodo })
         .then((todo) => {
         if (!todo) {
-            return false;
+            return null;
         }
         return todo;
     })

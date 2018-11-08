@@ -1,14 +1,10 @@
-const { ImageModel } = require('../typegoouseClasses/image');
+const { ImageModel } = require('../models/image');
+import mongoose from 'mongoose'
 
-function createImage(payload) {
-  return new ImageModel({
-    name: payload.name,
-    destination: payload.destination,
-    url: payload.url,
-    originalname: payload.originalname,
-  });
+function createImage(payload: Object): mongoose.Query {
+  return new ImageModel(payload);
 }
-const find = (payload) => {
+const find = (payload: Object): mongoose.Query => {
   return ImageModel.find(payload);
 };
 

@@ -16,7 +16,7 @@ const { jwtStrategy } = require('./strategy/jwtStrategy');
 const globalRouter = require('./routes/index');
 const errorJSON = require('./helpers/errorChecker/JSONerror');
 const errorAuth = require('./helpers/errorChecker/authError');
-const { UserModel } = require('./typegoouseClasses/user');
+const { UserModel } = require('./models/user');
 mongoose.connect('mongodb://localhost/Users', { useNewUrlParser: true });
 app.set('views', path.join('views'));
 app.set('view engine', 'pug');

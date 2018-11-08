@@ -5,20 +5,24 @@ const { customResponse } = require('../../helpers/customResponse/customResponse'
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
 import * as  userServices from '../../services/userServices.js';
 import * as  todoServices from '../../services/todoServices.js';
+import { IUser } from '../../interfaces/user'
+import { Request } from 'express';
+import { Response } from 'express-serve-static-core';
+import { IError } from '../../interfaces/error.js';
+import { ITodo } from '../../interfaces/todo.js';
 const constants = require('../../constants');
 const { createReport } = require('../../helpers/createReport');
 
-const changeTodoAsAdmin = (req, res) => {
+const changeTodoAsAdmin = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAfterValidation(errors, res);
   }
 
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err, user) => {
+    .exec((err: IError, user: IUser): Response => {
       if (user.role.rights !== 1) {
         return customResponse(res, 422, 'Use must login as admin');
       }
@@ -31,7 +35,7 @@ const changeTodoAsAdmin = (req, res) => {
 
       return userServices
         .find({ _id: idUser })
-        .then((user) => {
+        .then((user: IUser): Response => {
 
           if (!user) {
             return customResponse(
@@ -41,7 +45,7 @@ const changeTodoAsAdmin = (req, res) => {
             );
           }
           const check = todoServices.changeTodosAsAdmin(idTodo, idUser);
-          return check.then((todo) => {
+          return check.then((todo: ITodo): Response => {
             if (!todo) {
               return customResponse(
                 res,
@@ -57,47 +61,45 @@ const changeTodoAsAdmin = (req, res) => {
             );
           });
         })
-        .catch(err => err);
+        .catch((err: IError): IError => err);
     });
 };
-const getUserlist = (req, res) => {
+const getUserlist = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAfterValidation(errors, res);
   }
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err, user) => {
+    .exec((err: IError, user: IUser): Response => {
       if (user.role.rights === 1) {
         return userServices
           .find({})
-          .then((users) => {
+          .then((users: Array<IUser>): Response => {
             return customResponse(res, 200, 'UsersList', users);
           })
-          .catch(err => err);
+          .catch((err: IError): IError => err);
       }
       return customResponse(res, 422, 'You must login as admin');
     });
 };
-const getTodolist = (req, res) => {
+const getTodolist = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, Errormsg, res);
+    return errorAfterValidation(errors, res);
   }
   const { userID } = req.query;
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err, user) => {
+    .exec((err: IError, user: IUser) => {
       if (user.role.rights === 1) {
-        return userServices.find({ _id: userID }).then((user) => {
+        return userServices.find({ _id: userID }).then((user: IUser): Response => {
           if (!user) {
             return customResponse(res, 422, 'User Not found');
           }
-          return todoServices.findAll({ todoOwner: user._id }).then((todo) => {
+          return todoServices.findAll({ todoOwner: user._id }).then((todo: Array<ITodo>): Response => {
             return customResponse(res, 200, 'Todo list of user', {
               todoList: todo,
             });
@@ -108,11 +110,11 @@ const getTodolist = (req, res) => {
     });
 };
 
-const getMonthlyReport = (req, res) => {
+const getMonthlyReport = (req: Request, res: Response): Response => {
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err, user) => {
+    .exec((err: IError, user: IUser): Response => {
       if (user.role.rights === 1) {
         return createReport(res);
       }

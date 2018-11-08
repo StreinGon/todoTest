@@ -9,7 +9,7 @@ const localStrategy = new passportLocal.Strategy(
     usernameField: 'username',
     passwordField: 'password',
   },
-  (username, password, done) => {
+  (username: String, password: String, done) => {
     userServices
       .find({ username })
       .then((user) => {

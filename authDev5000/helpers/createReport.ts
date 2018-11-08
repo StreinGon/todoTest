@@ -1,8 +1,10 @@
+import { Response } from "express-serve-static-core";
+
 const Excel = require('exceljs');
 
 const todoServices = require('../services/todoServices');
 
-const createReport = (res) => {
+const createReport = (res: Response): Response => {
   const workbook = new Excel.Workbook();
   const worksheet = workbook.addWorksheet('report');
   worksheet.columns = [

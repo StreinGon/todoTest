@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { customResponse } = require('../../helpers/customResponse/customResponse');
-function errorAftervalidation(errors, Errormsg, res) {
+function errorAftervalidation(errors, res) {
     let ErrormsgTest = '';
     errors.array().forEach((mes) => {
         if (ErrormsgTest === '') {

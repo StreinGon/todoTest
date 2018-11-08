@@ -8,7 +8,7 @@ const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterV
 const userServices = require("../../services/userServices.js");
 const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
-const { inviteRegModel } = require('../../typegoouseClasses/inviteReg');
+const { InviteToRegModel } = require('../../models/inviteReg');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 const getUser = (req, res) => {
     const check = userServices.getUser({ _id: req.user._id });
     return check.then((user) => {
-        if (!user || user.length < 1) {
+        if (!user) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
         return imageServices.find({ _id: user.avatar }).then((image) => {
@@ -28,19 +28,18 @@ const getUser = (req, res) => {
                 image,
             });
         });
-    }).catch(err => res.send(err));
+    }).catch((error) => res.send(error));
 };
 exports.getUser = getUser;
 const sendInvite = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { mail } = req.body;
     const check = userServices.getUser({ mail });
     return check.then((user) => {
-        if (!user || user.length < 1) {
+        if (!user) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
         const mailOptions = {
@@ -49,7 +48,7 @@ const sendInvite = (req, res) => {
             subject: 'InviteCode',
             text: String(`${req.headers.host}/users/?invite=${req.user.invite}`),
         };
-        return inviteRegModel.find({ _id: req.user.invite }).then((shared) => {
+        return InviteToRegModel.find({ _id: req.user.invite }).then((shared) => {
             shared.todos = req.user.todos;
             shared.allowed.push(req.user._id);
             shared.save();
@@ -57,7 +56,7 @@ const sendInvite = (req, res) => {
                 if (error) {
                     return customResponse(res, 422, 'Errors', error);
                 }
-                return customResponse(res, 200, 'Email sent: ', info.response);
+                return customResponse(res, 200, 'Email sent ');
             });
         });
     });
@@ -65,14 +64,13 @@ const sendInvite = (req, res) => {
 exports.sendInvite = sendInvite;
 const sendInviteToReg = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { mail } = req.body;
     for (let i = 0; i < mail.length; i = i + 1) {
         const inviteToken = uuidv1();
-        const newToken = new inviteRegModel({
+        const newToken = new InviteToRegModel({
             invite_token: inviteToken,
         });
         newToken.save();

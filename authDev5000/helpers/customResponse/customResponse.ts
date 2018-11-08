@@ -1,4 +1,6 @@
-export function customResponse(res, status, message, data) {
+import { Response } from "express";
+
+export function customResponse(res, status: number, message: String, data: Object): Response {
   const today = new Date();
 
   let dd = today.getDate();

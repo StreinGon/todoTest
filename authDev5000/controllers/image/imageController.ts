@@ -9,15 +9,18 @@ const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterV
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 import * as  todoServices from '../../services/todoServices.js';
 import * as   imageServices from '../../services/imageServices.js';
+import { Request } from 'express';
+import { Response } from 'express-serve-static-core';
+import { IRequest, file } from '../../interfaces/request.js';
 const constants = require('../../constants');
 
-const downloadAllAssets = (req, res, next) => {
+const downloadAllAssets = (req: Request, res: Response): Response => {
   const array = [];
   fs.readdir('public/uploads').then((items) => {
-    items.forEach((file) => {
+    items.forEach((file: String): void => {
       const promiseTest = fs
         .readFile(path.join('public/uploads', String(file)))
-        .then((data) => {
+        .then((data: String): void => {
           zip.file(`${String(file)}.png`, data);
         });
       array.push(promiseTest);
@@ -27,14 +30,15 @@ const downloadAllAssets = (req, res, next) => {
       const data = zip.generate({ base64: false, compression: 'DEFLATE' });
       res.end(data, 'binary');
     });
-  });
+  }).catch((err: Error): Error => err);
+  return customResponse(res, 422, "Fatal Error");
 };
 
-const getImage = (req, res, next) => {
+const getImage = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
+
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   const index = req.url.indexOf('?');
   const imageName = req.url.slice(1, index);
@@ -43,13 +47,12 @@ const getImage = (req, res, next) => {
   return sharp(`${constants.otherConstants.UPLOADS}${imageName}`)
     .resize(width, height)
     .toBuffer()
-    .then((data) => {
-
+    .then((data: String): void => {
       return res.end(data, 'binary');
     })
-    .catch(err => err);
+    .catch((error: Error): Error => error);
 };
-const addImage = (req, res) => {
+const addImage = (req: IRequest, res: Response): Response => {
   const { id: idTodo } = req.query;
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
@@ -57,9 +60,9 @@ const addImage = (req, res) => {
 
   return todoServices
     .find({ _id: idTodo })
-    .then((todo) => {
+    .then((todo): Response => {
       if (req.files && todo.length >= 1) {
-        req.files.forEach((file) => {
+        req.files.forEach((file: file): void => {
           const photo = imageServices.createImage({
             name: file.filename,
             destination: file.destination,
@@ -84,7 +87,7 @@ const addImage = (req, res) => {
         'Add image error,check your files or id of todo',
       );
     })
-    .catch((err) => {
+    .catch((err: Error): Error | void => {
       if (err) return err;
     });
 };

@@ -1,53 +1,44 @@
-const { TodoModel } = require('../typegoouseClasses/todo');
-const mongoose = require('mongoose');
-import * as userServices from './userServices';
+const { TodoModel } = require('../models/todo');
+import mongoose from 'mongoose'
 
-const createNewTodo = (payload) => {
-  const todo = new TodoModel({
-    _id: new mongoose.Types.ObjectId(),
-    todoName: payload.title,
-    task: payload.description,
-    image: payload.photoId,
-    success: false,
-    todoOwner: payload.id,
-    priority: payload.priority,
-    timeTracking: {
-      investigation: payload.timeTracking.investigation,
-    },
-    status: payload.status,
-  });
+import * as userServices from './userServices';
+import { ITodo } from '../interfaces/todo';
+
+
+const createNewTodo = (payload: Object): mongoose.Query => {
+  const todo = new TodoModel(payload);
   todo.save();
   return todo;
 };
-const deleteTodo = (id, idTodo) => {
-  return find({ todoOwner: id, _id: idTodo }).then((todo) => {
+const deleteTodo = (id: String, idTodo: String): mongoose.Query => {
+  return find({ todoOwner: id, _id: idTodo }).then((todo): String => {
     if (!todo || todo.length < 1) {
-      return false;
+      return null;
     }
     todo[0].remove();
 
-    return { deleted: true, photoId: todo[0].image };
+    return todo[0].image;
   });
 };
-const find = (payload) => {
+const find = (payload: Object): mongoose.Query => {
   return TodoModel.find(payload);
 };
-const findAll = (payload) => {
+const findAll = (payload: Object): mongoose.Query => {
   return TodoModel.find(payload);
 };
-const changeTodosAsAdmin = (idTodo, idUser) => {
+const changeTodosAsAdmin = (idTodo: String, idUser: String): mongoose.Query => {
   return find({ _id: idTodo })
-    .then((todo) => {
+    .then((todo): ITodo => {
 
       if (!todo) {
         return null;
       }
       if (idUser != null && idUser !== undefined) {
-        return userServices.find({ _id: todo[0].todoOwner }).then((user) => {
+        return userServices.find({ _id: todo[0].todoOwner }).then((user): mongoose.Query => {
 
           user.todos.splice(user.todos.indexOf(idTodo), 1);
           user.save();
-          return userServices.find({ _id: idUser }).then((usernext) => {
+          return userServices.find({ _id: idUser }).then((usernext): ITodo => {
 
             usernext.todos.push(idTodo);
             todo[0].todoOwner = idUser;
@@ -61,11 +52,11 @@ const changeTodosAsAdmin = (idTodo, idUser) => {
       return null;
 
     })
-    .catch((err) => {
+    .catch((err: Error): Error => {
       if (err) return err;
     });
 };
-const changeTodos = (payload) => {
+const changeTodos = (payload): mongoose.Query => {
   return find({ todoOwner: payload.id, _id: payload.idTodo })
     .then((todo) => {
       if (!todo || todo.length < 1) {
@@ -100,19 +91,19 @@ const changeTodos = (payload) => {
 
       return todo[0];
     })
-    .catch((err) => {
+    .catch((err: Error): Error => {
       if (err) return err;
     });
 };
-const getTodo = (id, idTodo) => {
+const getTodo = (id: String, idTodo: String): mongoose.Query => {
   return find({ todoOwner: id, _id: idTodo })
-    .then((todo) => {
+    .then((todo: ITodo): ITodo => {
       if (!todo) {
-        return false;
+        return null;
       }
       return todo;
     })
-    .catch((err) => {
+    .catch((err: Error): Error => {
       if (err) {
         return err;
       }

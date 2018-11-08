@@ -9,8 +9,8 @@ const roleServices = require("../../services/roleServices.js");
 const userServices = require("../../services/userServices.js");
 const sharedTodosServices = require("../../services/sharedTodosServices");
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
-const { SharedTodosModel } = require('../../typegoouseClasses/sharedTodos');
-const { inviteReg } = require('../../typegoouseClasses/inviteReg');
+const { SharedTodosModel } = require('../../models/sharedTodos');
+const { InviteToRegModel } = require('../../models/inviteReg');
 const saltRounds = 10;
 const secret = Buffer.from('1', 'base64');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
@@ -49,9 +49,8 @@ const singIn = (req, res, next) => {
 exports.singIn = singIn;
 const singUp = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     const photo = imageServices.createImage({
         name: req.file ? req.file.filename : 'test',
@@ -80,7 +79,7 @@ const singUp = (req, res) => {
             newShared.todos = user.todos;
             newShared.save();
             if (req.query.inviteToReg) {
-                inviteReg
+                InviteToRegModel
                     .findOne({ invite_token: req.query.inviteToReg })
                     .then((token) => {
                     token.remove();

@@ -7,9 +7,8 @@ const { userCheck } = require('../../helpers/userCheck/userCheck');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const getTodolist = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAftervalidation(errors, Errormsg, res);
+        return errorAftervalidation(errors, res);
     }
     userCheck(req, res);
     const currentUser = req.user;

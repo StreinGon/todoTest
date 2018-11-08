@@ -7,41 +7,46 @@ import * as todoServices from '../../services/todoServices.js';
 import * as userServices from '../../services/userServices.js';
 import * as imageServices from '../../services/imageServices.js';
 import * as priorityServices from '../../services/priorityServices.js';
+import { Request, Response } from 'express';
+import { IRequest, file } from '../../interfaces/request.js';
+import { IUser } from '../../interfaces/user.js';
+import { ITodo } from '../../interfaces/todo.js';
+import { IImage } from '../../interfaces/image.js';
+import { ISharedTodo } from '../../interfaces/sharedTodos.js';
 const constants = require('../../constants');
 const { userCheck } = require('../../helpers/userCheck/userCheck');
 const sharedTodosServices = require('../../services/sharedTodosServices');
 
-const addTodo = (req, res) => {
+const addTodo = (req: IRequest, res: Response) => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
-  const { title } = req.body;
-  const { description } = req.body;
-  const { priority } = req.body;
-  const { investigation } = req.body;
-  const photoId = [];
+  const { title: todoName } = req.body;
+  const { description: task } = req.body;
+  const { priority: priority } = req.body;
+  const { investigation: investigation } = req.body;
+  const image = [];
   if (req.files) {
-    req.files.forEach((file) => {
-      console.log("test")
+    req.files.forEach((file: file): void => {
+
       const photo = imageServices.createImage({
         name: file.filename,
         destination: file.destination,
         originalname: file.originalname,
         url: `localhost:8080/image/${file.filename}`,
       });
-      photoId.push(photo._id);
+      image.push(photo._id);
       photo.save();
     });
   }
-  const newPriority = priorityServices.createPriority({ value: priority });
+  const newPriority = priorityServices.createPriority(priority);
   const newtodo = todoServices.createNewTodo({
-    title,
-    description,
-    photoId,
-    id: req.user._id,
+    todoName,
+    task,
+    image,
+    todoOwner: req.user._id,
     priority: newPriority._id,
     timeTracking: {
       investigation,
@@ -54,7 +59,7 @@ const addTodo = (req, res) => {
 
   return userServices
     .find({ username: req.user.username })
-    .then((user) => {
+    .then((user: IUser): Response => {
 
       userServices.userAddNewTodo(user, id)
 
@@ -65,15 +70,14 @@ const addTodo = (req, res) => {
         newtodo,
       );
     })
-    .catch((err) => {
+    .catch((err: Error): Error | void => {
       if (err) return err;
     });
 };
-const changeTodo = (req, res) => {
+const changeTodo = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const { id: idTodo } = req.query;
@@ -94,8 +98,8 @@ const changeTodo = (req, res) => {
 
   });
 
-  return check.then((todo) => {
-    if (!todo || todo.lenght < 1) {
+  return check.then((todo: Array<ITodo>): Response => {
+    if (!todo || todo.length < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
     return customResponse(
@@ -107,49 +111,47 @@ const changeTodo = (req, res) => {
   });
 };
 
-const deleteTodo = (req, res) => {
+const deleteTodo = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const { id: idTodo } = req.query;
-  return todoServices.deleteTodo(req.user._id, idTodo).then((todo) => {
+  return todoServices.deleteTodo(req.user._id, idTodo).then((todo: String): Response => {
     if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    if (todo.photoId.lenght > 0) {
+    if (todo) {
       return imageServices
-        .find({ _id: todo.photoId[0] })
-        .then((image) => {
+        .find({ _id: todo })
+        .then((image: IImage): Response => {
           if (image.name !== 'test') {
             fs.unlinkSync(`${image.destination}${image.name}`);
             image[0].remove();
           }
           return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
         })
-        .catch((err) => {
+        .catch((err: Error): Error => {
           return err;
         });
     }
     return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
   });
 };
-const getTodo = (req, res) => {
+const getTodo = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const { id } = req.query;
   const check = todoServices.getTodo(req.user._id, id);
-  return check.then((todo) => {
+  return check.then((todo: Array<ITodo>): Response => {
     if (!todo || todo.length < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    return imageServices.find({ _id: todo[0].image }).then((image) => {
+    return imageServices.find({ _id: todo[0].image }).then((image: IImage): Response => {
       return customResponse(res, 200, constants.statusConstants.TODO_SENDED, {
         todo,
         image,
@@ -157,11 +159,10 @@ const getTodo = (req, res) => {
     });
   });
 };
-const GetShared = (req, res) => {
+const GetShared = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const { id } = req.query;
@@ -169,10 +170,10 @@ const GetShared = (req, res) => {
   sharedTodosServices
     .find({ _id: id })
     .populate('todos')
-    .then((shared) => {
+    .then((shared: ISharedTodo): Response => {
       if (shared) {
         let checker = false;
-        shared.allowed.forEach((user) => {
+        shared.allowed.forEach((user: IUser): void => {
           if (user === req.user.id) {
             checker = true;
           }

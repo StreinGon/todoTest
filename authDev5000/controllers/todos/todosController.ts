@@ -2,14 +2,16 @@ const { validationResult } = require('express-validator/check');
 
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 import * as  todoServices from '../../services/todoServices';
+import { Request } from 'express';
+import { Response } from 'express-serve-static-core';
+import { ITodo } from '../../interfaces/todo';
 const { userCheck } = require('../../helpers/userCheck/userCheck');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 
-const getTodolist = (req, res) => {
+const getTodolist = (req: Request, res: Response): Response => {
   const errors = validationResult(req);
-  const Errormsg = '';
   if (!errors.isEmpty()) {
-    return errorAftervalidation(errors, Errormsg, res);
+    return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const currentUser = req.user;
@@ -28,7 +30,7 @@ const getTodolist = (req, res) => {
     .limit(amountInt)
     .populate('priority')
     .sort(sortParametr)
-    .exec((err, todo) => {
+    .exec((err: Error, todo: Array<ITodo>): Response => {
       if (!amount || !startFrom) {
         return customResponse(res, 200, 'TodoList', {
           todoList: todo,

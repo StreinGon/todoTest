@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { UserModel } = require('../typegoouseClasses/user');
+const { UserModel } = require('../models/user');
 const createNewUser = (payload) => {
     return UserModel.create(payload);
 };
@@ -22,7 +22,7 @@ const getUser = (payload) => {
     return find(payload)
         .then((user) => {
         if (!user) {
-            return false;
+            return null;
         }
         return user;
     })

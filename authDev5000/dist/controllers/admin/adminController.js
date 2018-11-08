@@ -9,9 +9,8 @@ const constants = require('../../constants');
 const { createReport } = require('../../helpers/createReport');
 const changeTodoAsAdmin = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     return userServices
         .find({ username: req.user.username })
@@ -39,15 +38,14 @@ const changeTodoAsAdmin = (req, res) => {
                 return customResponse(res, 200, constants.statusConstants.TODO_UPDATED, todo);
             });
         })
-            .catch(err => err);
+            .catch((err) => err);
     });
 };
 exports.changeTodoAsAdmin = changeTodoAsAdmin;
 const getUserlist = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     return userServices
         .find({ username: req.user.username })
@@ -59,7 +57,7 @@ const getUserlist = (req, res) => {
                 .then((users) => {
                 return customResponse(res, 200, 'UsersList', users);
             })
-                .catch(err => err);
+                .catch((err) => err);
         }
         return customResponse(res, 422, 'You must login as admin');
     });
@@ -67,9 +65,8 @@ const getUserlist = (req, res) => {
 exports.getUserlist = getUserlist;
 const getTodolist = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { userID } = req.query;
     return userServices

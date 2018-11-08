@@ -1,3 +1,5 @@
+import { Request } from "express-serve-static-core";
+
 const JwtStrategy = require('passport-jwt').Strategy;
 const userServices = require('../services/userServices.js');
 
@@ -6,7 +8,7 @@ const opts = <any>{
 
 };
 
-const cookieExtractor = (req) => {
+const cookieExtractor = (req: Request): String => {
   let token = null;
   if (req && req.cookies) {
     token = req.cookies.Authorization;

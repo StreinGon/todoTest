@@ -1,13 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { ImageModel } = require('../typegoouseClasses/image');
+const { ImageModel } = require('../models/image');
 function createImage(payload) {
-    return new ImageModel({
-        name: payload.name,
-        destination: payload.destination,
-        url: payload.url,
-        originalname: payload.originalname,
-    });
+    return new ImageModel(payload);
 }
 exports.createImage = createImage;
 const find = (payload) => {

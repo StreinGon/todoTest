@@ -7,9 +7,8 @@ const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterV
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const createNewCategory = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { categoryName } = req.body;
     return categoryServices
@@ -24,9 +23,8 @@ const createNewCategory = (req, res) => {
 exports.createNewCategory = createNewCategory;
 const getCategory = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { categoryName } = req.query;
     return categoryServices.getCategory(categoryName).then((category) => {
@@ -39,9 +37,8 @@ const getCategory = (req, res) => {
 exports.getCategory = getCategory;
 const addTodoToCategory = (req, res) => {
     const errors = validationResult(req);
-    const Errormsg = '';
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, Errormsg, res);
+        return errorAfterValidation(errors, res);
     }
     const { todoID } = req.query;
     const { categoryName } = req.body;
