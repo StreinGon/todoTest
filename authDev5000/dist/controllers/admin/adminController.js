@@ -50,7 +50,7 @@ const getUserlist = (req, res) => {
     return userServices
         .find({ username: req.user.username })
         .populate('role')
-        .exec((err, user) => {
+        .then((user) => {
         if (user.role.rights === 1) {
             return userServices
                 .find({})

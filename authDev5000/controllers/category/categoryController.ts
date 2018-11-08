@@ -8,7 +8,7 @@ import { ICategory } from '../../interfaces/category';
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 
-const createNewCategory = (req: Request, res: Response): Response => {
+const createNewCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -24,7 +24,7 @@ const createNewCategory = (req: Request, res: Response): Response => {
       return customResponse(res, 200, 'Category created', createdCategory);
     });
 };
-const getCategory = (req: Request, res: Response): Response => {
+const getCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, res);
@@ -37,7 +37,7 @@ const getCategory = (req: Request, res: Response): Response => {
     return customResponse(res, 200, 'Category sended', category);
   });
 };
-const addTodoToCategory = (req: Request, res: Response): Response => {
+const addTodoToCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, res);

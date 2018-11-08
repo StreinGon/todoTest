@@ -83,7 +83,7 @@ const changeTodo = (req, res) => {
         id: req.user._id,
     });
     return check.then((todo) => {
-        if (!todo || todo.length < 1) {
+        if (!todo) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
         return customResponse(res, 200, constants.statusConstants.TODO_UPDATED, todo);
@@ -97,13 +97,13 @@ const deleteTodo = (req, res) => {
     }
     userCheck(req, res);
     const { id: idTodo } = req.query;
-    return todoServices.deleteTodo(req.user._id, idTodo).then((todo) => {
-        if (!todo) {
+    return todoServices.deleteTodo(req.user._id, idTodo).then((image) => {
+        if (!image) {
             return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
         }
-        if (todo) {
+        if (image) {
             return imageServices
-                .find({ _id: todo })
+                .find({ _id: image })
                 .then((image) => {
                 if (image.name !== 'test') {
                     fs.unlinkSync(`${image.destination}${image.name}`);

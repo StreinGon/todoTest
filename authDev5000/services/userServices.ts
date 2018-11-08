@@ -1,6 +1,3 @@
-
-import { IUser } from '../interfaces/user';
-
 const { UserModel } = require('../models/user');
 
 
@@ -22,13 +19,13 @@ const userAddNewTodo = (user, id: String) => {
 };
 const getUser = (payload: Object) => {
   return find(payload)
-    .then((user: IUser): IUser => {
+    .then((user) => {
       if (!user) {
         return null;
       }
       return user;
     })
-    .catch((err: Error): Error => {
+    .catch((err) => {
       if (err) {
         return err;
       }

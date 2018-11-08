@@ -74,7 +74,7 @@ const addTodo = (req: IRequest, res: Response) => {
       if (err) return err;
     });
 };
-const changeTodo = (req: Request, res: Response): Response => {
+const changeTodo = (req: Request, res: Response): Promise<Error | ITodo> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAftervalidation(errors, res);
@@ -98,8 +98,8 @@ const changeTodo = (req: Request, res: Response): Response => {
 
   });
 
-  return check.then((todo: Array<ITodo>): Response => {
-    if (!todo || todo.length < 1) {
+  return check.then((todo) => {
+    if (!todo) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
     return customResponse(
@@ -111,21 +111,21 @@ const changeTodo = (req: Request, res: Response): Response => {
   });
 };
 
-const deleteTodo = (req: Request, res: Response): Response => {
+const deleteTodo = (req: Request, res: Response): Promise<Response | Error> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAftervalidation(errors, res);
   }
   userCheck(req, res);
   const { id: idTodo } = req.query;
-  return todoServices.deleteTodo(req.user._id, idTodo).then((todo: String): Response => {
-    if (!todo) {
+  return todoServices.deleteTodo(req.user._id, idTodo).then((image) => {
+    if (!image) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    if (todo) {
+    if (image) {
       return imageServices
-        .find({ _id: todo })
-        .then((image: IImage): Response => {
+        .find({ _id: image })
+        .then((image: IImage): Promise<Response | Error> => {
           if (image.name !== 'test') {
             fs.unlinkSync(`${image.destination}${image.name}`);
             image[0].remove();
@@ -139,7 +139,7 @@ const deleteTodo = (req: Request, res: Response): Response => {
     return customResponse(res, 200, constants.statusConstants.TODO_DELETED);
   });
 };
-const getTodo = (req: Request, res: Response): Response => {
+const getTodo = (req: Request, res: Response): Promise<Error | Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAftervalidation(errors, res);
@@ -147,11 +147,11 @@ const getTodo = (req: Request, res: Response): Response => {
   userCheck(req, res);
   const { id } = req.query;
   const check = todoServices.getTodo(req.user._id, id);
-  return check.then((todo: Array<ITodo>): Response => {
+  return check.then((todo: Array<ITodo>): Promise<Response | Error> => {
     if (!todo || todo.length < 1) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
-    return imageServices.find({ _id: todo[0].image }).then((image: IImage): Response => {
+    return imageServices.find({ _id: todo[0].image }).then((image: IImage): Promise<Response | Error> => {
       return customResponse(res, 200, constants.statusConstants.TODO_SENDED, {
         todo,
         image,

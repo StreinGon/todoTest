@@ -81,8 +81,7 @@ const singUp = (req: IRequest, res: Response) => {
   photo.save();
   const newRole = roleServices.createRoleOfUser(0);
   const hash = bcrypt.hashSync(req.body.password, saltRounds);
-  return newRole.save((err: Error): Error | Response => {
-    if (err) return err;
+  return newRole.save((err: Error): Promise<Error | Response> => {
     return userServices
       .createNewUser({
         username: req.body.username,

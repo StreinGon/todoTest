@@ -2,7 +2,6 @@ const { body } = require('express-validator/check');
 const { check } = require('express-validator/check');
 
 import * as userServices from '../../services/userServices.js';
-
 const registrationValidator = [
   check('mail')
     .isEmail()
@@ -33,7 +32,7 @@ const checkForExistingEmail = body('mail').custom((value) => {
     if (user) {
       return Promise.reject(new Error('E-mail already in use'));
     }
-    return true;
+    return Promise.resolve(true)
   });
 });
 export { registrationValidator, checkForExistingEmail };

@@ -1,34 +1,36 @@
 const { TodoModel } = require('../models/todo');
-
+import mongoose from 'mongoose'
 
 import * as userServices from './userServices';
 import { ITodo } from '../interfaces/todo';
 
 
-const createNewTodo = (payload: Object) => {
+
+
+const createNewTodo = (payload: Object): ITodo => {
   const todo = new TodoModel(payload);
   todo.save();
   return todo;
 };
 const deleteTodo = (id: String, idTodo: String) => {
-  return find({ todoOwner: id, _id: idTodo }).then((todo): String => {
+  return find({ todoOwner: id, _id: idTodo }).then((todo) => {
     if (!todo || todo.length < 1) {
       return null;
     }
     todo[0].remove();
 
-    return todo[0].image;
+    return todo[0].image[0];
   });
 };
-const find = (payload: Object) => {
+const find = (payload: Object): mongoose.Query<Array<ITodo>> => {
   return TodoModel.find(payload);
 };
 const findAll = (payload: Object) => {
   return TodoModel.find(payload);
 };
-const changeTodosAsAdmin = (idTodo: String, idUser: String) => {
+const changeTodosAsAdmin = (idTodo: mongoose.Schema.Types.ObjectId, idUser: mongoose.Schema.Types.ObjectId) => {
   return find({ _id: idTodo })
-    .then((todo): ITodo => {
+    .then((todo) => {
 
       if (!todo) {
         return null;
@@ -97,7 +99,7 @@ const changeTodos = (payload) => {
 };
 const getTodo = (id: String, idTodo: String) => {
   return find({ todoOwner: id, _id: idTodo })
-    .then((todo: ITodo): ITodo => {
+    .then((todo: ITodo[]): ITodo[] => {
       if (!todo) {
         return null;
       }

@@ -64,8 +64,6 @@ const singUp = (req, res) => {
     const newRole = roleServices.createRoleOfUser(0);
     const hash = bcrypt.hashSync(req.body.password, saltRounds);
     return newRole.save((err) => {
-        if (err)
-            return err;
         return userServices
             .createNewUser({
             username: req.body.username,

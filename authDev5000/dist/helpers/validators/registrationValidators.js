@@ -32,7 +32,7 @@ const checkForExistingEmail = body('mail').custom((value) => {
         if (user) {
             return Promise.reject(new Error('E-mail already in use'));
         }
-        return true;
+        return Promise.resolve(true);
     });
 });
 exports.checkForExistingEmail = checkForExistingEmail;

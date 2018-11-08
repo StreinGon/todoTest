@@ -14,7 +14,7 @@ const deleteTodo = (id, idTodo) => {
             return null;
         }
         todo[0].remove();
-        return todo[0].image;
+        return todo[0].image[0];
     });
 };
 exports.deleteTodo = deleteTodo;

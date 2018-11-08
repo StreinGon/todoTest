@@ -38,7 +38,7 @@ const getUser = (req: Request, res: Response) => {
     });
   }).catch((error: Error): Response => res.send(error));
 };
-const sendInvite = (req: Request, res: Response): Response => {
+const sendInvite = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAfterValidation(errors, res);

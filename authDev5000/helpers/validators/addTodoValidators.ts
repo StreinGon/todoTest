@@ -29,7 +29,7 @@ const addTodoValidator = [
     .isLength({ min: 5 })
     .withMessage('Description must be at least 5 chars long'),
 ];
-const checkForExistingTitle = body('title').custom((value) => {
+const checkForExistingTitle = body('title').custom((value: String): String | boolean => {
   return todoServices.find({ todoName: value }).then((task) => {
     if (task && task.length !== 0) {
       return Promise.reject(

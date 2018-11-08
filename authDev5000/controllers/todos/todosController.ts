@@ -8,7 +8,7 @@ import { ITodo } from '../../interfaces/todo';
 const { userCheck } = require('../../helpers/userCheck/userCheck');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 
-const getTodolist = (req: Request, res: Response): Response => {
+const getTodolist = (req: Request, res: Response): Promise<ITodo[]> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorAftervalidation(errors, res);

@@ -52,7 +52,7 @@ const getImage = (req: Request, res: Response): Response => {
     })
     .catch((error: Error): Error => error);
 };
-const addImage = (req: IRequest, res: Response): Response => {
+const addImage = (req: IRequest, res: Response): Promise<void | Error | Response> => {
   const { id: idTodo } = req.query;
   if (!idTodo) {
     return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
