@@ -22,7 +22,7 @@ const changeTodoAsAdmin = (req: Request, res: Response): Response => {
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err: IError, user: IUser): Response => {
+    .exec((err: IError, user): Response => {
       if (user.role.rights !== 1) {
         return customResponse(res, 422, 'Use must login as admin');
       }
@@ -72,7 +72,7 @@ const getUserlist = (req: Request, res: Response): Response => {
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err: IError, user: IUser): Response => {
+    .exec((err: IError, user): Response => {
       if (user.role.rights === 1) {
         return userServices
           .find({})
@@ -93,7 +93,7 @@ const getTodolist = (req: Request, res: Response): Response => {
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err: IError, user: IUser) => {
+    .exec((err: IError, user) => {
       if (user.role.rights === 1) {
         return userServices.find({ _id: userID }).then((user: IUser): Response => {
           if (!user) {
@@ -114,7 +114,7 @@ const getMonthlyReport = (req: Request, res: Response): Response => {
   return userServices
     .find({ username: req.user.username })
     .populate('role')
-    .exec((err: IError, user: IUser): Response => {
+    .exec((err: IError, user): Response => {
       if (user.role.rights === 1) {
         return createReport(res);
       }

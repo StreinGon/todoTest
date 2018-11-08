@@ -1,12 +1,12 @@
 const { PriorityModel } = require('../models/priority');
-import mongoose from 'mongoose'
 
-function createPriority(value: Number): mongoose.Query {
+
+function createPriority(value: Number) {
   return new PriorityModel({
     value: value,
   });
 }
-const find = (payload: Number): mongoose.Query => {
+const find = (payload: Number) => {
   return PriorityModel.findOne(payload);
 };
 export {

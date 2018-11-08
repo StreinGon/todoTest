@@ -1,14 +1,14 @@
 const { CategoryModel } = require('../models/category');
-import mongoose from 'mongoose';
+
 import { ICategory } from '../interfaces/category';
 
-const createNewCategory = (payload: Object): mongoose.Query => {
+const createNewCategory = (payload: Object) => {
   return CategoryModel.create(payload);
 };
-const find = (payload: Object): mongoose.Query => {
+const find = (payload: Object) => {
   return CategoryModel.find(payload);
 };
-const getCategory = (categoryName: String): mongoose.Query => {
+const getCategory = (categoryName: String) => {
   return find({ name: categoryName })
     .populate('todos')
     .then((category: ICategory): ICategory => {
@@ -23,7 +23,7 @@ const getCategory = (categoryName: String): mongoose.Query => {
       }
     });
 };
-const categoryAddNewTodo = (categoryName: String, id: String): mongoose.Query => {
+const categoryAddNewTodo = (categoryName: String, id: String) => {
   return find({ name: categoryName }).then((category): ICategory => {
     category[0].todos.push(id);
     category[0].save();

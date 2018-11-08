@@ -1,10 +1,10 @@
 const { ImageModel } = require('../models/image');
-import mongoose from 'mongoose'
 
-function createImage(payload: Object): mongoose.Query {
+
+function createImage(payload: Object) {
   return new ImageModel(payload);
 }
-const find = (payload: Object): mongoose.Query => {
+const find = (payload: Object) => {
   return ImageModel.find(payload);
 };
 

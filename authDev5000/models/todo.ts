@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import { Schema, Model, model } from "mongoose";
+import { Model, model } from "mongoose";
 import { ITodo } from "../interfaces/todo";
 const { Schema } = mongoose;
 const constants = require('../constants');

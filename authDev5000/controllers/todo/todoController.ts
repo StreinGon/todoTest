@@ -173,7 +173,7 @@ const GetShared = (req: Request, res: Response): Response => {
     .then((shared: ISharedTodo): Response => {
       if (shared) {
         let checker = false;
-        shared.allowed.forEach((user: IUser): void => {
+        shared.allowed.forEach((user) => {
           if (user === req.user.id) {
             checker = true;
           }

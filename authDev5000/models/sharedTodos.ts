@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const constants = require('../constants');
-import { Schema, Model, model } from "mongoose";
+import { Model, model } from "mongoose";
 import { ISharedTodo } from "../interfaces/sharedTodos";
 const { Schema } = mongoose;
 

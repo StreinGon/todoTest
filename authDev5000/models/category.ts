@@ -1,5 +1,5 @@
 import { ICategory } from "../interfaces/category";
-import { Schema, Model, model } from "mongoose";
+import { Model, model } from "mongoose";
 const mongoose = require('mongoose');
 const constants = require('../constants');
 

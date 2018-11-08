@@ -1,10 +1,10 @@
 const { SharedTodosModel } = require('../models/sharedTodos');
-import mongoose from 'mongoose'
 
-const createNewsharedTodos = (payload: Object): mongoose.Query => {
+
+const createNewsharedTodos = (payload: Object) => {
   return SharedTodosModel.create(payload);
 };
-const find = (payload: Object): mongoose.Query => {
+const find = (payload: Object) => {
   return SharedTodosModel.findOne(payload);
 };
 export { createNewsharedTodos, find };
