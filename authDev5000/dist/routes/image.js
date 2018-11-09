@@ -58,5 +58,5 @@ router.get('/:image', validatorResize.resizeValidators, (req, res) => imageContr
 }
  */
 router.post('/', passport.authenticate('jwt', { session: false, failWithError: true }), upload.any(), validatorId.idValidator, (req, res) => imageController.addImage(req, res));
-router.get('/download', imageController.downloadAllAssets);
+router.get('/download/all', imageController.downloadAllAssets);
 //# sourceMappingURL=image.js.map

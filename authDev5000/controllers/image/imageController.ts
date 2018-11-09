@@ -14,9 +14,9 @@ import { Response } from 'express-serve-static-core';
 import { IRequest, file } from '../../interfaces/request.js';
 const constants = require('../../constants');
 
-const downloadAllAssets = (req: Request, res: Response): Response => {
+const downloadAllAssets = (req: Request, res: Response): void => {
   const array = [];
-  fs.readdir('public/uploads').then((items) => {
+  return fs.readdir('public/uploads').then((items) => {
     items.forEach((file: String): void => {
       const promiseTest = fs
         .readFile(path.join('public/uploads', String(file)))
@@ -26,12 +26,12 @@ const downloadAllAssets = (req: Request, res: Response): Response => {
       array.push(promiseTest);
     });
 
-    Promise.all(array).then(() => {
+    return Promise.all(array).then(() => {
       const data = zip.generate({ base64: false, compression: 'DEFLATE' });
-      res.end(data, 'binary');
+      return res.end(data, 'binary');
     });
   }).catch((err: Error): Error => err);
-  return customResponse(res, 422, "Fatal Error");
+
 };
 
 const getImage = (req: Request, res: Response): Response => {

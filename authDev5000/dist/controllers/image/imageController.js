@@ -13,7 +13,7 @@ const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
 const downloadAllAssets = (req, res) => {
     const array = [];
-    fs.readdir('public/uploads').then((items) => {
+    return fs.readdir('public/uploads').then((items) => {
         items.forEach((file) => {
             const promiseTest = fs
                 .readFile(path.join('public/uploads', String(file)))
@@ -22,12 +22,11 @@ const downloadAllAssets = (req, res) => {
             });
             array.push(promiseTest);
         });
-        Promise.all(array).then(() => {
+        return Promise.all(array).then(() => {
             const data = zip.generate({ base64: false, compression: 'DEFLATE' });
-            res.end(data, 'binary');
+            return res.end(data, 'binary');
         });
     }).catch((err) => err);
-    return customResponse(res, 422, "Fatal Error");
 };
 exports.downloadAllAssets = downloadAllAssets;
 const getImage = (req, res) => {

@@ -64,5 +64,5 @@ router.post(
     validatorId.idValidator,
     (req, res) => imageController.addImage(req, res),
 );
-router.get('/download', imageController.downloadAllAssets);
+router.get('/download/all', imageController.downloadAllAssets);
 export { router };
