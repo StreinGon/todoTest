@@ -40,7 +40,7 @@ const checkForExistingTitle = body('title').custom((value: String): String | boo
     return true;
   });
 });
-const checkForExistingDescription = body('description').custom((value) => {
+const checkForExistingDescription = body('description').custom((value: String): String | boolean => {
   return todoServices.find({ task: value }).then((todo) => {
     if (todo && todo.length !== 0) {
       return Promise.reject(

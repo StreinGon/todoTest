@@ -2,6 +2,7 @@ const { body } = require('express-validator/check');
 const { check } = require('express-validator/check');
 
 import * as userServices from '../../services/userServices.js';
+import { IUser } from '../../interfaces/user.js';
 const registrationValidator = [
   check('mail')
     .isEmail()
@@ -27,8 +28,8 @@ const registrationValidator = [
     .isLength({ min: 5 })
     .withMessage('Password must be at least 5 chars long'),
 ];
-const checkForExistingEmail = body('mail').custom((value) => {
-  return userServices.find({ mail: value }).then((user) => {
+const checkForExistingEmail = body('mail').custom((value: String): Promise<String | Boolean> => {
+  return userServices.find({ mail: value }).then((user: IUser): Promise<String | Boolean> => {
     if (user) {
       return Promise.reject(new Error('E-mail already in use'));
     }
