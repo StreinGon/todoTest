@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
 const categoryServices = require("../../services/categoryServices");
 const todoServices = require("../../services/todoServices");
-const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const errorAfterValidation_1 = require("../../helpers/errorChecker/errorAfterValidation");
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const createNewCategory = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAfterValidation_1.errorAftervalidation(errors, res);
     }
     const { categoryName } = req.body;
     return categoryServices
@@ -24,11 +24,12 @@ exports.createNewCategory = createNewCategory;
 const getCategory = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAfterValidation_1.errorAftervalidation(errors, res);
     }
     const { categoryName } = req.query;
     return categoryServices.getCategory(categoryName).then((category) => {
-        if (!category) {
+        console.log(category);
+        if (!category || category.length < 1) {
             return customResponse(res, 422, 'Category not found');
         }
         return customResponse(res, 200, 'Category sended', category);
@@ -38,7 +39,7 @@ exports.getCategory = getCategory;
 const addTodoToCategory = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAfterValidation_1.errorAftervalidation(errors, res);
     }
     const { todoID } = req.query;
     const { categoryName } = req.body;
@@ -49,6 +50,9 @@ const addTodoToCategory = (req, res) => {
             return customResponse(res, 422, 'Category not updated');
         }
         todoServices.find({ _id: todoID }).then((todo) => {
+            if (!todo || todo.length < 1) {
+                return customResponse(res, 422, 'Category not updated');
+            }
             todo[0].category = updatedCategory.name;
             todo[0].save();
             return customResponse(res, 200, 'Category updated', updatedCategory);

@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 
 const adminController = require('../controllers/admin/adminController');
-
+import { idValidator } from '../helpers/validators/idValidator'
 const adminValidator = require('../helpers/validators/changeTodoAsAdminValidator');
 /**
  * @api {post} /admin Change todo owner
@@ -81,6 +81,7 @@ router.get(
 router.get(
     '/',
     passport.authenticate('jwt', { session: false, failWithError: true }),
+    idValidator,
     (req, res) => adminController.getTodolist(req, res),
 );
 router.get(

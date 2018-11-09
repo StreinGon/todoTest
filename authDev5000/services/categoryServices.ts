@@ -5,13 +5,13 @@ import { ICategory } from '../interfaces/category';
 const createNewCategory = (payload: Object): mongoose.Query<ICategory> => {
   return CategoryModel.create(payload);
 };
-const find = (payload: Object): mongoose.Query<ICategory> => {
+const find = (payload: Object): mongoose.Query<ICategory[]> => {
   return CategoryModel.find(payload);
 };
-const getCategory = (categoryName: String): Promise<void | ICategory | Error> => {
+const getCategory = (categoryName: String): Promise<void | ICategory[] | Error> => {
   return find({ name: categoryName })
     .populate('todos')
-    .then((category: ICategory): ICategory => {
+    .then((category: ICategory[]): ICategory[] => {
       if (!category) {
         return null;
       }
@@ -23,7 +23,7 @@ const getCategory = (categoryName: String): Promise<void | ICategory | Error> =>
       }
     });
 };
-const categoryAddNewTodo = (categoryName: String, id: String): Promise<void | ICategory | Error> => {
+const categoryAddNewTodo = (categoryName: String, id: mongoose.Schema.Types.ObjectId): Promise<void | ICategory | Error> => {
   return find({ name: categoryName }).then((category): ICategory => {
     category[0].todos.push(id);
     category[0].save();

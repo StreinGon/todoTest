@@ -13,7 +13,7 @@ const validatorResize = require('../helpers/validators/resizeValidator');
  * @api {get} /image/:imagename Image Get single image
  *  * @apiGroup Image
  */
-router.get('/', validatorResize.resizeValidators, (req, res) => imageController.getImage(req, res));
+router.get('/:image', validatorResize.resizeValidators, (req, res) => imageController.getImage(req, res));
 
 /**
  * @api {post} /todo/imageAdd/:id Add image to todo

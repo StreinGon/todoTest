@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const uuidv1 = require('uuid/v1');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const sharedTodosServices = require("../../services/sharedTodosServices");
 const userServices = require("../../services/userServices.js");
 const imageServices = require("../../services/imageServices.js");
 const constants = require('../../constants');
@@ -48,7 +49,8 @@ const sendInvite = (req, res) => {
             subject: 'InviteCode',
             text: String(`${req.headers.host}/users/?invite=${req.user.invite}`),
         };
-        return InviteToRegModel.find({ _id: req.user.invite }).then((shared) => {
+        return sharedTodosServices.find({ _id: req.user.invite }).then((shared) => {
+            console.log(shared);
             shared.todos = req.user.todos;
             shared.allowed.push(req.user._id);
             shared.save();

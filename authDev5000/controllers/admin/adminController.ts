@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator/check');
 
 
 const { customResponse } = require('../../helpers/customResponse/customResponse');
-const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 import * as  userServices from '../../services/userServices.js';
 import * as  todoServices from '../../services/todoServices.js';
 import { IUser } from '../../interfaces/user'
@@ -16,7 +16,7 @@ const { createReport } = require('../../helpers/createReport');
 const changeTodoAsAdmin = (req: Request, res: Response): Promise<IUser> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
 
   return userServices
@@ -68,7 +68,7 @@ const changeTodoAsAdmin = (req: Request, res: Response): Promise<IUser> => {
 const getUserlist = (req: Request, res: Response): Promise<IUser> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
   return userServices
     .find({ username: req.user.username })
@@ -88,7 +88,7 @@ const getUserlist = (req: Request, res: Response): Promise<IUser> => {
 const getTodolist = (req: Request, res: Response): Promise<IUser> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
   const { userID } = req.query;
   return userServices
@@ -97,6 +97,7 @@ const getTodolist = (req: Request, res: Response): Promise<IUser> => {
     .exec((err: IError, user) => {
       if (user.role.rights === 1) {
         return userServices.find({ _id: userID }).then((user: IUser): Response => {
+
           if (!user) {
             return customResponse(res, 422, 'User Not found');
           }

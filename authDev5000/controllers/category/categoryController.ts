@@ -5,14 +5,14 @@ import * as todoServices from '../../services/todoServices';
 import { Request } from 'express';
 import { Response } from 'express-serve-static-core';
 import { ICategory } from '../../interfaces/category';
-const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+import { errorAftervalidation } from '../../helpers/errorChecker/errorAfterValidation';
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 
 const createNewCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
   const { categoryName } = req.body;
   return categoryServices
@@ -27,11 +27,12 @@ const createNewCategory = (req: Request, res: Response): Promise<Response> => {
 const getCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
   const { categoryName } = req.query;
-  return categoryServices.getCategory(categoryName).then((category: ICategory): Response => {
-    if (!category) {
+  return categoryServices.getCategory(categoryName).then((category: Array<ICategory>): Response => {
+    console.log(category)
+    if (!category || category.length < 1) {
       return customResponse(res, 422, 'Category not found');
     }
     return customResponse(res, 200, 'Category sended', category);
@@ -40,7 +41,7 @@ const getCategory = (req: Request, res: Response): Promise<Response> => {
 const addTodoToCategory = (req: Request, res: Response): Promise<Response> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return errorAfterValidation(errors, res);
+    return errorAftervalidation(errors, res);
   }
   const { todoID } = req.query;
   const { categoryName } = req.body;
@@ -51,6 +52,9 @@ const addTodoToCategory = (req: Request, res: Response): Promise<Response> => {
         return customResponse(res, 422, 'Category not updated');
       }
       todoServices.find({ _id: todoID }).then((todo) => {
+        if (!todo || todo.length < 1) {
+          return customResponse(res, 422, 'Category not updated');
+        }
         todo[0].category = updatedCategory.name;
         todo[0].save();
         return customResponse(res, 200, 'Category updated', updatedCategory);

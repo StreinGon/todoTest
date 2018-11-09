@@ -45,7 +45,7 @@ const getImage = (req, res) => {
         .then((data) => {
         return res.end(data, 'binary');
     })
-        .catch((error) => error);
+        .catch((error) => { return customResponse(res, 422, "Image name Error", error); });
 };
 exports.getImage = getImage;
 const addImage = (req, res) => {

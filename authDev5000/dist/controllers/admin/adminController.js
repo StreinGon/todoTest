@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
-const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const userServices = require("../../services/userServices.js");
 const todoServices = require("../../services/todoServices.js");
 const constants = require('../../constants');
@@ -10,7 +10,7 @@ const { createReport } = require('../../helpers/createReport');
 const changeTodoAsAdmin = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAftervalidation(errors, res);
     }
     return userServices
         .find({ username: req.user.username })
@@ -45,7 +45,7 @@ exports.changeTodoAsAdmin = changeTodoAsAdmin;
 const getUserlist = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAftervalidation(errors, res);
     }
     return userServices
         .find({ username: req.user.username })
@@ -66,7 +66,7 @@ exports.getUserlist = getUserlist;
 const getTodolist = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return errorAfterValidation(errors, res);
+        return errorAftervalidation(errors, res);
     }
     const { userID } = req.query;
     return userServices

@@ -35,6 +35,7 @@ const downloadAllAssets = (req: Request, res: Response): Response => {
 };
 
 const getImage = (req: Request, res: Response): Response => {
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -47,10 +48,11 @@ const getImage = (req: Request, res: Response): Response => {
   return sharp(`${constants.otherConstants.UPLOADS}${imageName}`)
     .resize(width, height)
     .toBuffer()
-    .then((data: String): void => {
+    .then((data: String): void | Error => {
+
       return res.end(data, 'binary');
     })
-    .catch((error: Error): Error => error);
+    .catch((error: Error): void | Error => { return customResponse(res, 422, "Image name Error", error) });
 };
 const addImage = (req: IRequest, res: Response): Promise<void | Error | Response> => {
   const { id: idTodo } = req.query;

@@ -5,6 +5,7 @@ const uuidv1 = require('uuid/v1');
 
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
+import * as sharedTodosServices from '../../services/sharedTodosServices'
 import * as  userServices from '../../services/userServices.js';
 import * as imageServices from '../../services/imageServices.js';
 import { Request } from 'express';
@@ -46,7 +47,8 @@ const sendInvite = (req: Request, res: Response): Promise<Response> => {
   const { mail } = req.body;
   const check = userServices.getUser({ mail });
 
-  return check.then((user: IUser): Response => {
+  return check.then((user: IUser): Promise<Response> => {
+
     if (!user) {
       return customResponse(res, 422, constants.statusConstants.NOT_FOUND);
     }
@@ -56,7 +58,8 @@ const sendInvite = (req: Request, res: Response): Promise<Response> => {
       subject: 'InviteCode',
       text: String(`${req.headers.host}/users/?invite=${req.user.invite}`),
     };
-    return InviteToRegModel.find({ _id: req.user.invite }).then((shared): Response => {
+    return sharedTodosServices.find({ _id: req.user.invite }).then((shared): Promise<Response> => {
+      console.log(shared)
       shared.todos = req.user.todos;
       shared.allowed.push(req.user._id);
       shared.save();

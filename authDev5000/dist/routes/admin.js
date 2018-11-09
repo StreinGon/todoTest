@@ -5,6 +5,7 @@ const router = express.Router();
 exports.router = router;
 const passport = require('passport');
 const adminController = require('../controllers/admin/adminController');
+const idValidator_1 = require("../helpers/validators/idValidator");
 const adminValidator = require('../helpers/validators/changeTodoAsAdminValidator');
 /**
  * @api {post} /admin Change todo owner
@@ -70,6 +71,6 @@ router.get('/users', passport.authenticate('jwt', { session: false, failWithErro
     "responseTime": "10/30/2018 17:27"
 }
  */
-router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => adminController.getTodolist(req, res));
+router.get('/', passport.authenticate('jwt', { session: false, failWithError: true }), idValidator_1.idValidator, (req, res) => adminController.getTodolist(req, res));
 router.get('/report', passport.authenticate('jwt', { session: false, failWithError: true }), (req, res) => adminController.getMonthlyReport(req, res));
 //# sourceMappingURL=admin.js.map
