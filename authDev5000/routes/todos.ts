@@ -1,4 +1,4 @@
-const passport = require('passport');
+const passport = require('passport')
 const express = require('express');
 
 const router = express.Router();
@@ -50,4 +50,4 @@ router.get(
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req, res) => todosController.getTodolist(req, res),
 );
-export  { router };
+export { router };

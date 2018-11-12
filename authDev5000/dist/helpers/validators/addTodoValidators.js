@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { body } = require('express-validator/check');
-const todoServices = require('../../services/todoServices.js');
+const todoServices = require('../../services/todoServices');
 const addTodoValidator = [
     body('investigation')
         .custom(value => /^[1-9]+$/.test(value))

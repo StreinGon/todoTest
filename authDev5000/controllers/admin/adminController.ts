@@ -3,13 +3,13 @@ const { validationResult } = require('express-validator/check');
 
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
-import * as  userServices from '../../services/userServices.js';
-import * as  todoServices from '../../services/todoServices.js';
+import * as  userServices from '../../services/userServices';
+import * as  todoServices from '../../services/todoServices';
 import { IUser } from '../../interfaces/user'
 import { Request } from 'express';
 import { Response } from 'express-serve-static-core';
-import { IError } from '../../interfaces/error.js';
-import { ITodo } from '../../interfaces/todo.js';
+import { IError } from '../../interfaces/error';
+import { ITodo } from '../../interfaces/todo';
 const constants = require('../../constants');
 const { createReport } = require('../../helpers/createReport');
 

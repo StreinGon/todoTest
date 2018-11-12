@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator/check');
 
 import * as  imageServices from '../../services/imageServices';
-import * as  roleServices from '../../services/roleServices.js';
-import * as  userServices from '../../services/userServices.js';
+import * as  roleServices from '../../services/roleServices';
+import * as  userServices from '../../services/userServices';
 import * as  sharedTodosServices from '../../services/sharedTodosServices';
 import { Request } from 'express-serve-static-core';
 import { Response, NextFunction } from 'express';
@@ -59,7 +59,7 @@ const singIn = (req: Request, res: Response, next: NextFunction): Response | voi
         res,
         200,
         constants.statusConstants.LOGIN_CORRECT,
-        changedUser,
+        { user: changedUser, token: token },
       );
     });
   })(req, res, next);
@@ -111,6 +111,7 @@ const singUp = (req: IRequest, res: Response) => {
           res,
           200,
           constants.statusConstants.REDISTRATION_SUCCESSFULL,
+          user
         );
       });
   });

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { body } = require('express-validator/check');
 const { check } = require('express-validator/check');
-const userServices = require("../../services/userServices.js");
+const userServices = require("../../services/userServices");
 const registrationValidator = [
     check('mail')
         .isEmail()

@@ -1,4 +1,5 @@
 const { CategoryModel } = require('../models/category');
+
 import mongoose from 'mongoose'
 import { ICategory } from '../interfaces/category';
 

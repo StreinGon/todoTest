@@ -8,8 +8,8 @@ const nodezip = require('node-zip');
 const zip = new nodezip();
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
-const todoServices = require("../../services/todoServices.js");
-const imageServices = require("../../services/imageServices.js");
+const todoServices = require("../../services/todoServices");
+const imageServices = require("../../services/imageServices");
 const constants = require('../../constants');
 const downloadAllAssets = (req, res) => {
     const array = [];

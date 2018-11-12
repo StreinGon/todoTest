@@ -6,12 +6,12 @@ const uuidv1 = require('uuid/v1');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAfterValidation } = require('../../helpers/errorChecker/errorAfterValidation');
 import * as sharedTodosServices from '../../services/sharedTodosServices'
-import * as  userServices from '../../services/userServices.js';
-import * as imageServices from '../../services/imageServices.js';
+import * as  userServices from '../../services/userServices';
+import * as imageServices from '../../services/imageServices';
 import { Request } from 'express';
 import { Response } from 'express-serve-static-core';
-import { IUser } from '../../interfaces/user.js';
-import { IImage } from '../../interfaces/image.js';
+import { IUser } from '../../interfaces/user';
+import { IImage } from '../../interfaces/image';
 
 const constants = require('../../constants');
 const { InviteToRegModel } = require('../../models/inviteReg');

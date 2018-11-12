@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
+const passport = require('passport')
 
 const adminController = require('../controllers/admin/adminController');
 import { idValidator } from '../helpers/validators/idValidator'

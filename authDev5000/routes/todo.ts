@@ -2,10 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
 const router = express.Router();
-const passport = require('passport');
+const passport = require('passport')
 
 const todoController = require('../controllers/todo/todoController');
-
 const validator = require('../helpers/validators/addTodoValidators');
 const validatorID = require('../helpers/validators/idValidator');
 const validatorChange = require('../helpers/validators/changeTodoValidator');
@@ -123,4 +122,4 @@ router.delete(
   (req, res) => todoController.deleteTodo(req, res),
 );
 
-export  { router };
+export { router };

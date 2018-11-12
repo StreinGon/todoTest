@@ -7,11 +7,11 @@ const zip = new nodezip();
 
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
-import * as  todoServices from '../../services/todoServices.js';
-import * as   imageServices from '../../services/imageServices.js';
+import * as  todoServices from '../../services/todoServices';
+import * as   imageServices from '../../services/imageServices';
 import { Request } from 'express';
 import { Response } from 'express-serve-static-core';
-import { IRequest, file } from '../../interfaces/request.js';
+import { IRequest, file } from '../../interfaces/request';
 const constants = require('../../constants');
 
 const downloadAllAssets = (req: Request, res: Response): void => {

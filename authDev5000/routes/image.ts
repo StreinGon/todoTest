@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
 express.Router({ strict: true });
 const router = express.Router();
-const passport = require('passport');
+const passport = require('passport')
 
 const imageController = require('../controllers/image/imageController');
 const validatorId = require('../helpers/validators/idValidator');

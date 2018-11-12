@@ -5,8 +5,8 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator/check');
 const imageServices = require("../../services/imageServices");
-const roleServices = require("../../services/roleServices.js");
-const userServices = require("../../services/userServices.js");
+const roleServices = require("../../services/roleServices");
+const userServices = require("../../services/userServices");
 const sharedTodosServices = require("../../services/sharedTodosServices");
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
 const { SharedTodosModel } = require('../../models/sharedTodos');
@@ -42,7 +42,7 @@ const singIn = (req, res, next) => {
                 });
             }
             res.cookie(constants.statusConstants.AUTH_COOKIES, token);
-            return customResponse(res, 200, constants.statusConstants.LOGIN_CORRECT, changedUser);
+            return customResponse(res, 200, constants.statusConstants.LOGIN_CORRECT, { user: changedUser, token: token });
         });
     })(req, res, next);
 };

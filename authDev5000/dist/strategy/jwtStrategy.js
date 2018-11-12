@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const JwtStrategy = require('passport-jwt').Strategy;
-const userServices = require('../services/userServices.js');
+const userServices = require('../services/userServices');
 const secret = Buffer.from('1', 'base64');
 const opts = {};
 const cookieExtractor = (req) => {

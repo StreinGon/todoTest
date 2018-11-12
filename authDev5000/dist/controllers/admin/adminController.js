@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { validationResult } = require('express-validator/check');
 const { customResponse } = require('../../helpers/customResponse/customResponse');
 const { errorAftervalidation } = require('../../helpers/errorChecker/errorAfterValidation');
-const userServices = require("../../services/userServices.js");
-const todoServices = require("../../services/todoServices.js");
+const userServices = require("../../services/userServices");
+const todoServices = require("../../services/todoServices");
 const constants = require('../../constants');
 const { createReport } = require('../../helpers/createReport');
 const changeTodoAsAdmin = (req, res) => {

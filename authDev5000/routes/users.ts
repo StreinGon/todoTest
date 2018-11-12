@@ -1,7 +1,7 @@
 const express = require('express');
-
+const passport = require('passport')
 const router = express.Router();
-const passport = require('passport');
+
 
 const validatorID = require('../helpers/validators/idValidator');
 const authController = require('../controllers/auth/authController');
@@ -36,4 +36,4 @@ router.post(
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req, res) => userController.sendInviteToReg(req, res),
 );
-export  { router };
+export { router };

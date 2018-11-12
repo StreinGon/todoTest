@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let main = require('../app');
 let debug = require('debug')('auth:server');
 let http = require('http');
@@ -62,4 +64,5 @@ function onListening() {
     const bind = typeof addr === 'string' ? `pipe  ${addr}` : `port  ${addr.port}`;
     debug(`Listening on   ${bind}`);
 }
+exports.default = server;
 //# sourceMappingURL=www.js.map
