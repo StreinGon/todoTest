@@ -1,0 +1,1 @@
+{"version":3,"file":"JSONerror.js","sourceRoot":"","sources":["../../../../src/helpers/errorChecker/JSONerror.ts"],"names":[],"mappings":";;AAEA,+EAA4E;AAC5E,4EAAkE;AAErD,QAAA,SAAS,GAAG,CAAC,KAAa,EAAE,OAAgB,EAAE,QAAQ,EAAC,IAAI,EAAmB,EAAE;IAC3F,IAAI,KAAK,YAAY,WAAW,EAAE;QAChC,OAAO,+BAAc,CAAC,QAAQ,EAAE,GAAG,EAAE,kCAAY,CAAC,CAAC;KAEpD;IACD,OAAO,IAAI,EAAE,CAAC;AAChB,CAAC,CAAC"}

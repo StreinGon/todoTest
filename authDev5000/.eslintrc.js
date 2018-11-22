@@ -4,6 +4,16 @@ module.exports = {
     node: true,
     mocha: true
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['@root','./']
+        ],
+        extensions: ['.ts', '.js', '.jsx', '.json']
+      }
+    }
+  },
   rules: {
     "arrow-body-style": [0, "as-needed"],
     "arrow-parens": [0, "as-needed"],

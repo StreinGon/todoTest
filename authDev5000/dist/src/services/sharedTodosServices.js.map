@@ -1,0 +1,1 @@
+{"version":3,"file":"sharedTodosServices.js","sourceRoot":"","sources":["../../../src/services/sharedTodosServices.ts"],"names":[],"mappings":";;AAEA,yDAA2D;AAG9C,QAAA,oBAAoB,GAAG,CAAC,OAAe,EAAwB,EAAE;IAC5E,OAAO,8BAAgB,CAAC,MAAM,CAAC,OAAO,CAAC,CAAC;AAC1C,CAAC,CAAC;AAEW,QAAA,IAAI,GAAG,CAAC,OAAe,EAA+B,EAAE;IACnE,OAAO,8BAAgB,CAAC,OAAO,CAAC,OAAO,CAAC,CAAC;AAC3C,CAAC,CAAC"}

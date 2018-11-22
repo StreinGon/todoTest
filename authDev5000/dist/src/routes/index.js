@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const todos_1 = require("./todos");
+const todo_1 = require("./todo");
+const login_1 = require("./login");
+const users_1 = require("./users");
+const registerform_1 = require("./registerform");
+const admin_1 = require("./admin");
+const image_1 = require("./image");
+const category_1 = require("./category");
+const router = express_1.Router();
+router.use('/users', users_1.default);
+router.use('/reg', registerform_1.default);
+router.use('/login', login_1.default);
+router.use('/todos', todos_1.default);
+router.use('/todo', todo_1.default);
+router.use('/admin', admin_1.default);
+router.use('/image', image_1.default);
+router.use('/category', category_1.default);
+exports.default = router;
+//# sourceMappingURL=index.js.map

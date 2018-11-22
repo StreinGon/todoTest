@@ -1,25 +1,27 @@
-const express = require('express');
-const app = express();
-const httpErrors = require('http-errors');
-const path = require('path');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const expressSession = require('express-session');
-const passport = require('passport');
-const bodyParser = require('body-parser');
+import * as express from 'express';
+import * as passport  from 'passport';
+import * as httpErrors from 'http-errors';
+import * as path from 'path';
+import * as mongoose from 'mongoose';
+import * as cookieParser from 'cookie-parser';
+import * as cors  from 'cors';
+import * as expressSession from 'express-session';
+import * as bodyParser  from 'body-parser';
 
-const { localStrategy } = require('./strategy/localStrategy');
-const { jwtStrategy } = require('./strategy/jwtStrategy');
-const globalRouter = require('./routes/index');
-const errorJSON = require('./helpers/errorChecker/JSONerror');
-const errorAuth = require('./helpers/errorChecker/authError');
-const { UserModel } = require('./models/user');
+import { localStrategy }  from'@src/strategy/localStrategy';
+import { jwtStrategy }  from'@src/strategy/jwtStrategy';
+import routes  from'@src/routes/index';
+import { jsonError }  from'@src/helpers/errorChecker/JSONerror';
+import { authError } from'@src/helpers/errorChecker/authError';
+import { UserModel }  from '@src/models/user';
+import { IUser } from '@src/interfaces/user';
+
+const app = express();
 
 mongoose.connect(
   'mongodb://localhost/Users',
   { useNewUrlParser: true },
-);
+); 
 
 app.set('views', path.join('views'));
 
@@ -36,7 +38,7 @@ app.use(express.static(path.join('public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
-app.use(errorJSON.JSONerrorChecker);
+app.use(jsonError);
 
 app.use(cors());
 
@@ -45,19 +47,18 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header(
     'Access-Control-Allow-Headers',
-    // tslint:disable-next-line:max-line-length
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials',
+    'Origin, X-Requested-With, Content-Type, Authorization, Access-Control-Allow-Credentials',
   );
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: IUser, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser((_id, done) => {
-  UserModel.findById(_id, (err, user) => {
+passport.deserializeUser((id, done) => {
+  UserModel.findById(id, (err: Error, user: IUser) => {
     done(err, user);
   });
 });
@@ -66,22 +67,22 @@ passport.use('jwt', jwtStrategy);
 
 passport.use('local', localStrategy);
 
-app.use(errorAuth.authError);
+app.use(authError);
 
 app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use('/', globalRouter.router);
+app.use('/', routes);
 
 app.use((req, res, next) => {
   next(httpErrors(404));
 });
 
-app.use((err, req, res) => {
+app.use((err:any, req, res:any): Response => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
-  res.send('err');
+  return res.send('err');
 });
 export { app };

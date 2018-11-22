@@ -3,23 +3,23 @@
 /**
  * Module dependencies.
  */
-
-let main = require('../app');
-let debug = require('debug')('auth:server');
-let http = require('http');
+require('module-alias/register')
+const main = require('../app');
+const debug = require('debug')('auth:server');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(process.env.PORT || '8080');
 main.app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-let server = http.createServer(main.app);
+const server = http.createServer(main.app);
 
 /**
  * Listen on provided port, on all network interfaces.
